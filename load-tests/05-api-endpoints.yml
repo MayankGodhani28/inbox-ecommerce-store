@@ -1,0 +1,71 @@
+# ─────────────────────────────────────────────────────────────────
+#  LOAD TEST 5: API Endpoint Specific Test
+#  File: load-tests/05-api-endpoints.yml
+#
+#  Tests EACH endpoint individually at moderate load.
+#  Useful to find which specific API is slow.
+#
+#  "Is it /api/products that is slow, or /api/orders?"
+# ─────────────────────────────────────────────────────────────────
+
+config:
+  target: "http://localhost:4000"
+  phases:
+    - name: "API Endpoints Test"
+      duration: 60
+      arrivalRate: 30
+
+  http:
+    timeout: 10
+    defaults:
+      headers:
+        Content-Type: "application/json"
+
+scenarios:
+  # Products API — most hit endpoint
+  - name: "GET /api/products (no filter)"
+    weight: 25
+    flow:
+      - get:
+          url: "/api/products"
+          expect:
+            - statusCode: 200
+            - contentType: json
+
+  - name: "GET /api/products (with filters)"
+    weight: 25
+    flow:
+      - get:
+          url: "/api/products?category=Electronics&sort=rating&pageSize=20"
+          expect:
+            - statusCode: 200
+
+  # Coupons API
+  - name: "GET /api/coupons"
+    weight: 10
+    flow:
+      - get:
+          url: "/api/coupons"
+          expect:
+            - statusCode: 200
+
+  # Auth — registration attempt (will likely fail if email exists, that's fine)
+  - name: "POST /api/auth/login (wrong credentials)"
+    weight: 20
+    flow:
+      - post:
+          url: "/api/auth/login"
+          json:
+            email: "loadtest{{ $randomNumber(1, 1000) }}@test.com"
+            password: "wrongpassword"
+          expect:
+            - statusCode: [200, 401]   # either is valid
+
+  # Health check
+  - name: "GET /api/health"
+    weight: 20
+    flow:
+      - get:
+          url: "/api/health"
+          expect:
+            - statusCode: 200

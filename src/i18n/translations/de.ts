@@ -2,8 +2,8 @@ import { TranslationDictionary } from '../types';
 
 export const de: TranslationDictionary = {
   // Navigation & Header
-  'nav.demoTitle': 'Inbox Infotech Demo',
-  'nav.demoSubtitle': 'Vollständiger MERN-fähiger Prototyp',
+  'nav.demoTitle': 'Inbox Infotech Store',
+  'nav.demoSubtitle': 'Offizieller E-Commerce-Shop',
   'nav.viewingAs': 'Ansicht als:',
   'nav.adminBadge': '🛡️ Admin (Vollzugriff)',
   'nav.customerBadge': '👤 Kunde',
@@ -29,7 +29,7 @@ export const de: TranslationDictionary = {
   'nav.allProducts': 'Alle Produkte',
   'nav.browseAllProducts': 'Alle Produkte durchsuchen',
   'nav.trackOrders': 'Bestellungen verfolgen',
-  'nav.adminDashboardDemo': 'Admin-Dashboard (Demo)',
+  'nav.adminDashboardDemo': 'Admin-Dashboard',
   'nav.browseByCategory': 'Nach Kategorie durchsuchen',
   'nav.flashDealsPromo': 'Blitzangebote (Bis zu 35% Rabatt)',
 
@@ -237,7 +237,7 @@ export const de: TranslationDictionary = {
   'cart.couponPlaceholder': 'Code eingeben (z. B. SAVE10)',
   'cart.apply': 'Einlösen',
   'cart.couponApplied': 'Eingelöster Gutschein: {code}',
-  'cart.availableCodes': 'Verfügbare Demo-Gutscheincodes:',
+  'cart.availableCodes': 'Verfügbare Gutscheincodes:',
   'cart.clickToApply': 'Klicken zum Einlösen von {code} ({desc})',
   'cart.proceedCheckout': 'Zur Kasse gehen',
   'cart.secureCheckoutBadge': '256-Bit SSL-verschlüsselte Bezahlung',
@@ -299,7 +299,7 @@ export const de: TranslationDictionary = {
   'checkout.processing': 'Bestellung wird verarbeitet...',
   'checkout.orderSummary': 'Bestellübersicht ({count} Artikel)',
   'checkout.discountLabel': 'Rabatt ({code})',
-  'checkout.shippingGuarantee': 'Garantierte und sichere Demo-Bezahlung.',
+  'checkout.shippingGuarantee': 'Garantierte und sichere Bezahlung.',
 
   // Order Success Page
   'orderSuccess.noOrderTitle': 'Keine aktuelle Bestellung gefunden',
@@ -414,7 +414,9 @@ export const de: TranslationDictionary = {
   'admin.totalOrders': 'Bestellungen gesamt',
   'admin.catalogItems': 'Katalog-Produkte',
   'admin.lowStockAlerts': 'Geringer Lagerbestand',
+  'admin.quickStatPending': 'Ausstehend',
   'admin.quickStatCompleted': 'Abgewickelte Aufträge',
+  'admin.actionEdit': 'Bearbeiten',
   'admin.recentOrders': 'Neueste Bestellungen',
   'admin.viewAllOrders': 'Alle Bestellungen anzeigen →',
   'admin.orderId': 'Bestell-ID',
@@ -496,8 +498,8 @@ export const de: TranslationDictionary = {
   'footer.stayUpdatedDesc': 'Abonnieren Sie unseren Newsletter für 15% Rabatt mit Code WELCOME15 und Blitzangebote.',
   'footer.emailPlaceholder': 'Ihre E-Mail-Adresse',
   'footer.subscribeBtn': 'Newsletter abonnieren',
-  'footer.copyright': 'Alle Rechte vorbehalten. Entwickelt als vollständige, responsive Full-Stack-Demo.',
-  'footer.acceptedPayments': 'Akzeptierte Demo-Zahlungsmittel:',
+  'footer.copyright': 'Alle Rechte vorbehalten. Sichere Full-Stack-E-Commerce-Plattform.',
+  'footer.acceptedPayments': 'Akzeptierte Zahlungsmethoden:',
 
   // Toasts
   'toast.subscribedNewsletter': 'Newsletter erfolgreich abonniert!',

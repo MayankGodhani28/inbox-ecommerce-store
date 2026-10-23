@@ -24,6 +24,33 @@ interface ProductsProps {
 
 const ITEMS_PER_PAGE = 8;
 
+const isKnownCategory = (val?: string): boolean => {
+  if (!val) return false;
+  return CATEGORIES.includes(val as ProductCategory);
+};
+
+const extractSearchFromParam = (val?: string): string => {
+  if (!val) return '';
+  if (val.startsWith('search:')) {
+    try {
+      return decodeURIComponent(val.replace('search:', ''));
+    } catch {
+      return val.replace('search:', '');
+    }
+  }
+  if (!isKnownCategory(val) && val !== 'all' && val !== 'deals') {
+    return val;
+  }
+  return '';
+};
+
+const extractCategoryFromParam = (val?: string): string => {
+  if (!val) return '';
+  if (val.startsWith('search:')) return '';
+  if (isKnownCategory(val)) return val;
+  return '';
+};
+
 export const Products: React.FC<ProductsProps> = ({
   products,
   initialCategory,
@@ -40,8 +67,11 @@ export const Products: React.FC<ProductsProps> = ({
   // Sort option
   const [sortBy, setSortBy] = useState<FilterState['sortBy']>('popularity');
 
+  const initialSearchText = extractSearchFromParam(initialCategory);
+  const initialCat = extractCategoryFromParam(initialCategory);
+
   // Search input query inside catalog
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(initialSearchText);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -53,30 +83,33 @@ export const Products: React.FC<ProductsProps> = ({
 
   // Filter State
   const [filters, setFilters] = useState<FilterState>({
-    category: initialCategory && initialCategory !== 'all' && initialCategory !== 'deals'
-      ? initialCategory
-      : '',
+    category: initialCat,
     brand: [],
     priceRange: [0, 2000],
     minRating: 0,
     discountMin: initialCategory === 'deals' ? 10 : 0,
     inStockOnly: false,
-    searchQuery: '',
+    searchQuery: initialSearchText,
     sortBy: 'popularity',
   });
 
-  // Sync category if initialCategory changes from Navbar
+  // Sync category or search query if initialCategory changes from Navbar
   useEffect(() => {
-    if (initialCategory === 'deals') {
-      setFilters((prev) => ({ ...prev, category: '', discountMin: 10 }));
-    } else if (initialCategory && initialCategory !== 'all') {
-      setFilters((prev) => ({
-        ...prev,
-        category: initialCategory,
-        discountMin: 0,
-      }));
+    const nextSearch = extractSearchFromParam(initialCategory);
+    const nextCat = extractCategoryFromParam(initialCategory);
+
+    if (nextSearch) {
+      setSearchQuery(nextSearch);
+      setFilters((prev) => ({ ...prev, category: '', discountMin: 0, searchQuery: nextSearch }));
+    } else if (initialCategory === 'deals') {
+      setSearchQuery('');
+      setFilters((prev) => ({ ...prev, category: '', discountMin: 10, searchQuery: '' }));
+    } else if (nextCat) {
+      setSearchQuery('');
+      setFilters((prev) => ({ ...prev, category: nextCat, discountMin: 0, searchQuery: '' }));
     } else {
-      setFilters((prev) => ({ ...prev, category: '', discountMin: 0 }));
+      setSearchQuery('');
+      setFilters((prev) => ({ ...prev, category: '', discountMin: 0, searchQuery: '' }));
     }
     setCurrentPage(1);
   }, [initialCategory]);
@@ -192,11 +225,15 @@ export const Products: React.FC<ProductsProps> = ({
             )}
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">
-            {!filters.category
-              ? filters.discountMin > 0
+            {searchQuery ? (
+              <span>Search Results for &ldquo;{searchQuery}&rdquo;</span>
+            ) : !filters.category ? (
+              filters.discountMin > 0
                 ? t('catalog.specialOffers')
                 : t('catalog.allProducts')
-              : tCategory(filters.category)}
+            ) : (
+              tCategory(filters.category)
+            )}
           </h1>
           <p className="text-xs text-slate-500 mt-1">
             {t('catalog.showingItems', { count: sortedProducts.length })}

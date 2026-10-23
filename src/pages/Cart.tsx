@@ -46,12 +46,12 @@ export const Cart: React.FC<CartProps> = ({ onNavigate, onSelectProduct }) => {
   const [couponInput, setCouponInput] = useState('');
   const [couponError, setCouponError] = useState<string | null>(null);
 
-  const handleApplyCoupon = (e: React.FormEvent) => {
+  const handleApplyCoupon = async (e: React.FormEvent) => {
     e.preventDefault();
     setCouponError(null);
     if (!couponInput.trim()) return;
 
-    const res = applyCoupon(couponInput.trim());
+    const res = await applyCoupon(couponInput.trim());
     if (!res.success) {
       setCouponError(res.message);
     } else {
@@ -59,12 +59,12 @@ export const Cart: React.FC<CartProps> = ({ onNavigate, onSelectProduct }) => {
     }
   };
 
-  const handleApplyPresetCoupon = (code: string) => {
+  const handleApplyPresetCoupon = async (code: string) => {
     setCouponError(null);
-    applyCoupon(code);
+    await applyCoupon(code);
   };
 
-  const freeShippingThreshold = 50;
+  const freeShippingThreshold = 75;
   const amountNeededForFreeShipping = Math.max(0, freeShippingThreshold - subtotal);
   const freeShippingProgress = Math.min(100, Math.round((subtotal / freeShippingThreshold) * 100));
 

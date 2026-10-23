@@ -40,6 +40,7 @@ export interface Product {
   isBestSeller?: boolean;
   isNewArrival?: boolean;
   isDealOfDay?: boolean;
+  isArchived?: boolean;
   createdAt?: string;
 }
 
@@ -119,17 +120,17 @@ export interface Order {
   couponCode?: string;
   shippingAddress: Address;
   deliveryMethod: 'Standard' | 'Express';
-  paymentMethod: PaymentMethod;
+  paymentMethod: string;
   paymentStatus: 'Paid' | 'Pending';
-  transactionId: string;
+  transactionId?: string;
   status: OrderStatus;
   statusHistory: {
     status: OrderStatus;
     timestamp: string;
     note: string;
   }[];
-  trackingNumber: string;
-  estimatedDeliveryDate: string;
+  trackingNumber?: string;
+  estimatedDeliveryDate?: string;
 }
 
 export interface User {
@@ -137,9 +138,27 @@ export interface User {
   name: string;
   email: string;
   phone: string;
-  role: 'customer' | 'admin';
+  role: 'customer' | 'admin' | 'superadmin';
+  storeName?: string;
+  sellerStatus?: 'PENDING' | 'APPROVED' | 'REJECTED' | 'SUSPENDED';
   avatar?: string;
   addresses: Address[];
+  createdAt: string;
+}
+
+export interface SellerApplication {
+  id: string;
+  userId?: string | null;
+  storeName: string;
+  legalName: string;
+  email: string;
+  phone: string;
+  businessAddress: string;
+  category: string;
+  taxId?: string | null;
+  description?: string | null;
+  status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'SUSPENDED';
+  rejectionReason?: string | null;
   createdAt: string;
 }
 

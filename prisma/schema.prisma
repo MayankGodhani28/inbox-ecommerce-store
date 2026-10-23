@@ -1,0 +1,320 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum SellerStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
+model User {
+  id                 String               @id @default(uuid())
+  email              String               @unique
+  passwordHash       String
+  name               String
+  phone              String?
+  avatarUrl          String?
+  role               Role                 @default(CUSTOMER)
+  sellerStatus       SellerStatus?
+  storeName          String?
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+
+  sessions           Session[]
+  addresses          Address[]
+  cartItems          CartItem[]
+  savedItems         SavedItem[]
+  wishlistItems      WishlistItem[]
+  orders             Order[]
+  reviews            Review[]
+  couponRedemptions  CouponRedemption[]
+  checkoutRequests   CheckoutRequest[]
+  sellerApplications SellerApplication[]
+
+  @@index([email])
+  @@index([role])
+}
+
+model SellerApplication {
+  id              String       @id @default(uuid())
+  userId          String?
+  user            User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+  storeName       String
+  legalName       String
+  email           String
+  phone           String
+  businessAddress String
+  category        String
+  taxId           String?      // GSTIN, Tax ID, or Business Number
+  description     String?
+  status          SellerStatus @default(PENDING)
+  rejectionReason String?
+  reviewedAt      DateTime?
+  reviewedBy      String?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@index([email])
+  @@index([status])
+}
+
+model Session {
+  id         String    @id @default(uuid())
+  tokenHash  String    @unique
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt  DateTime
+  revokedAt  DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Address {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName  String
+  phone     String
+  street    String
+  city      String
+  state     String
+  pincode   String
+  country   String   @default("India")
+  type      String   @default("Home")
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Product {
+  id             String         @id
+  name           String
+  brand          String
+  category       String
+  description    String
+  price          Int            // Minor units (cents/paise)
+  originalPrice  Int            // Minor units
+  discount       Int            @default(0) // Percentage
+  rating         Float          @default(0)
+  reviewCount    Int            @default(0)
+  stock          Int            @default(0)
+  images         Json           // string[]
+  colors         Json?          // string[]
+  sizes          Json?          // string[]
+  specifications Json           // Record<string, string>
+  isTrending     Boolean        @default(false)
+  isBestSeller   Boolean        @default(false)
+  isNewArrival   Boolean        @default(false)
+  isDealOfDay    Boolean        @default(false)
+  isArchived     Boolean        @default(false)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  cartItems      CartItem[]
+  savedItems     SavedItem[]
+  wishlistItems  WishlistItem[]
+  orderItems     OrderItem[]
+  reviews        Review[]
+
+  @@index([category, isArchived])
+  @@index([isArchived, isTrending])
+  @@index([isArchived, isBestSeller])
+}
+
+model CartItem {
+  id            String   @id @default(uuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId     String
+  product       Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  quantity      Int      @default(1)
+  selectedColor String   @default("")
+  selectedSize  String   @default("")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([userId, productId, selectedColor, selectedSize])
+  @@index([userId])
+}
+
+model SavedItem {
+  id            String   @id @default(uuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId     String
+  product       Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  selectedColor String   @default("")
+  selectedSize  String   @default("")
+  createdAt     DateTime @default(now())
+
+  @@unique([userId, productId, selectedColor, selectedSize])
+  @@index([userId])
+}
+
+model WishlistItem {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
+  @@index([userId])
+}
+
+model Coupon {
+  id                 String             @id @default(uuid())
+  code               String             @unique
+  description        String
+  discountPercentage Int                @default(0)
+  minSpend           Int                @default(0) // Minor units
+  maxDiscount        Int?               // Minor units
+  freeShipping       Boolean            @default(false)
+  usageLimit         Int?
+  usedCount          Int                @default(0)
+  isActive           Boolean            @default(true)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  redemptions        CouponRedemption[]
+}
+
+model CouponRedemption {
+  id         String   @id @default(uuid())
+  couponId   String
+  coupon     Coupon   @relation(fields: [couponId], references: [id], onDelete: Restrict)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orderId    String?
+  redeemedAt DateTime @default(now())
+
+  @@index([couponId])
+  @@index([userId])
+}
+
+model Order {
+  id                   String               @id @default(uuid())
+  orderNumber          String               @unique
+  userId               String
+  user                 User                 @relation(fields: [userId], references: [id], onDelete: Restrict)
+  customerName         String
+  customerEmail        String
+  customerPhone        String
+  currency             String               @default("USD")
+  subtotal             Int                  // Minor units
+  discount             Int                  @default(0)
+  deliveryFee          Int                  @default(0)
+  tax                  Int                  @default(0)
+  total                Int                  // Minor units
+  couponCode           String?
+  shippingAddress      Json                 // Address snapshot
+  deliveryMethod       String               @default("Standard")
+  paymentMethod        String
+  paymentStatus        String               @default("Pending")
+  transactionId        String?
+  status               String               @default("Order Placed")
+  trackingNumber       String?
+  estimatedDeliveryDate DateTime?
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+
+  items                OrderItem[]
+  statusHistory        OrderStatusHistory[]
+  checkoutRequest      CheckoutRequest?
+
+  @@index([userId, createdAt])
+  @@index([orderNumber])
+  @@index([status])
+}
+
+model OrderItem {
+  id            String   @id @default(uuid())
+  orderId       String
+  order         Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId     String?
+  product       Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  name          String
+  image         String
+  selectedColor String?
+  selectedSize  String?
+  unitPrice     Int      // Minor units snapshot
+  quantity      Int
+  totalPrice    Int      // Minor units snapshot
+
+  @@index([orderId])
+}
+
+model OrderStatusHistory {
+  id        String   @id @default(uuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  status    String
+  note      String?
+  actor     String?
+  createdAt DateTime @default(now())
+
+  @@index([orderId])
+}
+
+model CheckoutRequest {
+  id             String   @id @default(uuid())
+  idempotencyKey String   @unique
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  payloadHash    String
+  orderId        String?  @unique
+  order          Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  status         String   @default("PENDING")
+  createdAt      DateTime @default(now())
+
+  @@index([idempotencyKey])
+}
+
+model Review {
+  id               String   @id @default(uuid())
+  productId        String
+  product          Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rating           Int
+  title            String
+  comment          String
+  verifiedPurchase Boolean  @default(false)
+  helpfulCount     Int      @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@unique([productId, userId])
+  @@index([productId, createdAt])
+}
+
+model NewsletterSubscription {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  isActive     Boolean  @default(true)
+  subscribedAt DateTime @default(now())
+}
+
+model HealthCheck {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  note      String?
+}

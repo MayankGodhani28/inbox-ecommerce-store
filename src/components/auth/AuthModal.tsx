@@ -2,18 +2,20 @@ import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from '../../context/LanguageContext';
 import { BrandLogo } from '../common/BrandLogo';
-import { X, Eye, EyeOff, KeyRound, Mail, User as UserIcon, Phone, CheckCircle2, ArrowRight } from 'lucide-react';
+import { X, Eye, EyeOff, Mail, User as UserIcon, Phone, CheckCircle2, ArrowRight, ShieldCheck } from 'lucide-react';
 
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
   initialMode?: 'login' | 'register' | 'forgot';
+  onLoginSuccess?: (role: string) => void;
 }
 
 export const AuthModal: React.FC<AuthModalProps> = ({
   isOpen,
   onClose,
   initialMode = 'login',
+  onLoginSuccess,
 }) => {
   const { login, register } = useAuth();
   const { t } = useTranslation();
@@ -33,18 +35,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
   if (!isOpen) return null;
 
-  const handleFillDemoUser = () => {
-    setEmail('user@inbox.com');
-    setPassword('password123');
-    setErrorMsg('');
-  };
-
-  const handleFillDemoAdmin = () => {
-    setEmail('admin@inbox.com');
-    setPassword('admin123');
-    setErrorMsg('');
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg('');
@@ -55,13 +45,19 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         if (!email.trim() || !password) {
           throw new Error('Please enter both email and password.');
         }
-        await login(email, password);
+        const logged = await login(email, password);
+        if (onLoginSuccess && logged?.role) {
+          onLoginSuccess(logged.role);
+        }
         onClose();
       } else if (mode === 'register') {
-        if (!name.trim() || !email.trim() || !phone.trim() || !password) {
-          throw new Error('Please fill in all registration fields.');
+        if (!name.trim() || !email.trim() || !password) {
+          throw new Error('Please fill in name, email, and password.');
         }
-        await register(name, email, phone);
+        if (password.length < 8) {
+          throw new Error('Password must be at least 8 characters long.');
+        }
+        await register(name, email, password, phone);
         onClose();
       } else if (mode === 'forgot') {
         if (!email.trim()) {
@@ -108,32 +104,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             {mode === 'register' && t('auth.registerDesc')}
             {mode === 'forgot' && t('auth.forgotDesc')}
           </p>
-
-          {/* Quick Demo Autofill Bar for college presentation */}
-          {mode === 'login' && (
-            <div className="mt-4 p-2.5 bg-orange-50/80 border border-orange-200/80 rounded-xl text-left">
-              <span className="text-[11px] font-bold text-orange-800 uppercase tracking-wider block mb-1.5 flex items-center gap-1">
-                <KeyRound className="w-3.5 h-3.5 text-orange-600" />
-                {t('auth.demoShortcuts')}
-              </span>
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={handleFillDemoUser}
-                  className="flex-1 text-xs py-1 px-2.5 bg-white hover:bg-orange-100 text-slate-800 rounded-lg border border-orange-200 font-semibold transition-colors cursor-pointer"
-                >
-                  {t('auth.fillCustomerDemo')}
-                </button>
-                <button
-                  type="button"
-                  onClick={handleFillDemoAdmin}
-                  className="flex-1 text-xs py-1 px-2.5 bg-slate-800 hover:bg-slate-900 text-white rounded-lg font-semibold transition-colors cursor-pointer"
-                >
-                  {t('auth.fillAdminDemo')}
-                </button>
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Form Body */}
@@ -284,6 +254,32 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 )}
               </button>
             </form>
+          )}
+
+          {/* Quick Admin Access Option */}
+          {mode === 'login' && (
+            <div className="mt-4 p-3 rounded-xl bg-blue-50/80 border border-blue-200/70 flex items-center justify-between gap-3 text-xs animate-fade-in">
+              <div className="flex items-center gap-2.5 text-slate-700 min-w-0">
+                <div className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                  <ShieldCheck className="w-4 h-4" />
+                </div>
+                <div className="min-w-0">
+                  <p className="font-bold text-slate-900 leading-tight truncate">Store Administrator</p>
+                  <p className="text-[11px] text-slate-500 font-mono truncate">admin@inbox.com</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail('admin@inbox.com');
+                  setPassword('AdminSecure2026!');
+                  setErrorMsg('');
+                }}
+                className="px-3 py-1.5 rounded-lg bg-white text-blue-700 font-bold text-xs hover:bg-blue-50 hover:border-blue-300 border border-blue-200 shadow-2xs transition-all cursor-pointer whitespace-nowrap shrink-0"
+              >
+                Fill Admin Credentials
+              </button>
+            </div>
           )}
 
           {/* Switch mode links */}

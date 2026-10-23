@@ -3,6 +3,7 @@ import { Order, OrderStatus } from '../types';
 import { orderService } from '../services/orderService';
 import { useToast } from '../context/ToastContext';
 import { useTranslation } from '../context/LanguageContext';
+import { useAuth } from '../context/AuthContext';
 import {
   CheckCircle2,
   Clock,
@@ -10,7 +11,7 @@ import {
   MapPin,
   Search,
   ChevronRight,
-  FastForward,
+  ShieldAlert,
 } from 'lucide-react';
 
 interface OrderTrackingProps {
@@ -33,77 +34,86 @@ export const OrderTracking: React.FC<OrderTrackingProps> = ({
   onNavigate,
   onSelectProduct,
 }) => {
+  const { user } = useAuth();
   const { showToast } = useToast();
-  const { t, tStatus } = useTranslation();
+  const { t } = useTranslation();
 
   const [searchId, setSearchId] = useState(initialOrderId || '');
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(false);
+  const [accessDenied, setAccessDenied] = useState(false);
 
   // Load initial order or first available order
   useEffect(() => {
+    let isMounted = true;
+    if (!user) {
+      setOrder(null);
+      return;
+    }
+
     const fetchOrder = async () => {
       setLoading(true);
+      setAccessDenied(false);
+
       if (initialOrderId) {
-        const found = orderService.getOrderById(initialOrderId);
-        if (found) {
-          setOrder(found);
-          setSearchId(found.id);
+        const found = await orderService.getOrderById(initialOrderId);
+        if (found && isMounted) {
+          if (found.userId === user.id || user.role === 'admin') {
+            setOrder(found);
+            setSearchId(found.id);
+          } else {
+            setAccessDenied(true);
+            setOrder(null);
+          }
           setLoading(false);
           return;
         }
       }
 
-      // Fallback to most recent order
-      const orders = orderService.getOrders();
-      if (orders.length > 0) {
+      // Fallback to most recent order of current user
+      const orders = await orderService.getOrders();
+      if (orders.length > 0 && isMounted) {
         setOrder(orders[0]);
         setSearchId(orders[0].id);
       }
-      setLoading(false);
+      if (isMounted) {
+        setLoading(false);
+      }
     };
 
     fetchOrder();
-  }, [initialOrderId]);
+    return () => {
+      isMounted = false;
+    };
+  }, [initialOrderId, user]);
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
+  const handleSearchSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!searchId.trim()) return;
 
+    if (!user) {
+      showToast('Authentication required', { message: 'Please sign in to track orders', type: 'error' });
+      onNavigate('login', 'order-tracking');
+      return;
+    }
+
     setLoading(true);
-    const found = orderService.getOrderById(searchId.trim());
+    setAccessDenied(false);
+
+    const found = await orderService.getOrderById(searchId.trim());
     if (found) {
-      setOrder(found);
+      if (found.userId === user.id || user.role === 'admin') {
+        setOrder(found);
+      } else {
+        setAccessDenied(true);
+        setOrder(null);
+        showToast('You do not have permission to view this order', { type: 'error' });
+      }
     } else {
+      setOrder(null);
       showToast(t('tracking.orderNotFound', { id: searchId }), { type: 'error' });
     }
     setLoading(false);
-  };
-
-  // Demo fast-forward status step for presentation
-  const handleSimulateNextStep = async () => {
-    if (!order) return;
-    const statusOrder: OrderStatus[] = [
-      'Order Placed',
-      'Confirmed',
-      'Packed',
-      'Shipped',
-      'Out for Delivery',
-      'Delivered',
-    ];
-    const currentIndex = statusOrder.indexOf(order.status);
-    if (currentIndex < statusOrder.length - 1) {
-      const nextStatus = statusOrder[currentIndex + 1];
-      const updated = await orderService.updateOrderStatus(order.id, nextStatus);
-      if (updated) {
-        setOrder({ ...updated });
-        showToast(t('tracking.simulatedSuccess', { status: tStatus(nextStatus).toUpperCase() }), {
-          type: 'success',
-        });
-      }
-    } else {
-      showToast(t('tracking.alreadyDelivered'), { type: 'info' });
-    }
   };
 
   const getStepIndex = (status: OrderStatus) => {
@@ -111,6 +121,34 @@ export const OrderTracking: React.FC<OrderTrackingProps> = ({
   };
 
   const currentStepIndex = order ? getStepIndex(order.status) : 0;
+
+  if (!user) {
+    return (
+      <div className="max-w-xl mx-auto px-4 py-16 text-center">
+        <div className="w-16 h-16 bg-orange-50 text-[#E84A27] rounded-full flex items-center justify-center mx-auto mb-4">
+          <ShieldAlert className="w-8 h-8" />
+        </div>
+        <h2 className="text-xl font-bold text-slate-900">Sign in to track orders</h2>
+        <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+          Order tracking is private and scoped to your account. Please sign in to view your orders and delivery checkpoints.
+        </p>
+        <div className="flex items-center justify-center gap-3 mt-6">
+          <button
+            onClick={() => onNavigate('home')}
+            className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+          >
+            Return to Home
+          </button>
+          <button
+            onClick={() => onNavigate('login', 'order-tracking')}
+            className="px-6 py-2.5 bg-[#E84A27] hover:bg-[#d03d1c] text-white rounded-xl text-xs font-bold shadow-md shadow-orange-500/20 transition-all cursor-pointer"
+          >
+            Sign In to Account
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 w-full">
@@ -145,6 +183,14 @@ export const OrderTracking: React.FC<OrderTrackingProps> = ({
         </form>
       </div>
 
+      {accessDenied && (
+        <div className="p-8 text-center bg-rose-50 text-rose-800 rounded-2xl border border-rose-200 mb-6">
+          <ShieldAlert className="w-8 h-8 mx-auto mb-2 text-rose-600" />
+          <p className="font-bold text-sm">Access Denied</p>
+          <p className="text-xs text-rose-600 mt-1">This order reference belongs to another account. You cannot view its tracking details.</p>
+        </div>
+      )}
+
       {order ? (
         <div className="flex flex-col gap-6">
           {/* Main Status Header Card */}
@@ -152,34 +198,26 @@ export const OrderTracking: React.FC<OrderTrackingProps> = ({
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
               <div>
                 <span className="text-xs font-bold text-orange-600 uppercase tracking-wider">
-                  {t('tracking.carrierNotice', { num: order.trackingNumber || 'BD8839201IN' })}
+                  {order.trackingNumber
+                    ? t('tracking.carrierNotice', { num: order.trackingNumber })
+                    : 'Awaiting Courier Dispatch'}
                 </span>
                 <h1 className="text-2xl font-black text-slate-900 mt-0.5 font-mono">
                   #{order.id}
                 </h1>
                 <p className="text-xs text-slate-500 mt-1">
                   {t('orderSuccess.trackingNumber')}:{' '}
-                  <strong className="text-slate-800 font-mono">{order.trackingNumber || 'BD8839201IN'}</strong>
+                  <strong className="text-slate-800 font-mono">{order.trackingNumber || 'Pending Dispatch'}</strong>
                 </p>
               </div>
 
               <div className="flex flex-wrap items-center gap-2">
-                {/* Presentation Fast-Forward Simulator Button */}
-                <button
-                  onClick={handleSimulateNextStep}
-                  className="px-3 py-1.5 rounded-xl bg-orange-50 hover:bg-orange-100 text-[#E84A27] border border-orange-200 text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
-                  title="Fast forward status for demo"
-                >
-                  <FastForward className="w-3.5 h-3.5" />
-                  {t('tracking.simulateNextStep')}
-                </button>
-
                 <div className="p-3 bg-emerald-50 rounded-2xl border border-emerald-200 text-right">
                   <span className="text-[10px] font-bold text-emerald-800 uppercase block">
                     {t('tracking.estimatedDelivery')}
                   </span>
                   <span className="text-xs font-extrabold text-emerald-700">
-                    {order.estimatedDeliveryDate || 'Tomorrow by 6:00 PM'}
+                    {order.estimatedDeliveryDate || 'Standard 3-4 Days'}
                   </span>
                 </div>
               </div>
@@ -234,32 +272,31 @@ export const OrderTracking: React.FC<OrderTrackingProps> = ({
             <div className="mt-4 pt-6 border-t border-slate-100">
               <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4 flex items-center gap-1.5">
                 <Clock className="w-4 h-4 text-orange-600" />
-                {t('tracking.currentStatus')}
+                {t('tracking.checkpointHistory')}
               </h3>
 
               <div className="flex flex-col gap-3">
-                {order.statusHistory.map((sh, idx) => (
+                {order.statusHistory.map((h, i) => (
                   <div
-                    key={idx}
-                    className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start justify-between text-xs"
+                    key={i}
+                    className="flex items-start justify-between py-2.5 px-3.5 bg-slate-50/70 rounded-xl border border-slate-100 text-xs"
                   >
-                    <div className="flex items-start gap-3">
-                      <div className="w-2 h-2 rounded-full bg-orange-600 mt-1.5 shrink-0" />
-                      <div>
-                        <p className="font-bold text-slate-900">{tStatus(sh.status)}</p>
-                        <p className="text-[11px] text-slate-500 mt-0.5">{sh.note}</p>
-                      </div>
+                    <div>
+                      <p className="font-bold text-slate-900">{h.status}</p>
+                      <p className="text-[11px] text-slate-500 mt-0.5">{h.note}</p>
                     </div>
-                    <span className="text-[10px] text-slate-400 font-mono shrink-0">{sh.timestamp}</span>
+                    <span className="text-[10px] text-slate-400 shrink-0 font-mono">
+                      {h.timestamp}
+                    </span>
                   </div>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* Bottom Grid: Shipping Address & Order Items */}
+          {/* Delivery & Items Summary Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Delivery Details */}
+            {/* Shipping Destination */}
             <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
               <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-1.5">
                 <MapPin className="w-4 h-4 text-orange-600" />
@@ -308,7 +345,7 @@ export const OrderTracking: React.FC<OrderTrackingProps> = ({
           </div>
         </div>
       ) : (
-        !loading && (
+        !loading && !accessDenied && (
           <div className="p-12 text-center bg-white rounded-3xl border border-slate-200">
             <p className="text-xs text-slate-500">{t('tracking.enterValidId')}</p>
           </div>

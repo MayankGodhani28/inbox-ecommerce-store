@@ -1,0 +1,65 @@
+# ─────────────────────────────────────────────────────────────────
+#  LOAD TEST 4: Soak Test (Memory Leak Detection)
+#  File: load-tests/04-soak-test.yml
+#
+#  Simulates: Moderate traffic sustained for a LONG time (hours)
+#
+#  Why companies do this:
+#   Sometimes a server works fine for 5 minutes, but after 2 hours
+#   it runs out of memory (memory leak) and crashes.
+#   This test finds those bugs.
+#
+#  Pattern: Constant 30 users/second for 10 minutes
+#           (In production you'd run this for 4-8 hours)
+#
+#  Watch for: Response times INCREASING over time
+#             Memory usage growing on the server
+# ─────────────────────────────────────────────────────────────────
+
+config:
+  target: "http://localhost:4000"
+  phases:
+    # Sustained moderate load for 10 minutes
+    # In a real company this runs for 4-8 hours overnight
+    - name: "Soak — 10 Minutes at Steady Load"
+      duration: 600          # 600 seconds = 10 minutes
+      arrivalRate: 30        # steady 30 users/second
+
+  ensure:
+    thresholds:
+      - http.response_time.p95: 2000   # must stay under 2s throughout
+      - http.response_time.p99: 5000   # 99th percentile under 5s
+    conditions:
+      - expression: errors.rate < 0.5   # less than 0.5% errors overall
+        strict: true
+
+  http:
+    timeout: 10
+
+scenarios:
+  - name: "Sustained Browsing"
+    weight: 50
+    flow:
+      - get:
+          url: "/api/products"
+      - think: 3
+      - get:
+          url: "/api/products?category=Fashion"
+      - think: 2
+
+  - name: "Sustained Search"
+    weight: 30
+    flow:
+      - get:
+          url: "/api/products?search=phone&sort=popularity"
+      - think: 2
+      - get:
+          url: "/api/products?newArrival=true"
+      - think: 3
+
+  - name: "Health Polling"
+    weight: 20
+    flow:
+      - get:
+          url: "/api/health"
+      - think: 5

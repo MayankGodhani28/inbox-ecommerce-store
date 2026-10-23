@@ -70,8 +70,14 @@ export const RatingStars: React.FC<RatingStarsProps> = ({
       </div>
       {showCount && (
         <span className="text-xs font-semibold text-slate-700 ml-0.5">
-          {rating.toFixed(1)}
-          {count !== undefined && <span className="text-slate-400 font-normal"> ({count})</span>}
+          {count === 0 ? (
+            <span className="text-slate-400 font-normal">No reviews</span>
+          ) : (
+            <>
+              {rating.toFixed(1)}
+              {count !== undefined && <span className="text-slate-400 font-normal"> ({count})</span>}
+            </>
+          )}
         </span>
       )}
     </div>

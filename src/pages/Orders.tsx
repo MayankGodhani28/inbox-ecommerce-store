@@ -34,14 +34,15 @@ export const Orders: React.FC<OrdersProps> = ({ onNavigate, onSelectProduct }) =
   const [searchOrderId, setSearchOrderId] = useState('');
 
   useEffect(() => {
-    const all = orderService.getOrders();
-    // Show orders for current user or all mock orders
-    if (user) {
-      const userOrders = orderService.getUserOrders(user.id);
-      setOrders(userOrders.length > 0 ? userOrders : all);
-    } else {
-      setOrders(all);
-    }
+    let isMounted = true;
+    orderService.getOrders().then((data) => {
+      if (isMounted) {
+        setOrders(data);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
   }, [user]);
 
   const filteredOrders = orders.filter((o) => {
@@ -56,6 +57,34 @@ export const Orders: React.FC<OrdersProps> = ({ onNavigate, onSelectProduct }) =
     if (activeFilter === 'delivered') return o.status === 'Delivered';
     return true;
   });
+
+  if (!user) {
+    return (
+      <div className="max-w-xl mx-auto px-4 py-16 text-center">
+        <div className="w-16 h-16 bg-orange-50 text-[#E84A27] rounded-full flex items-center justify-center mx-auto mb-4">
+          <Package className="w-8 h-8" />
+        </div>
+        <h2 className="text-xl font-bold text-slate-900">Sign in to view orders</h2>
+        <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+          Order history and tax invoices are private to your customer account. Please sign in to view your purchases.
+        </p>
+        <div className="flex items-center justify-center gap-3 mt-6">
+          <button
+            onClick={() => onNavigate('home')}
+            className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+          >
+            Return to Home
+          </button>
+          <button
+            onClick={() => onNavigate('login', 'orders')}
+            className="px-6 py-2.5 bg-[#E84A27] hover:bg-[#d03d1c] text-white rounded-xl text-xs font-bold shadow-md shadow-orange-500/20 transition-all cursor-pointer"
+          >
+            Sign In to Account
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full">

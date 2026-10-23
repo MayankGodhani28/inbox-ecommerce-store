@@ -20,6 +20,7 @@ import {
   MapPin,
   Sparkles,
   Zap,
+  Store,
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -46,7 +47,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   products,
   onOpenAuthModal,
 }) => {
-  const { user, isAuthenticated, isAdmin, logout, switchDemoRole } = useAuth();
+  const { user, isAuthenticated, isAdmin, isSuperAdmin, logout } = useAuth();
   const { totalItemsCount } = useCart();
   const { wishlistCount } = useWishlist();
   const { t, tCategory } = useTranslation();
@@ -88,9 +89,10 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
+    const q = searchQuery.trim();
+    if (q) {
       setShowSuggestions(false);
-      onNavigate('products', searchQuery);
+      onNavigate('products', `search:${encodeURIComponent(q)}`);
     }
   };
 
@@ -118,33 +120,25 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* 3-Language Selector: ENG, GER, DUT */}
             <LanguageSelector variant="segmented" />
 
-            <div className="hidden sm:flex items-center gap-1.5 text-[11px]">
-              <span className="text-slate-400">{t('nav.viewingAs')}</span>
-              <span className="text-amber-300 font-bold">
-                {isAdmin ? t('nav.adminBadge') : t('nav.customerBadge')}
-              </span>
-            </div>
-            <div className="flex items-center gap-1 bg-slate-800 p-0.5 rounded-lg border border-slate-700">
-              <button
-                onClick={() => switchDemoRole('customer')}
-                className={`px-2 py-0.5 rounded text-[10px] font-bold transition-colors cursor-pointer ${
-                  !isAdmin ? 'bg-orange-600 text-white shadow-xs' : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                {t('nav.customerView')}
-              </button>
-              <button
-                onClick={() => {
-                  switchDemoRole('admin');
-                  onNavigate('admin');
-                }}
-                className={`px-2 py-0.5 rounded text-[10px] font-bold transition-colors cursor-pointer ${
-                  isAdmin ? 'bg-[#009FE3] text-white shadow-xs' : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                {t('nav.adminDashboard')}
-              </button>
-            </div>
+            {isAuthenticated && (
+              <div className="flex items-center gap-2">
+                <div className="hidden sm:flex items-center gap-1.5 text-[11px]">
+                  <span className="text-slate-400">{t('nav.viewingAs')}</span>
+                  <span className={`font-bold ${isAdmin ? 'text-sky-300' : 'text-amber-300'}`}>
+                    {isAdmin ? t('nav.adminBadge') : t('nav.customerBadge')}
+                  </span>
+                </div>
+                {isAdmin && (
+                  <button
+                    onClick={() => onNavigate('admin')}
+                    className="px-3 py-1 rounded-lg text-[11px] font-extrabold bg-[#009FE3] hover:bg-[#0087c2] text-white transition-all cursor-pointer shadow-sm flex items-center gap-1.5"
+                  >
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    <span>Admin Portal</span>
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -277,7 +271,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </button>
               ) : (
                 <button
-                  onClick={onOpenAuthModal}
+                  onClick={() => onNavigate('login', currentTab !== 'login' ? currentTab : undefined)}
                   className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
                 >
                   <UserIcon className="w-3.5 h-3.5" />
@@ -329,18 +323,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <Heart className="w-4 h-4 text-slate-400" />
                       {t('nav.wishlistWithCount', { count: wishlistCount })}
                     </button>
-                    {isAdmin && (
-                      <button
-                        onClick={() => {
-                          setUserDropdownOpen(false);
-                          onNavigate('admin');
-                        }}
-                        className="w-full text-left px-4 py-2 text-xs font-semibold text-blue-600 hover:bg-blue-50 flex items-center gap-2 cursor-pointer"
-                      >
-                        <ShieldCheck className="w-4 h-4 text-blue-500" />
-                        {t('nav.adminDashboard')}
-                      </button>
-                    )}
                   </div>
 
                   <div className="border-t border-slate-100 pt-1">

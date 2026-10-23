@@ -2,8 +2,8 @@ import { TranslationDictionary } from '../types';
 
 export const en: TranslationDictionary = {
   // Navigation & Header
-  'nav.demoTitle': 'Inbox Infotech Demo',
-  'nav.demoSubtitle': 'Complete MERN-Ready Prototype',
+  'nav.demoTitle': 'Inbox Infotech Store',
+  'nav.demoSubtitle': 'Official E-Commerce Storefront',
   'nav.viewingAs': 'Viewing as:',
   'nav.adminBadge': '🛡️ Admin (Full Access)',
   'nav.customerBadge': '👤 Customer',
@@ -29,7 +29,7 @@ export const en: TranslationDictionary = {
   'nav.allProducts': 'All Products',
   'nav.browseAllProducts': 'Browse All Products',
   'nav.trackOrders': 'Track Orders',
-  'nav.adminDashboardDemo': 'Admin Dashboard (Demo)',
+  'nav.adminDashboardDemo': 'Admin Dashboard',
   'nav.browseByCategory': 'Browse By Category',
   'nav.flashDealsPromo': 'Flash Deals (Up to 35% OFF)',
 
@@ -108,7 +108,7 @@ export const en: TranslationDictionary = {
   'home.viewMore': 'View More →',
   'home.verifiedReviews': 'Verified Reviews',
   'home.lovedByCustomers': 'Loved by Over 50,000+ Customers',
-  'home.testimonial1Quote': '"The AuraSound Pro headphones arrived in just 2 days. The noise cancellation and audio quality rival headphones twice the price. Seamless demo checkout too!"',
+  'home.testimonial1Quote': '"The AuraSound Pro headphones arrived in just 2 days. The noise cancellation and audio quality rival headphones twice the price. Seamless checkout too!"',
   'home.testimonial1Buyer': 'Verified Buyer • Mumbai',
   'home.testimonial2Quote': '"I was blown away by the BaristaTouch espresso machine. Perfectly extracted crema and the dual basket air fryer makes weeknight dinners effortless."',
   'home.testimonial2Buyer': 'Verified Buyer • Bengaluru',
@@ -237,7 +237,7 @@ export const en: TranslationDictionary = {
   'cart.couponPlaceholder': 'Enter coupon (e.g. SAVE10)',
   'cart.apply': 'Apply',
   'cart.couponApplied': 'Applied Coupon: {code}',
-  'cart.availableCodes': 'Available Demo Promo Codes:',
+  'cart.availableCodes': 'Available Promo Codes:',
   'cart.clickToApply': 'Click to apply {code} ({desc})',
   'cart.proceedCheckout': 'Proceed to Checkout',
   'cart.secureCheckoutBadge': '256-Bit SSL Encrypted Checkout',
@@ -299,7 +299,7 @@ export const en: TranslationDictionary = {
   'checkout.processing': 'Processing Order...',
   'checkout.orderSummary': 'Order Summary ({count} items)',
   'checkout.discountLabel': 'Discount ({code})',
-  'checkout.shippingGuarantee': 'Guaranteed safe & secure demo checkout.',
+  'checkout.shippingGuarantee': 'Guaranteed safe & secure checkout.',
 
   // Order Success Page
   'orderSuccess.noOrderTitle': 'No recent order found',
@@ -414,7 +414,9 @@ export const en: TranslationDictionary = {
   'admin.totalOrders': 'Total Orders',
   'admin.catalogItems': 'Catalog Products',
   'admin.lowStockAlerts': 'Low Stock Alerts',
+  'admin.quickStatPending': 'Pending',
   'admin.quickStatCompleted': 'Fulfilled Orders',
+  'admin.actionEdit': 'Edit',
   'admin.recentOrders': 'Recent Orders',
   'admin.viewAllOrders': 'View All Orders →',
   'admin.orderId': 'Order ID',
@@ -496,8 +498,8 @@ export const en: TranslationDictionary = {
   'footer.stayUpdatedDesc': 'Subscribe to unlock 15% off coupon code WELCOME15 and receive flash deal alerts.',
   'footer.emailPlaceholder': 'Your email address',
   'footer.subscribeBtn': 'Subscribe to Newsletter',
-  'footer.copyright': 'All rights reserved. Built as a comprehensive, responsive full-stack capable demo presentation.',
-  'footer.acceptedPayments': 'Accepted Demo Payments:',
+  'footer.copyright': 'All rights reserved. Secure full-stack e-commerce platform.',
+  'footer.acceptedPayments': 'Accepted Payment Methods:',
 
   // Toasts
   'toast.subscribedNewsletter': 'Subscribed to newsletter!',

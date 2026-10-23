@@ -1,131 +1,104 @@
 import { Product, ProductReview } from '../types';
-import { INITIAL_PRODUCTS } from '../data/products';
+import { apiClient } from './apiClient';
 
-const PRODUCTS_STORAGE_KEY = 'inbox_products_data_v1';
-const REVIEWS_STORAGE_KEY = 'inbox_reviews_data_v1';
+// Clean up obsolete localStorage catalog caches
+try {
+  localStorage.removeItem('inbox_products_data_v1');
+  localStorage.removeItem('inbox_reviews_data_v1');
+} catch {
+  // Ignored if storage unavailable
+}
+
+export interface CatalogQueryOptions {
+  category?: string;
+  search?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  sort?: string;
+  page?: number;
+  pageSize?: number;
+  trending?: boolean;
+  bestSeller?: boolean;
+  newArrival?: boolean;
+  dealOfDay?: boolean;
+}
 
 export const productService = {
-  // Get all products (with fallback to INITIAL_PRODUCTS)
-  async getProducts(): Promise<Product[]> {
+  // Get products with optional filtering/pagination
+  async getProducts(options: CatalogQueryOptions = {}): Promise<Product[]> {
+    const params = new URLSearchParams();
+    if (options.category) params.set('category', options.category);
+    if (options.search) params.set('search', options.search);
+    if (options.minPrice !== undefined) params.set('minPrice', String(options.minPrice));
+    if (options.maxPrice !== undefined) params.set('maxPrice', String(options.maxPrice));
+    if (options.sort) params.set('sort', options.sort);
+    if (options.page) params.set('page', String(options.page));
+    if (options.pageSize) params.set('pageSize', String(options.pageSize));
+    if (options.trending) params.set('trending', 'true');
+    if (options.bestSeller) params.set('bestSeller', 'true');
+    if (options.newArrival) params.set('newArrival', 'true');
+    if (options.dealOfDay) params.set('dealOfDay', 'true');
+
+    const query = params.toString() ? `?${params.toString()}` : '';
+    const data = await apiClient.get<{ products: Product[]; total: number }>(`/api/products${query}`);
+    return data.products;
+  },
+
+  // Get single product by id
+  async getProductById(id: string): Promise<Product | null> {
     try {
-      const stored = localStorage.getItem(PRODUCTS_STORAGE_KEY);
-      if (stored) {
-        return JSON.parse(stored);
-      }
-      // Initialize if empty
-      localStorage.setItem(PRODUCTS_STORAGE_KEY, JSON.stringify(INITIAL_PRODUCTS));
-      return INITIAL_PRODUCTS;
-    } catch (e) {
-      console.error('Error fetching products:', e);
-      return INITIAL_PRODUCTS;
+      const data = await apiClient.get<{ product: Product }>(`/api/products/${id}`);
+      return data.product;
+    } catch (err: any) {
+      if (err?.status === 404) return null;
+      throw err;
     }
   },
 
-  // Get product by id
-  async getProductById(id: string): Promise<Product | null> {
-    const products = await this.getProducts();
-    return products.find((p) => p.id === id) || null;
+  // Get merchant admin products (isolated to current merchant)
+  async getAdminProducts(): Promise<Product[]> {
+    const data = await apiClient.get<{ products: Product[] }>('/api/admin/products');
+    return data.products;
   },
 
-  // Add new product (Admin)
+  // Add new product (Admin only)
   async addProduct(product: Omit<Product, 'id'>): Promise<Product> {
-    const products = await this.getProducts();
-    const newProduct: Product = {
-      ...product,
-      id: `prod-custom-${Date.now()}`,
-      rating: product.rating || 5.0,
-      reviewCount: product.reviewCount || 0,
-      createdAt: new Date().toISOString(),
-    };
-    const updated = [newProduct, ...products];
-    localStorage.setItem(PRODUCTS_STORAGE_KEY, JSON.stringify(updated));
-    return newProduct;
+    const data = await apiClient.post<{ product: Product }>('/api/admin/products', product);
+    return data.product;
   },
 
-  // Update product (Admin)
+  // Update product (Admin only)
   async updateProduct(id: string, updates: Partial<Product>): Promise<Product> {
-    const products = await this.getProducts();
-    const index = products.findIndex((p) => p.id === id);
-    if (index === -1) throw new Error('Product not found');
-    const updatedProduct = { ...products[index], ...updates };
-    products[index] = updatedProduct;
-    localStorage.setItem(PRODUCTS_STORAGE_KEY, JSON.stringify(products));
-    return updatedProduct;
+    const data = await apiClient.patch<{ product: Product }>(`/api/admin/products/${id}`, updates);
+    return data.product;
   },
 
-  // Delete product (Admin)
+  // Delete/Archive product (Admin only)
   async deleteProduct(id: string): Promise<boolean> {
-    const products = await this.getProducts();
-    const filtered = products.filter((p) => p.id !== id);
-    localStorage.setItem(PRODUCTS_STORAGE_KEY, JSON.stringify(filtered));
+    await apiClient.delete(`/api/admin/products/${id}`);
     return true;
   },
 
-  // Reset to initial mock data
-  async resetProducts(): Promise<Product[]> {
-    localStorage.setItem(PRODUCTS_STORAGE_KEY, JSON.stringify(INITIAL_PRODUCTS));
-    return INITIAL_PRODUCTS;
-  },
-
-  // Reviews operations
+  // Get reviews for product
   async getReviewsForProduct(productId: string): Promise<ProductReview[]> {
-    try {
-      const stored = localStorage.getItem(`${REVIEWS_STORAGE_KEY}_${productId}`);
-      if (stored) return JSON.parse(stored);
-
-      // Default mock reviews
-      const initialReviews: ProductReview[] = [
-        {
-          id: `rev-${productId}-1`,
-          userName: 'Alex Morgan',
-          userAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
-          rating: 5,
-          date: '3 days ago',
-          title: 'Exceeded all my expectations!',
-          comment: 'The craftsmanship and attention to detail is remarkable. Arrived fast in sturdy packaging. Would definitely recommend to anyone!',
-          verifiedPurchase: true,
-          helpfulCount: 24,
-        },
-        {
-          id: `rev-${productId}-2`,
-          userName: 'David Kumar',
-          userAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
-          rating: 4,
-          date: '1 week ago',
-          title: 'Great product and value for money',
-          comment: 'Works exactly as described. Battery life and finish are spot on. One small point is the manual could be clearer, but setup is intuitive.',
-          verifiedPurchase: true,
-          helpfulCount: 12,
-        },
-      ];
-      localStorage.setItem(`${REVIEWS_STORAGE_KEY}_${productId}`, JSON.stringify(initialReviews));
-      return initialReviews;
-    } catch {
-      return [];
-    }
+    const data = await apiClient.get<{ reviews: ProductReview[] }>(`/api/products/${productId}/reviews`);
+    return data.reviews;
   },
 
-  async addReview(productId: string, review: Omit<ProductReview, 'id' | 'date' | 'helpfulCount' | 'verifiedPurchase'>): Promise<ProductReview> {
-    const reviews = await this.getReviewsForProduct(productId);
-    const newReview: ProductReview = {
-      ...review,
-      id: `rev-${Date.now()}`,
-      date: 'Just now',
-      verifiedPurchase: true,
-      helpfulCount: 0,
-    };
-    const updated = [newReview, ...reviews];
-    localStorage.setItem(`${REVIEWS_STORAGE_KEY}_${productId}`, JSON.stringify(updated));
+  // Add review (Authenticated customer with verified purchase calculation)
+  async addReview(
+    productId: string,
+    review: { rating: number; title: string; comment: string }
+  ): Promise<ProductReview> {
+    const data = await apiClient.post<{ review: ProductReview }>(`/api/products/${productId}/reviews`, review);
+    return data.review;
+  },
 
-    // Update product average rating & review count
-    const products = await this.getProducts();
-    const prod = products.find((p) => p.id === productId);
-    if (prod) {
-      const sum = updated.reduce((acc, r) => acc + r.rating, 0);
-      const avg = Number((sum / updated.length).toFixed(1));
-      await this.updateProduct(productId, { rating: avg, reviewCount: updated.length });
-    }
-
-    return newReview;
+  // Mark review as helpful
+  async markReviewHelpful(productId: string, reviewId: string): Promise<number> {
+    const data = await apiClient.post<{ reviewId: string; helpfulCount: number }>(
+      `/api/products/${productId}/reviews/${reviewId}/helpful`
+    );
+    return data.helpfulCount;
   },
 };

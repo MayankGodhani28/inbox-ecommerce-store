@@ -1,15 +1,44 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Order, OrderItem } from '../types';
 import { useTranslation } from '../context/LanguageContext';
+import { orderService } from '../services/orderService';
 import { CheckCircle, ArrowRight, Printer, Truck } from 'lucide-react';
 
 interface OrderSuccessProps {
   order: Order | null;
+  orderId?: string;
   onNavigate: (tab: string, param?: string) => void;
 }
 
-export const OrderSuccess: React.FC<OrderSuccessProps> = ({ order, onNavigate }) => {
+export const OrderSuccess: React.FC<OrderSuccessProps> = ({ order: initialOrder, orderId, onNavigate }) => {
   const { t, tPaymentMethod } = useTranslation();
+  const [order, setOrder] = useState<Order | null>(initialOrder);
+  const [isLoading, setIsLoading] = useState(!initialOrder && !!(orderId || new URLSearchParams(window.location.search).get('orderId')));
+
+  useEffect(() => {
+    if (initialOrder) {
+      setOrder(initialOrder);
+      return;
+    }
+    const targetId = orderId || new URLSearchParams(window.location.search).get('orderId');
+    if (targetId) {
+      setIsLoading(true);
+      orderService.getOrderById(targetId)
+        .then((found) => {
+          if (found) setOrder(found);
+        })
+        .finally(() => setIsLoading(false));
+    }
+  }, [initialOrder, orderId]);
+
+  if (isLoading) {
+    return (
+      <div className="max-w-2xl mx-auto px-4 py-24 text-center">
+        <div className="w-8 h-8 border-3 border-orange-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+        <p className="text-xs text-slate-500 font-semibold">Loading verified order receipt...</p>
+      </div>
+    );
+  }
 
   if (!order) {
     return (
@@ -66,7 +95,7 @@ export const OrderSuccess: React.FC<OrderSuccessProps> = ({ order, onNavigate })
           <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
             <span className="text-[11px] font-bold text-slate-400 uppercase">{t('orderSuccess.trackingNumber')}</span>
             <p className="text-sm font-extrabold text-orange-600 mt-0.5 font-mono">
-              {order.trackingNumber || 'BD8839201IN'}
+              {order.trackingNumber || 'Pending courier assignment'}
             </p>
           </div>
         </div>
@@ -101,7 +130,11 @@ export const OrderSuccess: React.FC<OrderSuccessProps> = ({ order, onNavigate })
 
           {/* Totals */}
           <div className="mt-4 pt-3 border-t border-slate-100 flex justify-between items-baseline text-xs">
-            <span className="font-bold text-slate-700">{t('orderSuccess.totalPaid', { method: tPaymentMethod(order.paymentMethod) })}</span>
+            <span className="font-bold text-slate-700">
+              {order.paymentStatus === 'Paid'
+                ? t('orderSuccess.totalPaid', { method: tPaymentMethod(order.paymentMethod) })
+                : `Total Due (${tPaymentMethod(order.paymentMethod)})`}
+            </span>
             <span className="text-base font-black text-slate-900">${order.total.toFixed(2)}</span>
           </div>
         </div>

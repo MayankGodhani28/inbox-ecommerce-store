@@ -4,6 +4,7 @@ import { RatingStars } from '../components/common/RatingStars';
 import { ProductCard } from '../components/product/ProductCard';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
+import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useTranslation } from '../context/LanguageContext';
 import { productService } from '../services/productService';
@@ -39,6 +40,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
 }) => {
   const { addToCart } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
+  const { user, isAuthenticated } = useAuth();
   const { showToast } = useToast();
   const { t, tCategory } = useTranslation();
 
@@ -54,7 +56,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
   const [pincodeStatus, setPincodeStatus] = useState<string | null>(null);
 
   // New review form
-  const [newReviewAuthor, setNewReviewAuthor] = useState('');
+  const [newReviewTitle, setNewReviewTitle] = useState('');
   const [newReviewRating, setNewReviewRating] = useState(5);
   const [newReviewComment, setNewReviewComment] = useState('');
   const [showReviewForm, setShowReviewForm] = useState(false);
@@ -114,25 +116,48 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
 
   const handleSubmitReview = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newReviewAuthor.trim() || !newReviewComment.trim()) return;
+    if (!isAuthenticated) {
+      showToast('Authentication required', { message: 'Please sign in to submit a review', type: 'error' });
+      onNavigate('login', `product-details:${product.id}`);
+      return;
+    }
+    if (!newReviewComment.trim()) return;
 
-    await productService.addReview(product.id, {
-      userName: newReviewAuthor.trim(),
-      rating: newReviewRating,
-      title: 'Customer Review',
-      comment: newReviewComment.trim(),
-    });
+    try {
+      await productService.addReview(product.id, {
+        rating: newReviewRating,
+        title: newReviewTitle.trim() || 'Verified Shopper Review',
+        comment: newReviewComment.trim(),
+      });
 
-    const updated = await productService.getProductById(product.id);
-    if (updated) setProduct(updated);
+      const updated = await productService.getProductById(product.id);
+      if (updated) setProduct(updated);
 
-    const updatedReviews = await productService.getReviewsForProduct(product.id);
-    setReviews(updatedReviews);
+      const updatedReviews = await productService.getReviewsForProduct(product.id);
+      setReviews(updatedReviews);
 
-    showToast(t('toast.reviewSubmitted'), { type: 'success' });
-    setNewReviewAuthor('');
-    setNewReviewComment('');
-    setShowReviewForm(false);
+      showToast(t('toast.reviewSubmitted'), { type: 'success' });
+      setNewReviewTitle('');
+      setNewReviewComment('');
+      setShowReviewForm(false);
+    } catch (err: any) {
+      showToast('Review submission failed', {
+        message: err?.status === 401 ? 'Please log in to submit a review' : err?.message || 'Unable to submit review',
+        type: 'error',
+      });
+    }
+  };
+
+  const handleMarkHelpful = async (reviewId: string) => {
+    try {
+      const newHelpfulCount = await productService.markReviewHelpful(product.id, reviewId);
+      setReviews((prev) =>
+        prev.map((r) => (r.id === reviewId ? { ...r, helpfulCount: newHelpfulCount } : r))
+      );
+      showToast('Marked as helpful', { type: 'success' });
+    } catch (err: any) {
+      showToast('Unable to update helpful count', { type: 'error' });
+    }
   };
 
   const handleShare = () => {
@@ -258,10 +283,14 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-1 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">
                 <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
-                <span className="text-xs font-black text-amber-900">{product.rating}</span>
+                <span className="text-xs font-black text-amber-900">
+                  {product.reviewCount > 0 ? product.rating.toFixed(1) : '0.0'}
+                </span>
               </div>
               <span className="text-xs text-slate-500">
-                ({t('details.basedOnReviews', { count: product.reviewCount })})
+                {product.reviewCount > 0
+                  ? `(${t('details.basedOnReviews', { count: product.reviewCount })})`
+                  : '(No reviews yet)'}
               </span>
               <span className="text-slate-300">•</span>
               <span className="text-xs text-emerald-600 font-semibold flex items-center gap-1">
@@ -539,58 +568,70 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
 
               {/* Add Review Form */}
               {showReviewForm && (
-                <form
-                  onSubmit={handleSubmitReview}
-                  className="p-5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-3"
-                >
-                  <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
-                    {t('details.writeReview')}
-                  </h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                !isAuthenticated ? (
+                  <div className="p-5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-800 text-xs">
+                    <p className="font-bold mb-1">Sign-in Required</p>
+                    <p>Please log in to submit a verified product review.</p>
+                  </div>
+                ) : (
+                  <form
+                    onSubmit={handleSubmitReview}
+                    className="p-5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-3"
+                  >
+                    <div className="flex items-center justify-between pb-2 border-b border-slate-200">
+                      <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                        {t('details.writeReview')}
+                      </h4>
+                      <span className="text-xs text-slate-500">
+                        Reviewing as <strong className="text-slate-800">{user?.name}</strong>
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-xs text-slate-600 block mb-1">Headline</label>
+                        <input
+                          type="text"
+                          value={newReviewTitle}
+                          onChange={(e) => setNewReviewTitle(e.target.value)}
+                          placeholder="Headline (e.g. Fantastic quality!)"
+                          className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-slate-200 focus:outline-none focus:border-orange-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs text-slate-600 block mb-1">{t('details.yourRating')}</label>
+                        <select
+                          value={newReviewRating}
+                          onChange={(e) => setNewReviewRating(Number(e.target.value))}
+                          className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-slate-200 focus:outline-none focus:border-orange-500 cursor-pointer"
+                        >
+                          <option value={5}>5 Stars - Excellent</option>
+                          <option value={4}>4 Stars - Good</option>
+                          <option value={3}>3 Stars - Average</option>
+                          <option value={2}>2 Stars - Poor</option>
+                          <option value={1}>1 Star - Terrible</option>
+                        </select>
+                      </div>
+                    </div>
                     <div>
-                      <label className="text-xs text-slate-600 block mb-1">{t('details.yourName')}</label>
-                      <input
-                        type="text"
+                      <label className="text-xs text-slate-600 block mb-1">{t('details.yourReview')}</label>
+                      <textarea
+                        rows={3}
                         required
-                        value={newReviewAuthor}
-                        onChange={(e) => setNewReviewAuthor(e.target.value)}
-                        placeholder="e.g. John Doe"
+                        value={newReviewComment}
+                        onChange={(e) => setNewReviewComment(e.target.value)}
+                        placeholder={t('details.reviewPlaceholder')}
                         className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-slate-200 focus:outline-none focus:border-orange-500"
                       />
                     </div>
-                    <div>
-                      <label className="text-xs text-slate-600 block mb-1">{t('details.yourRating')}</label>
-                      <select
-                        value={newReviewRating}
-                        onChange={(e) => setNewReviewRating(Number(e.target.value))}
-                        className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-slate-200 focus:outline-none focus:border-orange-500 cursor-pointer"
-                      >
-                        <option value={5}>5 Stars - Excellent</option>
-                        <option value={4}>4 Stars - Good</option>
-                        <option value={3}>3 Stars - Average</option>
-                        <option value={2}>2 Stars - Poor</option>
-                        <option value={1}>1 Star - Terrible</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div>
-                    <label className="text-xs text-slate-600 block mb-1">{t('details.yourReview')}</label>
-                    <textarea
-                      rows={3}
-                      required
-                      value={newReviewComment}
-                      onChange={(e) => setNewReviewComment(e.target.value)}
-                      placeholder={t('details.reviewPlaceholder')}
-                      className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-slate-200 focus:outline-none focus:border-orange-500"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-fit px-5 py-2 rounded-xl bg-[#E84A27] text-white text-xs font-bold shadow-xs hover:bg-[#d43f1f] cursor-pointer"
-                  >
-                    {t('details.submitReview')}
-                  </button>
-                </form>
+                    <button
+                      type="submit"
+                      className="w-fit px-5 py-2 rounded-xl bg-[#E84A27] text-white text-xs font-bold shadow-xs hover:bg-[#d43f1f] cursor-pointer"
+                    >
+                      {t('details.submitReview')}
+                    </button>
+                  </form>
+                )
               )}
 
               {/* Reviews List */}
@@ -602,10 +643,16 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
                       className="p-4 rounded-2xl bg-slate-50 border border-slate-200/70 flex flex-col gap-2"
                     >
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-wrap">
                           <span className="font-bold text-xs text-slate-900">{rev.userName}</span>
+                          {rev.verifiedPurchase && (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                              <Check className="w-2.5 h-2.5 text-emerald-600" />
+                              Verified Purchase
+                            </span>
+                          )}
                           <span className="text-[10px] text-slate-400 font-mono">
-                            {rev.date}
+                            {new Date(rev.date).toLocaleDateString()}
                           </span>
                         </div>
                         <div className="flex text-amber-400">
@@ -619,7 +666,18 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
                           ))}
                         </div>
                       </div>
+                      {rev.title && <h4 className="text-xs font-bold text-slate-800">{rev.title}</h4>}
                       <p className="text-xs text-slate-600 leading-relaxed">{rev.comment}</p>
+                      <div className="flex items-center gap-2 pt-2 border-t border-slate-100 mt-1">
+                        <button
+                          type="button"
+                          onClick={() => handleMarkHelpful(rev.id)}
+                          className="inline-flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-slate-900 transition-colors cursor-pointer"
+                        >
+                          <ThumbsUp className="w-3.5 h-3.5" />
+                          <span>Helpful ({rev.helpfulCount || 0})</span>
+                        </button>
+                      </div>
                     </div>
                   ))
                 ) : (

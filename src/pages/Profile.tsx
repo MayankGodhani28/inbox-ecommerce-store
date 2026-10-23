@@ -43,21 +43,35 @@ export const Profile: React.FC<ProfileProps> = ({ onNavigate }) => {
     return (
       <div className="max-w-2xl mx-auto px-4 py-16 text-center">
         <h2 className="text-xl font-bold text-slate-800">{t('profile.notLoggedInTitle')}</h2>
-        <button
-          onClick={() => onNavigate('home')}
-          className="mt-4 px-6 py-2.5 bg-[#E84A27] text-white rounded-xl text-xs font-bold cursor-pointer"
-        >
-          {t('profile.returnHome')}
-        </button>
+        <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+          Sign in to view your personalized profile, manage shipping addresses, and sync your preferences.
+        </p>
+        <div className="flex items-center justify-center gap-3 mt-6">
+          <button
+            onClick={() => onNavigate('home')}
+            className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+          >
+            {t('profile.returnHome')}
+          </button>
+          <button
+            onClick={() => onNavigate('login', 'profile')}
+            className="px-6 py-2.5 bg-[#E84A27] hover:bg-[#d03d1c] text-white rounded-xl text-xs font-bold shadow-md shadow-orange-500/20 transition-all cursor-pointer"
+          >
+            Sign In to Account
+          </button>
+        </div>
       </div>
     );
   }
 
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
-    await updateProfile({ name, phone });
-    setIsEditing(false);
-    showToast(t('toast.profileUpdated'), { type: 'success' });
+    try {
+      await updateProfile({ name, phone });
+      setIsEditing(false);
+    } catch {
+      // AuthContext displays error toast
+    }
   };
 
   const handleAddAddressSubmit = async (e: React.FormEvent) => {
@@ -66,23 +80,26 @@ export const Profile: React.FC<ProfileProps> = ({ onNavigate }) => {
       showToast(t('toast.requiredFields'), { type: 'error' });
       return;
     }
-    await addAddress({
-      fullName: user.name,
-      phone: user.phone || phone || '+91 98765 43210',
-      street,
-      city,
-      state,
-      pincode: postalCode,
-      country,
-      type: 'Home',
-      isDefault: (user.addresses || []).length === 0,
-    });
-    setShowAddressForm(false);
-    setStreet('');
-    setCity('');
-    setState('');
-    setPostalCode('');
-    showToast(t('toast.addressAdded'), { type: 'success' });
+    try {
+      await addAddress({
+        fullName: user.name,
+        phone: user.phone || phone || '+91 98765 43210',
+        street,
+        city,
+        state,
+        pincode: postalCode,
+        country,
+        type: 'Home',
+        isDefault: (user.addresses || []).length === 0,
+      });
+      setShowAddressForm(false);
+      setStreet('');
+      setCity('');
+      setState('');
+      setPostalCode('');
+    } catch {
+      // AuthContext displays error toast
+    }
   };
 
   return (
@@ -316,11 +333,11 @@ export const Profile: React.FC<ProfileProps> = ({ onNavigate }) => {
             )}
 
             {/* Saved Addresses List */}
-            {user.addresses.length === 0 ? (
+            {(user.addresses || []).length === 0 ? (
               <p className="text-xs text-slate-400 py-4 text-center">{t('profile.noAddresses')}</p>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {user.addresses.map((addr: Address) => (
+                {(user.addresses || []).map((addr: Address) => (
                   <div
                     key={addr.id}
                     className={`p-4 rounded-2xl border flex flex-col justify-between ${

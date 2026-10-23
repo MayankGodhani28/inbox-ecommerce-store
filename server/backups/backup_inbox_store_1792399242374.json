@@ -1,0 +1,2023 @@
+{
+  "timestamp": "2026-10-19T08:40:42.373Z",
+  "version": "1.0.0",
+  "metadata": {
+    "totalUsers": 24,
+    "totalProducts": 42,
+    "totalOrders": 5,
+    "totalCoupons": 5,
+    "totalAddresses": 0,
+    "totalReviews": 6,
+    "totalNewsletters": 2
+  },
+  "tables": {
+    "users": [
+      {
+        "id": "375b3064-e320-4a87-96f9-abbc21a033a1",
+        "email": "admin@inbox.com",
+        "passwordHash": "$2b$12$hzB5yUUHGpUo9rhkFU/qaOEJwA06B5Bz.SAkrc9q/QPmE12xyDmPK",
+        "name": "Inbox Store Admin",
+        "phone": null,
+        "avatarUrl": null,
+        "role": "ADMIN",
+        "createdAt": "2026-10-19T07:03:36.021Z",
+        "updatedAt": "2026-10-19T07:03:36.021Z"
+      },
+      {
+        "id": "c99417a7-5e0d-4388-abcc-786e8f995a71",
+        "email": "attacker_1792398851320@evil.com",
+        "passwordHash": "$2b$12$xJkVuIScZBl9OYpQNO7Oa.O16tVdcfH7Q.hiClbCcCLuj9m6jTy1K",
+        "name": "Malicious Actor",
+        "phone": null,
+        "avatarUrl": null,
+        "role": "CUSTOMER",
+        "createdAt": "2026-10-19T08:34:11.906Z",
+        "updatedAt": "2026-10-19T08:34:11.906Z"
+      },
+      {
+        "id": "8939b171-a0a6-45ab-8cff-05271801de91",
+        "email": "shopper1_1792398851320@test.com",
+        "passwordHash": "$2b$12$YnHbOD9D1xtXyXoz4aaSaeL7fbYidnPGIqOTDOuyoLXyOaJALvq/G",
+        "name": "Shopper One",
+        "phone": null,
+        "avatarUrl": null,
+        "role": "CUSTOMER",
+        "createdAt": "2026-10-19T08:34:12.377Z",
+        "updatedAt": "2026-10-19T08:34:12.377Z"
+      },
+      {
+        "id": "8606c372-58ad-408c-8cb1-563d6f3105a2",
+        "email": "cust_cat_1792394978548@inbox.com",
+        "passwordHash": "$2b$12$7Dg21qCugLtwwGzD27SLlOqeGquSXtRs30tw6bmUbi.z8SnENUYry",
+        "name": "Catalog Customer",
+        "phone": null,
+        "avatarUrl": null,
+        "role": "CUSTOMER",
+        "createdAt": "2026-10-19T07:29:39.125Z",
+        "updatedAt": "2026-10-19T07:29:39.125Z"
+      },
+      {
+        "id": "4d61c519-d16a-4ea8-9c00-f1470b9c5057",
+        "email": "admin_cat_1792394978548@inbox.com",
+        "passwordHash": "dummy",
+        "name": "Catalog Admin",
+        "phone": null,
+        "avatarUrl": null,
+        "role": "ADMIN",
+        "createdAt": "2026-10-19T07:29:39.153Z",
+        "updatedAt": "2026-10-19T07:29:39.153Z"
+      },
+      {
+        "id": "b7e865a6-f711-4af5-b22f-74dc60a06249",
+        "email": "reviewer_a_1792397335980@example.com",
+        "passwordHash": "$2b$12$Ufvh/7wEtj/oJ3OFLNIZiuddepfshEwYe1wToXqVyHIBPIU8Mca/O",
+        "name": "Alice Walker",
+        "phone": null,
+        "avatarUrl": null,
+        "role": "CUSTOMER",
+        "createdAt": "2026-10-19T08:08:56.645Z",
+        "updatedAt": "2026-10-19T08:08:56.645Z"
+      },
+      {
+        "id": "72eab8e2-fdaf-4b0f-8055-f004d8d09412",
+        "email": "reviewer_b_1792397335980@example.com",
+        "passwordHash": "$2b$12$Yh96uTt3r.BxfKeiX9qdGelN4Xfx1xOaM09GTqJngZq5kdvCwnPJm",
+        "name": "Bob Roberts",
+        "phone": null,
+        "avatarUrl": null,
+        "role": "CUSTOMER",
+        "createdAt": "2026-10-19T08:08:57.100Z",
+        "updatedAt": "2026-10-19T08:08:57.100Z"
+      },
+      {
+        "id": "d8df880c-e9c4-439a-a032-c105d4d517f9",
+        "email": "reviewer_a_1792397353107@example.com",
+        "passwordHash": "$2b$12$aJqD1lMDq4pOzB4BhMu2B.e8oBGXXo6.supkto9hBM89bxaFuAXP6",
+        "name": "Alice Walker",
+        "phone": null,
+        "avatarUrl": null,
+        "role": "CUSTOMER",
+        "createdAt": "2026-10-19T08:09:13.782Z",
+        "updatedAt": "2026-10-19T08:09:13.782Z"
+      },
+      {
+        "id": "6efd05be-3f5f-443f-828e-f5b8d1b6eafb",
+        "email": "reviewer_b_1792397353107@example.com",
+        "passwordHash": "$2b$12$9WWi4XXruCcaMPmgRPnaDeuH8s5d8DEFDNPA6lzd2cGuxnx/AYJ3W",
+        "name": "Bob Roberts",
+        "phone": null,
+        "avatarUrl": null,
+        "role": "CUSTOMER",
+        "createdAt": "2026-10-19T08:09:14.221Z",
+        "updatedAt": "2026-10-19T08:09:14.221Z"
+      },
+      {
+        "id": "dd5437f7-46db-44fd-9a91-6650a30d98b8",
+        "email": "reviewer_a_1792397400161@example.com",
+        "passwordHash": "$2b$12$syZZxCvAYjoGup8yuFljW.XDt6GXXB0HORYeK.qRFmekJdPO8fTta",
+        "name": "Alice Walker",
+        "phone": null,
+        "avatarUrl": null,
+        "role": "CUSTOMER",
+        "createdAt": "2026-10-19T08:10:00.735Z",
+        "updatedAt": "2026-10-19T08:10:00.735Z"
+      },
+      {
+        "id": "e7fa9469-eb50-4b43-af29-39b4ffacd1f2",
+        "email": "reviewer_b_1792397400161@example.com",
+        "passwordHash": "$2b$12$bDI6OArQZa.aZXCV5Jc.LOk4KziGTelUg7I5DaIjHSai7bM6ONgiK",
+        "name": "Bob Roberts",
+        "phone": null,
+        "avatarUrl": null,
+        "role": "CUSTOMER",
+        "createdAt": "2026-10-19T08:10:01.178Z",
+        "updatedAt": "2026-10-19T08:10:01.178Z"
+      },
+      {
+        "id": "86650418-0ddb-45d1-83bc-5b298ce4c344",
+        "email": "reviewer_a_1792397419391@example.com",
+        "passwordHash": "$2b$12$1zQmYvOUQ456xCv1pDMk.OXGlkXISp7jyCOooYy1YemIXdaq6Z2o6",
+        "name": "Alice Walker",
+        "phone": null,
+        "avatarUrl": null,
+        "role": "CUSTOMER",
+        "createdAt": "2026-10-19T08:10:19.958Z",
+        "updatedAt": "2026-10-19T08:10:19.958Z"
+      },
+      {
+        "id": "91a16dcd-b37b-4599-99fc-7c9372d92354",
+        "email": "reviewer_b_1792397419391@example.com",
+        "passwordHash": "$2b$12$/0p76.HHwjC2mURGuErgl.Coq8UGPBagsrRvEt2.8LPuAgAagsHWi",
+        "name": "Bob Roberts",
+        "phone": null,
+        "avatarUrl": null,
+        "role": "CUSTOMER",
+        "createdAt": "2026-10-19T08:10:20.393Z",
+        "updatedAt": "2026-10-19T08:10:20.393Z"
+      },
+      {
+        "id": "d7b4f50e-c300-4f55-b496-68e07089f917",
+        "email": "reviewer_a_1792397474316@example.com",
+        "passwordHash": "$2b$12$GEAZR9dkeiidvDTSB7fshOiO9G4ImZALJmwdCy9hn9JlwLO.LQt82",
+        "name": "Alice Walker",
+        "phone": null,
+        "avatarUrl": null,
+        "role": "CUSTOMER",
+        "createdAt": "2026-10-19T08:11:14.881Z",
+        "updatedAt": "2026-10-19T08:11:14.881Z"
+      },
+      {
+        "id": "0fed1e1a-1446-456c-a9e1-84488cf0fd21",
+        "email": "reviewer_b_1792397474316@example.com",
+        "passwordHash": "$2b$12$lAoJvp8PLfH9.Aflwuo7zeyWgvNxfoTgcxO82ZJmsyYOCyU48QIqO",
+        "name": "Bob Roberts",
+        "phone": null,
+        "avatarUrl": null,
+        "role": "CUSTOMER",
+        "createdAt": "2026-10-19T08:11:15.328Z",
+        "updatedAt": "2026-10-19T08:11:15.328Z"
+      },
+      {
+        "id": "bbb6a232-e0ed-4dcc-b868-28ab180b48d5",
+        "email": "payment_shopper_1792398331294@example.com",
+        "passwordHash": "$2b$12$ExWGYN0zvL8A0hzfR8ZcwudPufL0.67wf6LC9tMKV77glCnNve2Cm",
+        "name": "Sam Miller",
+        "phone": null,
+        "avatarUrl": null,
+        "role": "CUSTOMER",
+        "createdAt": "2026-10-19T08:25:31.950Z",
+        "updatedAt": "2026-10-19T08:25:31.950Z"
+      },
+      {
+        "id": "2e78686b-73cc-4875-aaae-d34601dc0a14",
+        "email": "mayankgodhani222@gmail.com",
+        "passwordHash": "$2b$12$3wSyEkMmnVncHQgSR75l1eBd1iT8eWDY.Cb/VIyalXSx9Zo5r2Xeq",
+        "name": "asd asd",
+        "phone": "+91 9016412020",
+        "avatarUrl": null,
+        "role": "CUSTOMER",
+        "createdAt": "2026-10-19T08:26:44.071Z",
+        "updatedAt": "2026-10-19T08:26:44.071Z"
+      },
+      {
+        "id": "0a81de8f-cb91-48c8-8aba-56c636b7331b",
+        "email": "attacker_1792398780471@evil.com",
+        "passwordHash": "$2b$12$BzEimndn2Sfxi/TLMpDIqeFeoA8/KHE2heD6We6XdYCXDy57Nup4G",
+        "name": "Malicious Actor",
+        "phone": null,
+        "avatarUrl": null,
+        "role": "CUSTOMER",
+        "createdAt": "2026-10-19T08:33:01.203Z",
+        "updatedAt": "2026-10-19T08:33:01.203Z"
+      },
+      {
+        "id": "c719228e-9acd-48b5-9026-578182cdd6cf",
+        "email": "shopper1_1792398780471@test.com",
+        "passwordHash": "$2b$12$ksTPjZavnxttrLSSYH6mDe/jcooFhdkCqric5Qw5qT2y5o8BfWvOC",
+        "name": "Shopper One",
+        "phone": null,
+        "avatarUrl": null,
+        "role": "CUSTOMER",
+        "createdAt": "2026-10-19T08:33:01.705Z",
+        "updatedAt": "2026-10-19T08:33:01.705Z"
+      },
+      {
+        "id": "ceb99be8-a6fb-487f-acdd-74ac9a1023f5",
+        "email": "shopper2_1792398780471@test.com",
+        "passwordHash": "$2b$12$m8iHX6Tl.jrFd92CuQ2b1.JzmUvGXN4QzuqSrkloiRIxa3PQ57a2.",
+        "name": "Shopper Two",
+        "phone": null,
+        "avatarUrl": null,
+        "role": "CUSTOMER",
+        "createdAt": "2026-10-19T08:33:02.134Z",
+        "updatedAt": "2026-10-19T08:33:02.134Z"
+      },
+      {
+        "id": "1e51d84b-b2f7-41dd-ade3-8446d0cb7495",
+        "email": "shopper2_1792398851320@test.com",
+        "passwordHash": "$2b$12$rDRLWdqSfuwmEsFnfvIa.OpwUGlQTl1oB5ujVdY7nQVQIxEmoaG9S",
+        "name": "Shopper Two",
+        "phone": null,
+        "avatarUrl": null,
+        "role": "CUSTOMER",
+        "createdAt": "2026-10-19T08:34:12.823Z",
+        "updatedAt": "2026-10-19T08:34:12.823Z"
+      },
+      {
+        "id": "23e3d1cf-98c7-4bd8-b3c0-258088a19aa4",
+        "email": "attacker_1792398967522@evil.com",
+        "passwordHash": "$2b$12$d3natBg0H0/nwGWB/s8z.e4QTdruLs4sxk/2cpwoGy2AT0xrVw0QC",
+        "name": "Malicious Actor",
+        "phone": null,
+        "avatarUrl": null,
+        "role": "CUSTOMER",
+        "createdAt": "2026-10-19T08:36:08.279Z",
+        "updatedAt": "2026-10-19T08:36:08.279Z"
+      },
+      {
+        "id": "2bf4a116-806d-4fb7-acc2-c6b58a9e3c2c",
+        "email": "shopper1_1792398967522@test.com",
+        "passwordHash": "$2b$12$CGA9jcjZCoWipvjMh.YmtOUKcJ85j18MRZPkshzRRmbIpzl0UVeVC",
+        "name": "Shopper One",
+        "phone": null,
+        "avatarUrl": null,
+        "role": "CUSTOMER",
+        "createdAt": "2026-10-19T08:36:08.787Z",
+        "updatedAt": "2026-10-19T08:36:08.787Z"
+      },
+      {
+        "id": "36274fb7-c291-4124-8ac1-7345e0e9b27f",
+        "email": "shopper2_1792398967522@test.com",
+        "passwordHash": "$2b$12$hKLSCNkvM5wdqR/fqVdrgOPzqSy3C2Ww4m0IZ1.L/FCl5.xAyCWNS",
+        "name": "Shopper Two",
+        "phone": null,
+        "avatarUrl": null,
+        "role": "CUSTOMER",
+        "createdAt": "2026-10-19T08:36:09.219Z",
+        "updatedAt": "2026-10-19T08:36:09.219Z"
+      }
+    ],
+    "addresses": [],
+    "products": [
+      {
+        "id": "prod-elec-2",
+        "name": "UltraVision 4K UHD Smart OLED Monitor 32\"",
+        "brand": "VisionTech",
+        "category": "Electronics",
+        "description": "Vivid 4K UHD display with 144Hz refresh rate, 99% DCI-P3 color gamut, HDR10+, and built-in USB-C hub with 90W power delivery for laptops.",
+        "price": 59900,
+        "originalPrice": 79900,
+        "discount": 25,
+        "rating": 4.9,
+        "reviewCount": 189,
+        "stock": 12,
+        "images": [
+          "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1547082299-de196ea013d6?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [
+          "Space Gray",
+          "Arctic White"
+        ],
+        "sizes": [],
+        "specifications": {
+          "Ports": "HDMI 2.1, DP 1.4, USB-C 90W",
+          "Panel Type": "OLED HDR1000",
+          "Resolution": "3840 x 2160 (4K UHD)",
+          "Refresh Rate": "144Hz"
+        },
+        "isTrending": true,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.087Z",
+        "updatedAt": "2026-10-19T07:04:00.335Z"
+      },
+      {
+        "id": "prod-elec-3",
+        "name": "PulseWatch GT5 Fitness & GPS Smartwatch",
+        "brand": "PulseTech",
+        "category": "Electronics",
+        "description": "Advanced biometric sensors for continuous ECG, SpO2, sleep stages, stress tracking, and dual-band GPS with 14-day battery life on a single charge.",
+        "price": 17999,
+        "originalPrice": 22999,
+        "discount": 22,
+        "rating": 4.7,
+        "reviewCount": 420,
+        "stock": 35,
+        "images": [
+          "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [
+          "Obsidian Black",
+          "Titanium Silver",
+          "Rose Gold"
+        ],
+        "sizes": [],
+        "specifications": {
+          "Display": "1.43\" AMOLED Always-On",
+          "Sensors": "Optical Heart Rate, SpO2, Altimeter",
+          "Battery Life": "Up to 14 Days",
+          "Water Resistance": "5 ATM / 50m"
+        },
+        "isTrending": false,
+        "isBestSeller": true,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.095Z",
+        "updatedAt": "2026-10-19T07:02:44.990Z"
+      },
+      {
+        "id": "prod-elec-4",
+        "name": "Zenith Pro 14\" M3 Ultrabook (16GB/512GB)",
+        "brand": "Zenith",
+        "category": "Electronics",
+        "description": "Featherlight aerospace aluminum chassis, all-day 18-hour battery, brilliant Liquid Retina display, and silent fanless high-performance computing.",
+        "price": 119900,
+        "originalPrice": 139900,
+        "discount": 14,
+        "rating": 4.9,
+        "reviewCount": 260,
+        "stock": 9,
+        "images": [
+          "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [
+          "Space Gray",
+          "Starlight Silver"
+        ],
+        "sizes": [],
+        "specifications": {
+          "Memory": "16GB LPDDR5X",
+          "Weight": "1.24 kg",
+          "Storage": "512GB NVMe SSD",
+          "Processor": "Octa-Core High Efficiency"
+        },
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": true,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.102Z",
+        "updatedAt": "2026-10-19T07:02:44.998Z"
+      },
+      {
+        "id": "prod-elec-5",
+        "name": "SonicBoom Waterproof Bluetooth Speaker",
+        "brand": "AuraSound",
+        "category": "Electronics",
+        "description": "360-degree immersive bass, IP67 waterproof and dustproof, 24-hour playtime, and party-pair capability to sync multiple speakers.",
+        "price": 6999,
+        "originalPrice": 9999,
+        "discount": 30,
+        "rating": 4.6,
+        "reviewCount": 512,
+        "stock": 45,
+        "images": [
+          "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [
+          "Forest Green",
+          "Cobalt Blue",
+          "Matte Black"
+        ],
+        "sizes": [],
+        "specifications": {
+          "Battery": "24 Hours",
+          "Output Power": "30W RMS",
+          "Waterproof Rating": "IP67 Submersible"
+        },
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.110Z",
+        "updatedAt": "2026-10-19T07:02:45.006Z"
+      },
+      {
+        "id": "prod-elec-6",
+        "name": "Lumina 4K Mirrorless Cinema Camera Body",
+        "brand": "Lumina",
+        "category": "Electronics",
+        "description": "Professional 33MP full-frame sensor, 4K 120fps 10-bit recording, 5-axis in-body image stabilization, and real-time AI eye autofocus.",
+        "price": 169900,
+        "originalPrice": 199900,
+        "discount": 15,
+        "rating": 4.8,
+        "reviewCount": 95,
+        "stock": 6,
+        "images": [
+          "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [
+          "Classic Black"
+        ],
+        "sizes": [],
+        "specifications": {
+          "Video": "4K 120p, 10-bit 4:2:2",
+          "Sensor": "Full-Frame 33 Megapixels",
+          "Lens Mount": "E-Mount compatible"
+        },
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.117Z",
+        "updatedAt": "2026-10-19T07:02:45.014Z"
+      },
+      {
+        "id": "prod-fash-1",
+        "name": "UrbanHeritage Italian Leather Biker Jacket",
+        "brand": "UrbanHeritage",
+        "category": "Fashion",
+        "description": "Crafted from buttery soft genuine lambskin leather with heavy-duty YKK brass zippers, quilted silk lining, and timeless tailored biker silhouette.",
+        "price": 18900,
+        "originalPrice": 28000,
+        "discount": 32,
+        "rating": 4.7,
+        "reviewCount": 168,
+        "stock": 14,
+        "images": [
+          "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1521223890158-f9f7c3d5d504?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [
+          "Espresso Brown",
+          "Onyx Black"
+        ],
+        "sizes": [
+          "S",
+          "M",
+          "L",
+          "XL",
+          "XXL"
+        ],
+        "specifications": {
+          "Care": "Specialist Leather Clean Only",
+          "Lining": "Quilted Satin",
+          "Material": "100% Genuine Lambskin"
+        },
+        "isTrending": true,
+        "isBestSeller": true,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.125Z",
+        "updatedAt": "2026-10-19T07:02:45.023Z"
+      },
+      {
+        "id": "prod-fash-2",
+        "name": "AeroGlide Minimalist Casual Street Sneakers",
+        "brand": "AeroStep",
+        "category": "Fashion",
+        "description": "Ultralight everyday sneakers with orthopedic cloud cushioning, breathable organic mesh upper, and recycled vulcanized rubber soles.",
+        "price": 8499,
+        "originalPrice": 12000,
+        "discount": 29,
+        "rating": 4.6,
+        "reviewCount": 290,
+        "stock": 30,
+        "images": [
+          "https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [
+          "Cloud White",
+          "Charcoal Slate",
+          "Olive Moss"
+        ],
+        "sizes": [
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+        ],
+        "specifications": {
+          "Sole": "Zero-Gravity EVA Foam",
+          "Upper": "Engineered Breathable Mesh",
+          "Weight": "210g per shoe"
+        },
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": true,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.133Z",
+        "updatedAt": "2026-10-19T07:02:45.031Z"
+      },
+      {
+        "id": "prod-fash-3",
+        "name": "Elysian Meadow Tiered Floral Silk Midi Dress",
+        "brand": "Elysian",
+        "category": "Fashion",
+        "description": "Flowing French crepe silk blend midi dress featuring delicate hand-drawn botanical prints, flutter sleeves, and flattering smocked waistline.",
+        "price": 9500,
+        "originalPrice": 14000,
+        "discount": 32,
+        "rating": 4.8,
+        "reviewCount": 114,
+        "stock": 19,
+        "images": [
+          "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [
+          "Blush Peony",
+          "Sage Garden"
+        ],
+        "sizes": [
+          "XS",
+          "S",
+          "M",
+          "L"
+        ],
+        "specifications": {
+          "Fabric": "70% Silk, 30% Eco-Viscose",
+          "Length": "Midi (46 inches)",
+          "Closure": "Concealed back zip"
+        },
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": true,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.141Z",
+        "updatedAt": "2026-10-19T07:02:45.040Z"
+      },
+      {
+        "id": "prod-fash-4",
+        "name": "RawEdge Japanese Selvedge Denim Jeans (Slim Fit)",
+        "brand": "DenimCo",
+        "category": "Fashion",
+        "description": "Authentic 14oz shuttle-loomed Japanese denim with copper rivets, button fly, and natural indigo dye that develops a personalized patina over time.",
+        "price": 11500,
+        "originalPrice": 16000,
+        "discount": 28,
+        "rating": 4.9,
+        "reviewCount": 205,
+        "stock": 22,
+        "images": [
+          "https://images.unsplash.com/photo-1542272604-780c96856592?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [
+          "Deep Indigo",
+          "Washed Stone"
+        ],
+        "sizes": [
+          "30",
+          "32",
+          "34",
+          "36",
+          "38"
+        ],
+        "specifications": {
+          "Fit": "Slim Tapered",
+          "Origin": "Okayama Mills, Japan",
+          "Weight": "14oz Raw Selvedge"
+        },
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.149Z",
+        "updatedAt": "2026-10-19T07:02:45.048Z"
+      },
+      {
+        "id": "prod-beau-1",
+        "name": "Radiance Botanicals Triple Hyaluronic Glow Serum 50ml",
+        "brand": "Radiance Botanicals",
+        "category": "Beauty",
+        "description": "Multi-molecular weight hyaluronic acid combined with 15% stable Vitamin C and fermented niacinamide to intensely hydrate and brighten complexions.",
+        "price": 4200,
+        "originalPrice": 5800,
+        "discount": 28,
+        "rating": 4.8,
+        "reviewCount": 388,
+        "stock": 60,
+        "images": [
+          "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1608248597359-00971b3e70d4?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [],
+        "sizes": [],
+        "specifications": {
+          "Volume": "50 ml / 1.7 fl. oz.",
+          "Skin Type": "All skin types, sensitive friendly",
+          "Certification": "Cruelty-Free & Vegan",
+          "Key Ingredients": "Hyaluronic Acid 3%, Vit C 15%, Niacinamide"
+        },
+        "isTrending": true,
+        "isBestSeller": true,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.164Z",
+        "updatedAt": "2026-10-19T07:02:45.063Z"
+      },
+      {
+        "id": "prod-fash-5",
+        "name": "Nordic Knit 100% Merino Wool Turtleneck Sweater",
+        "brand": "NordicWear",
+        "category": "Fashion",
+        "description": "Extrafine 19.5 micron merino wool providing thermoregulating warmth without itchiness. Ribbed cuffs, collar, and relaxed modern drape.",
+        "price": 7999,
+        "originalPrice": 11000,
+        "discount": 27,
+        "rating": 4.7,
+        "reviewCount": 145,
+        "stock": 17,
+        "images": [
+          "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [
+          "Oatmeal Heather",
+          "Deep Navy",
+          "Caramel"
+        ],
+        "sizes": [
+          "S",
+          "M",
+          "L",
+          "XL"
+        ],
+        "specifications": {
+          "Gauge": "12gg Fine Knit",
+          "Composition": "100% Extrafine Merino Wool"
+        },
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.156Z",
+        "updatedAt": "2026-10-19T08:27:16.770Z"
+      },
+      {
+        "id": "prod-beau-3",
+        "name": "Amber Oud Artisan Eau De Parfum (100ml)",
+        "brand": "Maison Olfactory",
+        "category": "Beauty",
+        "description": "A captivating blend of golden amber, smoky Cambodian oud, velvety bourbon vanilla, and spicy pink peppercorn with remarkable 12+ hour longevity.",
+        "price": 11000,
+        "originalPrice": 15000,
+        "discount": 26,
+        "rating": 4.9,
+        "reviewCount": 160,
+        "stock": 15,
+        "images": [
+          "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [],
+        "sizes": [],
+        "specifications": {
+          "Volume": "100 ml / 3.4 oz",
+          "Sillage": "Strong & Long-lasting",
+          "Concentration": "Eau De Parfum (22% essence)"
+        },
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": true,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.181Z",
+        "updatedAt": "2026-10-19T07:02:45.078Z"
+      },
+      {
+        "id": "prod-beau-4",
+        "name": "SonicCleanse Pro Facial Cleansing Brush",
+        "brand": "GlowSkin",
+        "category": "Beauty",
+        "description": "Ultrasonic silicone vibrating brush with 8 intensity modes, gentle thermal warming to open pores, and IPX7 waterproof shower safety.",
+        "price": 5500,
+        "originalPrice": 8500,
+        "discount": 35,
+        "rating": 4.6,
+        "reviewCount": 174,
+        "stock": 25,
+        "images": [
+          "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [
+          "Soft Pink",
+          "Mint Green"
+        ],
+        "sizes": [],
+        "specifications": {
+          "Material": "Food-grade antimicrobial silicone",
+          "Vibrations": "8,000 pulses/min"
+        },
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.188Z",
+        "updatedAt": "2026-10-19T07:02:45.086Z"
+      },
+      {
+        "id": "prod-home-1",
+        "name": "BaristaTouch Precision Espresso Machine with Grinder",
+        "brand": "CaffèModerna",
+        "category": "Home & Kitchen",
+        "description": "15-bar Italian pump pressure, integrated conical burr grinder with 30 grind settings, micro-foam steam wand for latte art, and PID thermal control.",
+        "price": 49900,
+        "originalPrice": 65000,
+        "discount": 23,
+        "rating": 4.9,
+        "reviewCount": 480,
+        "stock": 16,
+        "images": [
+          "https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [
+          "Brushed Stainless Steel",
+          "Matte Black"
+        ],
+        "sizes": [],
+        "specifications": {
+          "Pump": "15 Bar High Pressure Italian Pump",
+          "Power": "1600W ThermoBlock Fast Heat",
+          "Water Tank": "2.0 Liters Removable"
+        },
+        "isTrending": true,
+        "isBestSeller": true,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.195Z",
+        "updatedAt": "2026-10-19T07:02:45.094Z"
+      },
+      {
+        "id": "prod-home-2",
+        "name": "CrispAir Digital 6-in-1 Dual Basket Air Fryer (8.5L)",
+        "brand": "KitchenChef",
+        "category": "Home & Kitchen",
+        "description": "Two independent cooking baskets allowing you to cook mains and sides simultaneously with Smart Finish sync. Requires up to 85% less oil.",
+        "price": 12999,
+        "originalPrice": 17999,
+        "discount": 28,
+        "rating": 4.8,
+        "reviewCount": 620,
+        "stock": 32,
+        "images": [
+          "https://images.unsplash.com/photo-1588854337236-6889d631faa8?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [
+          "Charcoal Gray"
+        ],
+        "sizes": [],
+        "specifications": {
+          "Presets": "8 One-touch digital menus",
+          "Capacity": "8.5 Liters Dual Zone",
+          "Functions": "Air Fry, Roast, Broil, Bake, Reheat, Dehydrate"
+        },
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": true,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.203Z",
+        "updatedAt": "2026-10-19T07:02:45.101Z"
+      },
+      {
+        "id": "prod-home-3",
+        "name": "RoboClean Max Laser Navigation Robot Vacuum & Mop",
+        "brand": "CleanBot",
+        "category": "Home & Kitchen",
+        "description": "5000Pa extreme suction power, LiDAR 3D obstacle avoidance, sonic scrubbing mop, and self-emptying 60-day dust bin station.",
+        "price": 38900,
+        "originalPrice": 54900,
+        "discount": 29,
+        "rating": 4.7,
+        "reviewCount": 230,
+        "stock": 14,
+        "images": [
+          "https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [
+          "Gloss White",
+          "Midnight Slate"
+        ],
+        "sizes": [],
+        "specifications": {
+          "Runtime": "Up to 180 Minutes",
+          "Suction": "5000 Pascals",
+          "Navigation": "Precision LiDAR Smart Map"
+        },
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.210Z",
+        "updatedAt": "2026-10-19T07:02:45.109Z"
+      },
+      {
+        "id": "prod-home-4",
+        "name": "CastIron Master 5-Piece Enamelled Dutch Oven Set",
+        "brand": "CulinaryArt",
+        "category": "Home & Kitchen",
+        "description": "Heavyweight cast iron for peerless heat distribution and retention, coated in chip-resistant vibrant porcelain enamel. Oven safe up to 500°F.",
+        "price": 15900,
+        "originalPrice": 22000,
+        "discount": 28,
+        "rating": 4.9,
+        "reviewCount": 310,
+        "stock": 20,
+        "images": [
+          "https://images.unsplash.com/photo-1584990347449-397a61d19119?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [
+          "Cerulean Blue",
+          "Cherry Crimson",
+          "Emerald Green"
+        ],
+        "sizes": [],
+        "specifications": {
+          "Material": "Enamelled Heavy Cast Iron",
+          "Compatibility": "Induction, Gas, Electric, Ceramic, Oven safe"
+        },
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.218Z",
+        "updatedAt": "2026-10-19T07:02:45.117Z"
+      },
+      {
+        "id": "prod-home-5",
+        "name": "Nordic Oak Minimalist Ergonomic Desk Chair",
+        "brand": "NordicLiving",
+        "category": "Home & Kitchen",
+        "description": "Sculpted solid European white oak backrest with high-resilience breathable linen cushion and lumbar support. Designed for 8+ hour work comfort.",
+        "price": 21900,
+        "originalPrice": 29900,
+        "discount": 27,
+        "rating": 4.7,
+        "reviewCount": 140,
+        "stock": 11,
+        "images": [
+          "https://images.unsplash.com/photo-1580481077195-73ab013f636f?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [
+          "Natural Oak / Sand",
+          "Walnut / Charcoal"
+        ],
+        "sizes": [],
+        "specifications": {
+          "Frame": "FSC-Certified Solid European Oak",
+          "Load Capacity": "300 lbs (136 kg)"
+        },
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": true,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.225Z",
+        "updatedAt": "2026-10-19T07:02:45.124Z"
+      },
+      {
+        "id": "prod-groc-1",
+        "name": "Estate Reserve Single Origin Ethiopian Whole Coffee Beans (1kg)",
+        "brand": "Yirgacheffe Reserve",
+        "category": "Grocery",
+        "description": "Directly sourced from high-altitude smallholder farms in Sidama, offering distinct jasmine florals, bright bergamot acidity, and candied honey sweetness.",
+        "price": 2850,
+        "originalPrice": 3800,
+        "discount": 25,
+        "rating": 4.9,
+        "reviewCount": 390,
+        "stock": 50,
+        "images": [
+          "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [],
+        "sizes": [],
+        "specifications": {
+          "Process": "Washed Organic",
+          "Altitude": "1950m - 2200m",
+          "Roast Level": "Medium Light"
+        },
+        "isTrending": false,
+        "isBestSeller": true,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.233Z",
+        "updatedAt": "2026-10-19T07:02:45.132Z"
+      },
+      {
+        "id": "prod-groc-2",
+        "name": "Tuscan Gold Cold Pressed Extra Virgin Olive Oil (750ml)",
+        "brand": "Villa Toscana",
+        "category": "Grocery",
+        "description": "First cold pressed within 6 hours of harvest from Frantoio and Leccino olives in Florence hills. Peppery finish with antioxidant-rich polyphenol levels.",
+        "price": 3400,
+        "originalPrice": 4500,
+        "discount": 24,
+        "rating": 4.8,
+        "reviewCount": 210,
+        "stock": 40,
+        "images": [
+          "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [],
+        "sizes": [],
+        "specifications": {
+          "Origin": "Tuscany, Italy (DOP Certified)",
+          "Volume": "750 ml in Dark UV Glass",
+          "Acidity": "< 0.2%"
+        },
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.240Z",
+        "updatedAt": "2026-10-19T07:02:45.139Z"
+      },
+      {
+        "id": "prod-groc-3",
+        "name": "Artisan Raw Himalayan Monofloral Honey (500g)",
+        "brand": "PureHimalayas",
+        "category": "Grocery",
+        "description": "Unfiltered, unpasteurized raw mountain honey gathered by wild bees from blooming medicinal flora at 8,000 feet. Naturally rich in bee pollen and enzymes.",
+        "price": 1999,
+        "originalPrice": 2600,
+        "discount": 23,
+        "rating": 4.9,
+        "reviewCount": 185,
+        "stock": 55,
+        "images": [
+          "https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [],
+        "sizes": [],
+        "specifications": {
+          "State": "Raw, Unheated, Unprocessed",
+          "Net Weight": "500 grams"
+        },
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.249Z",
+        "updatedAt": "2026-10-19T07:02:45.147Z"
+      },
+      {
+        "id": "prod-groc-4",
+        "name": "Ceremonial Grade Uji Matcha Green Tea Powder (80g)",
+        "brand": "KyotoTraditions",
+        "category": "Grocery",
+        "description": "First harvest stone-ground green tea leaves from shaded farms in Uji, Kyoto. Vibrant emerald color, velvety umami taste, and zero astringency.",
+        "price": 3200,
+        "originalPrice": 4200,
+        "discount": 24,
+        "rating": 4.8,
+        "reviewCount": 290,
+        "stock": 35,
+        "images": [
+          "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [],
+        "sizes": [],
+        "specifications": {
+          "Grade": "A+ Ceremonial First Flush",
+          "Origin": "Uji, Kyoto, Japan"
+        },
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.258Z",
+        "updatedAt": "2026-10-19T07:02:45.154Z"
+      },
+      {
+        "id": "prod-sport-1",
+        "name": "TitanGrip Adjustable Smart Dumbbells (5-52.5 lbs Pair)",
+        "brand": "TitanFitness",
+        "category": "Sports",
+        "description": "Rapid dial weight selection from 5 to 52.5 pounds per dumbbell, replacing 15 pairs of traditional weights. Heavy-duty steel plates with textured grip.",
+        "price": 29900,
+        "originalPrice": 39900,
+        "discount": 25,
+        "rating": 4.9,
+        "reviewCount": 520,
+        "stock": 18,
+        "images": [
+          "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [
+          "Matte Black / Red Accent"
+        ],
+        "sizes": [],
+        "specifications": {
+          "Material": "Laser-cut Steel with Nylon-coated Plates",
+          "Weight Range": "5 to 52.5 lbs per dumbbell (2.5 lb increments)"
+        },
+        "isTrending": true,
+        "isBestSeller": true,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.265Z",
+        "updatedAt": "2026-10-19T07:02:45.162Z"
+      },
+      {
+        "id": "prod-sport-2",
+        "name": "ZenFlex Eco Natural Tree Rubber Non-Slip Yoga Mat (6mm)",
+        "brand": "ZenFlex",
+        "category": "Sports",
+        "description": "Biodegradable organic tree rubber bottom with antimicrobial polyurethane top surface that gets grippier as you sweat. Laser-etched alignment guides.",
+        "price": 6499,
+        "originalPrice": 8999,
+        "discount": 28,
+        "rating": 4.7,
+        "reviewCount": 310,
+        "stock": 45,
+        "images": [
+          "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [
+          "Sage Green",
+          "Midnight Ocean",
+          "Dusty Rose"
+        ],
+        "sizes": [],
+        "specifications": {
+          "Weight": "2.6 kg",
+          "Material": "100% Natural Organic Rubber + Eco-PU",
+          "Dimensions": "72\" x 26\" x 6mm"
+        },
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.272Z",
+        "updatedAt": "2026-10-19T07:02:45.170Z"
+      },
+      {
+        "id": "prod-elec-1",
+        "name": "AuraSound Pro Active Noise Cancelling Headphones",
+        "brand": "AuraSound",
+        "category": "Electronics",
+        "description": "Industry-leading noise cancellation with spatial audio, 40-hour battery life, plush memory foam earcups, and ultra-crisp Hi-Res audio certification.",
+        "price": 24999,
+        "originalPrice": 32999,
+        "discount": 24,
+        "rating": 4.8,
+        "reviewCount": 342,
+        "stock": 28,
+        "images": [
+          "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [
+          "Midnight Black",
+          "Silver Mist",
+          "Ocean Navy"
+        ],
+        "sizes": [],
+        "specifications": {
+          "Weight": "250g",
+          "Charging": "USB-C Fast Charge (10 min = 5 hrs)",
+          "Battery Life": "Up to 40 Hours",
+          "Connectivity": "Bluetooth 5.3 & 3.5mm Aux",
+          "Noise Cancellation": "Hybrid Active ANC"
+        },
+        "isTrending": true,
+        "isBestSeller": true,
+        "isNewArrival": false,
+        "isDealOfDay": true,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.055Z",
+        "updatedAt": "2026-10-19T07:02:44.961Z"
+      },
+      {
+        "id": "prod-beau-2",
+        "name": "Velvet Rose Luxury Moisturizing Night Cream",
+        "brand": "LuxeDerm",
+        "category": "Beauty",
+        "description": "Restorative overnight barrier repair cream enriched with Damask rose water, squalane, ceramides, and peptides for plump, radiant morning skin.",
+        "price": 4950,
+        "originalPrice": 7000,
+        "discount": 29,
+        "rating": 4.7,
+        "reviewCount": 215,
+        "stock": 42,
+        "images": [
+          "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [],
+        "sizes": [],
+        "specifications": {
+          "Volume": "60g",
+          "Texture": "Rich velvet balm",
+          "Features": "Ceramide Complex, Peptides, Rose Otto"
+        },
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.173Z",
+        "updatedAt": "2026-10-19T07:02:45.071Z"
+      },
+      {
+        "id": "prod-sport-3",
+        "name": "HydraFlow Insulated Stainless Steel Sports Bottle (1 Litre)",
+        "brand": "HydraFlow",
+        "category": "Sports",
+        "description": "Triple-wall vacuum insulation keeps cold beverages ice-cold for 36 hours or hot for 16 hours. Leakproof chug lid with flexible carry loop.",
+        "price": 2999,
+        "originalPrice": 3999,
+        "discount": 25,
+        "rating": 4.8,
+        "reviewCount": 470,
+        "stock": 75,
+        "images": [
+          "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [
+          "Matte Black",
+          "Glacier Cyan",
+          "Coral Sunset"
+        ],
+        "sizes": [],
+        "specifications": {
+          "Capacity": "32 oz / 1000 ml",
+          "Material": "18/8 Pro-Grade Stainless Steel (BPA Free)"
+        },
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": true,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.280Z",
+        "updatedAt": "2026-10-19T07:02:45.178Z"
+      },
+      {
+        "id": "prod-sport-4",
+        "name": "Veloce Carbon Fiber Road Bicycle Helmet",
+        "brand": "Veloce",
+        "category": "Sports",
+        "description": "Wind-tunnel tested aerodynamics with integrated MIPS cranial rotational protection, 21 ventilation channels, and magnetic buckle system.",
+        "price": 11900,
+        "originalPrice": 16000,
+        "discount": 26,
+        "rating": 4.8,
+        "reviewCount": 140,
+        "stock": 20,
+        "images": [
+          "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [
+          "Carbon Matte Black",
+          "Ghost White"
+        ],
+        "sizes": [
+          "M (54-58cm)",
+          "L (58-62cm)"
+        ],
+        "specifications": {
+          "Safety": "MIPS Evolve Core + CPSC Certified",
+          "Weight": "235g"
+        },
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.287Z",
+        "updatedAt": "2026-10-19T07:02:45.189Z"
+      },
+      {
+        "id": "prod-book-1",
+        "name": "Designing Data-Intensive Applications (Hardcover Collector)",
+        "brand": "O'Reilly Media",
+        "category": "Books",
+        "description": "The definitive handbook by Martin Kleppmann on scalable architectures, distributed consistency, partitioning, stream processing, and fault tolerance.",
+        "price": 4699,
+        "originalPrice": 5999,
+        "discount": 22,
+        "rating": 5,
+        "reviewCount": 840,
+        "stock": 40,
+        "images": [
+          "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [],
+        "sizes": [],
+        "specifications": {
+          "ISBN": "978-1449373320",
+          "Pages": "616 pages",
+          "Author": "Martin Kleppmann",
+          "Format": "Hardcover Deluxe Edition"
+        },
+        "isTrending": false,
+        "isBestSeller": true,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.293Z",
+        "updatedAt": "2026-10-19T07:02:45.197Z"
+      },
+      {
+        "id": "prod-book-2",
+        "name": "Atomic Habits: Tiny Changes, Remarkable Results",
+        "brand": "Penguin Books",
+        "category": "Books",
+        "description": "James Clear reveals practical strategies on how small changes can produce transformative habits, overcome lack of motivation, and engineer your environment.",
+        "price": 1850,
+        "originalPrice": 2700,
+        "discount": 31,
+        "rating": 4.9,
+        "reviewCount": 1450,
+        "stock": 80,
+        "images": [
+          "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [],
+        "sizes": [],
+        "specifications": {
+          "Author": "James Clear",
+          "Format": "Paperback & Digital Companion",
+          "Language": "English"
+        },
+        "isTrending": false,
+        "isBestSeller": true,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.301Z",
+        "updatedAt": "2026-10-19T07:02:45.205Z"
+      },
+      {
+        "id": "prod-book-3",
+        "name": "The Psychology of Money: Timeless Lessons on Wealth",
+        "brand": "Harriman House",
+        "category": "Books",
+        "description": "Morgan Housel explores the strange ways people think about money and teaches you how to make better sense of life’s most important financial decisions.",
+        "price": 1699,
+        "originalPrice": 2400,
+        "discount": 29,
+        "rating": 4.8,
+        "reviewCount": 920,
+        "stock": 65,
+        "images": [
+          "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [],
+        "sizes": [],
+        "specifications": {
+          "Pages": "256 pages",
+          "Author": "Morgan Housel"
+        },
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.309Z",
+        "updatedAt": "2026-10-19T07:02:45.213Z"
+      },
+      {
+        "id": "prod-book-4",
+        "name": "Refactoring UI: Complete Modern Design Package",
+        "brand": "Refactor Press",
+        "category": "Books",
+        "description": "Learn how to design beautiful user interfaces yourself using specific, practical tactics explained from a developer’s perspective by Adam Wathan and Steve Schoger.",
+        "price": 5900,
+        "originalPrice": 7900,
+        "discount": 25,
+        "rating": 4.9,
+        "reviewCount": 510,
+        "stock": 30,
+        "images": [
+          "https://images.unsplash.com/photo-1507842229451-79b1be886a20?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [],
+        "sizes": [],
+        "specifications": {
+          "Format": "Hardcover + Digital Assets & Color Palettes",
+          "Authors": "Adam Wathan & Steve Schoger"
+        },
+        "isTrending": true,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.317Z",
+        "updatedAt": "2026-10-19T07:02:45.220Z"
+      },
+      {
+        "id": "prod-acc-1",
+        "name": "Vanguard Voyager Water-Resistant Tech Travel Backpack (28L)",
+        "brand": "Vanguard",
+        "category": "Accessories",
+        "description": "Engineered for developers and nomads with dedicated 16\" fleece laptop sleeve, hidden anti-theft passport pocket, luggage pass-through, and Cordura ballistic nylon.",
+        "price": 11900,
+        "originalPrice": 16500,
+        "discount": 28,
+        "rating": 4.9,
+        "reviewCount": 375,
+        "stock": 22,
+        "images": [
+          "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [
+          "Stealth Black",
+          "Charcoal Heather"
+        ],
+        "sizes": [],
+        "specifications": {
+          "Volume": "28 Liters (Expandable to 32L)",
+          "Material": "1000D Cordura Waterproof Nylon",
+          "Laptop Pocket": "Fits up to 16-inch MacBook Pro"
+        },
+        "isTrending": true,
+        "isBestSeller": true,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.325Z",
+        "updatedAt": "2026-10-19T07:02:45.227Z"
+      },
+      {
+        "id": "prod-acc-2",
+        "name": "Solarium Polarized Aviator Sunglasses (Titanium Frame)",
+        "brand": "Solarium",
+        "category": "Accessories",
+        "description": "Ultralight Japanese titanium frame with TAC polarized UV400 lenses that eliminate glare while preserving true color fidelity in bright daylight.",
+        "price": 8999,
+        "originalPrice": 13000,
+        "discount": 31,
+        "rating": 4.7,
+        "reviewCount": 190,
+        "stock": 38,
+        "images": [
+          "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [
+          "Gold / Forest Green",
+          "Silver / Smoke Gray"
+        ],
+        "sizes": [],
+        "specifications": {
+          "Frame": "Aerospace Beta-Titanium (14 grams)",
+          "Protection": "100% UV400 Protection (Cat 3)"
+        },
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.333Z",
+        "updatedAt": "2026-10-19T07:02:45.234Z"
+      },
+      {
+        "id": "prod-acc-3",
+        "name": "RidgeFold RFID-Blocking Slim Full-Grain Leather Wallet",
+        "brand": "RidgeFold",
+        "category": "Accessories",
+        "description": "Hand-stitched Italian vegetable-tanned leather holds 10 cards and cash with pull-tab quick access, built-in RFID blocking shield, and coin pocket.",
+        "price": 4500,
+        "originalPrice": 6500,
+        "discount": 31,
+        "rating": 4.8,
+        "reviewCount": 410,
+        "stock": 50,
+        "images": [
+          "https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [
+          "Cognac Tan",
+          "Midnight Black"
+        ],
+        "sizes": [],
+        "specifications": {
+          "Capacity": "Up to 12 Cards + Flat Bills",
+          "Material": "Full-Grain Tuscan Leather",
+          "Security": "13.56 MHz RFID Shielding"
+        },
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": true,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.341Z",
+        "updatedAt": "2026-10-19T07:02:45.242Z"
+      },
+      {
+        "id": "prod-acc-4",
+        "name": "Chronos Sapphire Crystal Automatic Bauhaus Watch",
+        "brand": "Chronos",
+        "category": "Accessories",
+        "description": "Exquisite minimalist dial with date window, scratch-resistant sapphire crystal, 42-hour Japanese automatic movement, and genuine Horween leather strap.",
+        "price": 24900,
+        "originalPrice": 34000,
+        "discount": 27,
+        "rating": 4.9,
+        "reviewCount": 180,
+        "stock": 14,
+        "images": [
+          "https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [
+          "Silver / White Dial",
+          "Rose Gold / Black Dial"
+        ],
+        "sizes": [],
+        "specifications": {
+          "Glass": "Double-Domed Anti-Reflective Sapphire",
+          "Movement": "Miyota 9015 Automatic (28,800 bph)",
+          "Water Resistance": "50 Meters"
+        },
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": true,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:02:37.348Z",
+        "updatedAt": "2026-10-19T07:02:45.249Z"
+      },
+      {
+        "id": "prod-custom-1792394979686",
+        "name": "Pro Wireless Gaming Mouse",
+        "brand": "HyperPulse",
+        "category": "Electronics",
+        "description": "Ultra-lightweight sensor mouse with 30K DPI and 80-hour battery life.",
+        "price": 8999,
+        "originalPrice": 11999,
+        "discount": 0,
+        "rating": 0,
+        "reviewCount": 0,
+        "stock": 50,
+        "images": [
+          "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=800&q=80"
+        ],
+        "colors": [],
+        "sizes": [],
+        "specifications": {},
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T07:29:39.688Z",
+        "updatedAt": "2026-10-19T07:29:39.688Z"
+      },
+      {
+        "id": "task11-prod-1792397335980",
+        "name": "Acoustic Pro Studio Monitor 1792397335980",
+        "brand": "AudioTech",
+        "category": "Electronics",
+        "description": "Reference studio monitors for verification testing.",
+        "price": 19900,
+        "originalPrice": 24900,
+        "discount": 0,
+        "rating": 3.5,
+        "reviewCount": 2,
+        "stock": 25,
+        "images": [
+          "https://images.unsplash.com/photo-1546435770-a3e426bf472b"
+        ],
+        "colors": null,
+        "sizes": null,
+        "specifications": {},
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T08:08:56.038Z",
+        "updatedAt": "2026-10-19T08:08:57.239Z"
+      },
+      {
+        "id": "task11-prod-1792397353107",
+        "name": "Acoustic Pro Studio Monitor 1792397353107",
+        "brand": "AudioTech",
+        "category": "Electronics",
+        "description": "Reference studio monitors for verification testing.",
+        "price": 19900,
+        "originalPrice": 24900,
+        "discount": 0,
+        "rating": 3.5,
+        "reviewCount": 2,
+        "stock": 25,
+        "images": [
+          "https://images.unsplash.com/photo-1546435770-a3e426bf472b"
+        ],
+        "colors": null,
+        "sizes": null,
+        "specifications": {},
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T08:09:13.284Z",
+        "updatedAt": "2026-10-19T08:09:14.318Z"
+      },
+      {
+        "id": "task11-prod-1792397400161",
+        "name": "Acoustic Pro Studio Monitor 1792397400161",
+        "brand": "AudioTech",
+        "category": "Electronics",
+        "description": "Reference studio monitors for verification testing.",
+        "price": 19900,
+        "originalPrice": 24900,
+        "discount": 0,
+        "rating": 3.5,
+        "reviewCount": 2,
+        "stock": 25,
+        "images": [
+          "https://images.unsplash.com/photo-1546435770-a3e426bf472b"
+        ],
+        "colors": null,
+        "sizes": null,
+        "specifications": {},
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T08:10:00.226Z",
+        "updatedAt": "2026-10-19T08:10:01.296Z"
+      },
+      {
+        "id": "task14-limited-1792398780471",
+        "name": "Limited Edition Prototype 1792398780471",
+        "brand": "VaultTech",
+        "category": "Electronics",
+        "description": "Exactly one unit available.",
+        "price": 5000,
+        "originalPrice": 5000,
+        "discount": 0,
+        "rating": 0,
+        "reviewCount": 0,
+        "stock": 1,
+        "images": [
+          "https://images.unsplash.com/photo-1546435770-a3e426bf472b"
+        ],
+        "colors": null,
+        "sizes": null,
+        "specifications": {},
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T08:33:01.269Z",
+        "updatedAt": "2026-10-19T08:33:01.269Z"
+      },
+      {
+        "id": "task14-limited-1792398851320",
+        "name": "Limited Edition Prototype 1792398851320",
+        "brand": "VaultTech",
+        "category": "Electronics",
+        "description": "Exactly one unit available.",
+        "price": 5000,
+        "originalPrice": 5000,
+        "discount": 0,
+        "rating": 0,
+        "reviewCount": 0,
+        "stock": -1,
+        "images": [
+          "https://images.unsplash.com/photo-1546435770-a3e426bf472b"
+        ],
+        "colors": null,
+        "sizes": null,
+        "specifications": {},
+        "isTrending": false,
+        "isBestSeller": false,
+        "isNewArrival": false,
+        "isDealOfDay": false,
+        "isArchived": false,
+        "createdAt": "2026-10-19T08:34:11.950Z",
+        "updatedAt": "2026-10-19T08:34:12.853Z"
+      }
+    ],
+    "coupons": [
+      {
+        "id": "9675f9d0-78e5-4256-8f2a-05afb4d13ea4",
+        "code": "SAVE10",
+        "description": "Get 10% off on all orders above $30",
+        "discountPercentage": 10,
+        "minSpend": 3000,
+        "maxDiscount": 2500,
+        "freeShipping": false,
+        "usageLimit": null,
+        "usedCount": 0,
+        "isActive": true,
+        "createdAt": "2026-10-19T07:02:37.356Z",
+        "updatedAt": "2026-10-19T07:02:45.256Z"
+      },
+      {
+        "id": "8820578c-6b84-4d77-b46b-bd0be2bcbe3d",
+        "code": "SAVE20",
+        "description": "Get 20% off on orders above $100",
+        "discountPercentage": 20,
+        "minSpend": 10000,
+        "maxDiscount": 6000,
+        "freeShipping": false,
+        "usageLimit": null,
+        "usedCount": 0,
+        "isActive": true,
+        "createdAt": "2026-10-19T07:02:37.365Z",
+        "updatedAt": "2026-10-19T07:02:45.264Z"
+      },
+      {
+        "id": "2b81eb1d-c372-45d2-a76e-8d050fa8cbd3",
+        "code": "WELCOME15",
+        "description": "Special 15% welcome discount for new members",
+        "discountPercentage": 15,
+        "minSpend": 4000,
+        "maxDiscount": 4000,
+        "freeShipping": false,
+        "usageLimit": null,
+        "usedCount": 0,
+        "isActive": true,
+        "createdAt": "2026-10-19T07:02:37.372Z",
+        "updatedAt": "2026-10-19T07:02:45.271Z"
+      },
+      {
+        "id": "ef102e9a-a755-4970-8b5a-5ed8f78eab37",
+        "code": "FREESHIP",
+        "description": "Enjoy 100% free standard and express delivery",
+        "discountPercentage": 0,
+        "minSpend": 2500,
+        "maxDiscount": null,
+        "freeShipping": true,
+        "usageLimit": null,
+        "usedCount": 0,
+        "isActive": true,
+        "createdAt": "2026-10-19T07:02:37.379Z",
+        "updatedAt": "2026-10-19T07:02:45.278Z"
+      },
+      {
+        "id": "fa352490-f6b4-4c06-81e7-6ebdeac4f83f",
+        "code": "INBOX50",
+        "description": "Inbox Infotech Launch Special — 25% off up to $75",
+        "discountPercentage": 25,
+        "minSpend": 15000,
+        "maxDiscount": 7500,
+        "freeShipping": false,
+        "usageLimit": null,
+        "usedCount": 0,
+        "isActive": true,
+        "createdAt": "2026-10-19T07:02:37.386Z",
+        "updatedAt": "2026-10-19T07:02:45.285Z"
+      }
+    ],
+    "orders": [
+      {
+        "id": "4b8d2690-7d5f-4620-8ba5-537ab336c54f",
+        "orderNumber": "INB-VERIF-1792397419391",
+        "userId": "86650418-0ddb-45d1-83bc-5b298ce4c344",
+        "customerName": "Alice Walker",
+        "customerEmail": "reviewer_a_1792397419391@example.com",
+        "customerPhone": "+1-555-0199",
+        "currency": "USD",
+        "subtotal": 19900,
+        "discount": 0,
+        "deliveryFee": 0,
+        "tax": 1592,
+        "total": 21492,
+        "couponCode": null,
+        "shippingAddress": {
+          "city": "Metropolis",
+          "street": "123 Test St",
+          "country": "IN",
+          "postalCode": "12345"
+        },
+        "deliveryMethod": "STANDARD",
+        "paymentMethod": "CASH_ON_DELIVERY",
+        "paymentStatus": "Paid",
+        "transactionId": null,
+        "status": "Delivered",
+        "trackingNumber": null,
+        "estimatedDeliveryDate": null,
+        "createdAt": "2026-10-19T08:10:20.520Z",
+        "updatedAt": "2026-10-19T08:10:20.520Z"
+      },
+      {
+        "id": "3bc01950-3361-42ce-9562-c1042870a7cf",
+        "orderNumber": "INB-VERIF-1792397474316",
+        "userId": "d7b4f50e-c300-4f55-b496-68e07089f917",
+        "customerName": "Alice Walker",
+        "customerEmail": "reviewer_a_1792397474316@example.com",
+        "customerPhone": "+1-555-0199",
+        "currency": "USD",
+        "subtotal": 19900,
+        "discount": 0,
+        "deliveryFee": 0,
+        "tax": 1592,
+        "total": 21492,
+        "couponCode": null,
+        "shippingAddress": {
+          "city": "Metropolis",
+          "street": "123 Test St",
+          "country": "IN",
+          "postalCode": "12345"
+        },
+        "deliveryMethod": "STANDARD",
+        "paymentMethod": "CASH_ON_DELIVERY",
+        "paymentStatus": "Paid",
+        "transactionId": null,
+        "status": "Delivered",
+        "trackingNumber": null,
+        "estimatedDeliveryDate": null,
+        "createdAt": "2026-10-19T08:11:15.451Z",
+        "updatedAt": "2026-10-19T08:11:15.451Z"
+      },
+      {
+        "id": "cc8ea588-5942-4a8d-83de-742be8050b84",
+        "orderNumber": "INB-436772-2475",
+        "userId": "2e78686b-73cc-4875-aaae-d34601dc0a14",
+        "customerName": "asd asd",
+        "customerEmail": "mayankgodhani222@gmail.com",
+        "customerPhone": "+91 9016412020",
+        "currency": "USD",
+        "subtotal": 7999,
+        "discount": 0,
+        "deliveryFee": 499,
+        "tax": 640,
+        "total": 9138,
+        "couponCode": null,
+        "shippingAddress": {
+          "id": "addr-1792398436741",
+          "city": "Bengaluru",
+          "type": "Home",
+          "phone": "+91 9016412020",
+          "state": "Karnataka",
+          "street": "402, Skyline Heights, MG Road",
+          "country": "India",
+          "pincode": "560001",
+          "fullName": "asd asd"
+        },
+        "deliveryMethod": "Express",
+        "paymentMethod": "Net Banking",
+        "paymentStatus": "Paid",
+        "transactionId": "TXN-F542E4E5",
+        "status": "Order Placed",
+        "trackingNumber": null,
+        "estimatedDeliveryDate": "2026-10-21T08:27:16.772Z",
+        "createdAt": "2026-10-19T08:27:16.774Z",
+        "updatedAt": "2026-10-19T08:27:16.774Z"
+      },
+      {
+        "id": "0db4681d-815e-4ff9-ac6a-f20b255b4cc4",
+        "orderNumber": "INB-852851-5641",
+        "userId": "8939b171-a0a6-45ab-8cff-05271801de91",
+        "customerName": "Shopper One",
+        "customerEmail": "shopper1_1792398851320@test.com",
+        "customerPhone": "",
+        "currency": "USD",
+        "subtotal": 5000,
+        "discount": 0,
+        "deliveryFee": 499,
+        "tax": 400,
+        "total": 5899,
+        "couponCode": null,
+        "shippingAddress": {
+          "city": "Metropolis",
+          "phone": "+1 555-0101",
+          "state": "NY",
+          "street": "42 Main St",
+          "country": "US",
+          "postalCode": "10001"
+        },
+        "deliveryMethod": "Standard",
+        "paymentMethod": "Cash on Delivery",
+        "paymentStatus": "Pending",
+        "transactionId": null,
+        "status": "Order Placed",
+        "trackingNumber": null,
+        "estimatedDeliveryDate": "2026-10-23T08:34:12.851Z",
+        "createdAt": "2026-10-19T08:34:12.853Z",
+        "updatedAt": "2026-10-19T08:34:12.853Z"
+      },
+      {
+        "id": "969be9b4-c6ff-4543-8918-a581375d560f",
+        "orderNumber": "INB-852892-5058",
+        "userId": "1e51d84b-b2f7-41dd-ade3-8446d0cb7495",
+        "customerName": "Shopper Two",
+        "customerEmail": "shopper2_1792398851320@test.com",
+        "customerPhone": "",
+        "currency": "USD",
+        "subtotal": 5000,
+        "discount": 0,
+        "deliveryFee": 499,
+        "tax": 400,
+        "total": 5899,
+        "couponCode": null,
+        "shippingAddress": {
+          "city": "Metropolis",
+          "phone": "+1 555-0101",
+          "state": "NY",
+          "street": "42 Main St",
+          "country": "US",
+          "postalCode": "10001"
+        },
+        "deliveryMethod": "Standard",
+        "paymentMethod": "Cash on Delivery",
+        "paymentStatus": "Pending",
+        "transactionId": null,
+        "status": "Order Placed",
+        "trackingNumber": null,
+        "estimatedDeliveryDate": "2026-10-23T08:34:12.892Z",
+        "createdAt": "2026-10-19T08:34:12.894Z",
+        "updatedAt": "2026-10-19T08:34:12.894Z"
+      }
+    ],
+    "orderItems": [
+      {
+        "id": "74bceb00-4380-4fd5-89b2-a73417c81257",
+        "orderId": "cc8ea588-5942-4a8d-83de-742be8050b84",
+        "productId": "prod-fash-5",
+        "name": "Nordic Knit 100% Merino Wool Turtleneck Sweater",
+        "image": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&w=800&q=80",
+        "selectedColor": "Oatmeal Heather",
+        "selectedSize": "S",
+        "unitPrice": 7999,
+        "quantity": 1,
+        "totalPrice": 7999
+      },
+      {
+        "id": "09662e61-963f-4119-b832-de4229a3c6fc",
+        "orderId": "0db4681d-815e-4ff9-ac6a-f20b255b4cc4",
+        "productId": "task14-limited-1792398851320",
+        "name": "Limited Edition Prototype 1792398851320",
+        "image": "https://images.unsplash.com/photo-1546435770-a3e426bf472b",
+        "selectedColor": null,
+        "selectedSize": null,
+        "unitPrice": 5000,
+        "quantity": 1,
+        "totalPrice": 5000
+      },
+      {
+        "id": "c3095e97-f6bc-4aee-b06b-752004bfc846",
+        "orderId": "969be9b4-c6ff-4543-8918-a581375d560f",
+        "productId": "task14-limited-1792398851320",
+        "name": "Limited Edition Prototype 1792398851320",
+        "image": "https://images.unsplash.com/photo-1546435770-a3e426bf472b",
+        "selectedColor": null,
+        "selectedSize": null,
+        "unitPrice": 5000,
+        "quantity": 1,
+        "totalPrice": 5000
+      }
+    ],
+    "orderStatusHistories": [
+      {
+        "id": "86fa6be0-7b1c-46b1-a381-b298eb6acafc",
+        "orderId": "cc8ea588-5942-4a8d-83de-742be8050b84",
+        "status": "Order Placed",
+        "note": "Order created and payment captured",
+        "actor": "SYSTEM",
+        "createdAt": "2026-10-19T08:27:16.774Z"
+      },
+      {
+        "id": "88aee39c-4de6-4901-9cb4-a343db2cdac8",
+        "orderId": "0db4681d-815e-4ff9-ac6a-f20b255b4cc4",
+        "status": "Order Placed",
+        "note": "Order created successfully with Cash on Delivery",
+        "actor": "SYSTEM",
+        "createdAt": "2026-10-19T08:34:12.853Z"
+      },
+      {
+        "id": "9cec73d7-29c8-498c-9a42-e283f15c70c2",
+        "orderId": "969be9b4-c6ff-4543-8918-a581375d560f",
+        "status": "Order Placed",
+        "note": "Order created successfully with Cash on Delivery",
+        "actor": "SYSTEM",
+        "createdAt": "2026-10-19T08:34:12.894Z"
+      }
+    ],
+    "reviews": [
+      {
+        "id": "5e0ea932-f054-4767-a951-0b8da24c2bcc",
+        "productId": "task11-prod-1792397335980",
+        "userId": "72eab8e2-fdaf-4b0f-8055-f004d8d09412",
+        "rating": 3,
+        "title": "Decent, but bass is punchy",
+        "comment": "Audio quality is clean though low frequencies are a bit heavy for neutral mixing.",
+        "verifiedPurchase": false,
+        "helpfulCount": 0,
+        "createdAt": "2026-10-19T08:08:57.216Z",
+        "updatedAt": "2026-10-19T08:08:57.216Z"
+      },
+      {
+        "id": "c53df7ec-a57e-40e3-a594-925576e41fae",
+        "productId": "task11-prod-1792397335980",
+        "userId": "b7e865a6-f711-4af5-b22f-74dc60a06249",
+        "rating": 4,
+        "title": "Updated After Burn-in",
+        "comment": "Treble settled down nicely after 20 hours of burn-in.",
+        "verifiedPurchase": false,
+        "helpfulCount": 0,
+        "createdAt": "2026-10-19T08:08:57.184Z",
+        "updatedAt": "2026-10-19T08:08:57.235Z"
+      },
+      {
+        "id": "7088406d-95c1-42a2-ac59-f85f64cb8799",
+        "productId": "task11-prod-1792397353107",
+        "userId": "6efd05be-3f5f-443f-828e-f5b8d1b6eafb",
+        "rating": 3,
+        "title": "Decent, but bass is punchy",
+        "comment": "Audio quality is clean though low frequencies are a bit heavy for neutral mixing.",
+        "verifiedPurchase": false,
+        "helpfulCount": 0,
+        "createdAt": "2026-10-19T08:09:14.294Z",
+        "updatedAt": "2026-10-19T08:09:14.294Z"
+      },
+      {
+        "id": "50123352-1ae9-40b8-ab70-9f99e9eb855f",
+        "productId": "task11-prod-1792397353107",
+        "userId": "d8df880c-e9c4-439a-a032-c105d4d517f9",
+        "rating": 4,
+        "title": "Updated After Burn-in",
+        "comment": "Treble settled down nicely after 20 hours of burn-in.",
+        "verifiedPurchase": false,
+        "helpfulCount": 0,
+        "createdAt": "2026-10-19T08:09:14.268Z",
+        "updatedAt": "2026-10-19T08:09:14.315Z"
+      },
+      {
+        "id": "45dff1da-6346-436e-b4c9-2d7e79a7f751",
+        "productId": "task11-prod-1792397400161",
+        "userId": "e7fa9469-eb50-4b43-af29-39b4ffacd1f2",
+        "rating": 3,
+        "title": "Decent, but bass is punchy",
+        "comment": "Audio quality is clean though low frequencies are a bit heavy for neutral mixing.",
+        "verifiedPurchase": false,
+        "helpfulCount": 0,
+        "createdAt": "2026-10-19T08:10:01.268Z",
+        "updatedAt": "2026-10-19T08:10:01.268Z"
+      },
+      {
+        "id": "dbf3ceca-42bd-4f88-a68f-8eab96088b9c",
+        "productId": "task11-prod-1792397400161",
+        "userId": "dd5437f7-46db-44fd-9a91-6650a30d98b8",
+        "rating": 4,
+        "title": "Updated After Burn-in",
+        "comment": "Treble settled down nicely after 20 hours of burn-in.",
+        "verifiedPurchase": false,
+        "helpfulCount": 0,
+        "createdAt": "2026-10-19T08:10:01.231Z",
+        "updatedAt": "2026-10-19T08:10:01.291Z"
+      }
+    ],
+    "newsletters": [
+      {
+        "id": "797f8031-b6a1-4729-94d6-fefcb291dc1d",
+        "email": "subscriber_1792397419391@domain.com",
+        "isActive": true,
+        "subscribedAt": "2026-10-19T08:10:20.590Z"
+      },
+      {
+        "id": "0fcf3ef6-c42e-4759-a3ce-3aa68abfd0b4",
+        "email": "subscriber_1792397474316@domain.com",
+        "isActive": true,
+        "subscribedAt": "2026-10-19T08:11:15.517Z"
+      }
+    ]
+  }
+}

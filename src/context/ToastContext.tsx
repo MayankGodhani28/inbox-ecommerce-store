@@ -40,6 +40,23 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
       setToasts((prev) => [...prev, newToast]);
 
+      // If authentication is required, dispatch event to trigger redirect to login page
+      if (typeof window !== 'undefined') {
+        const titleLower = title.toLowerCase();
+        const msgLower = (options?.message || '').toLowerCase();
+        if (
+          titleLower.includes('authentication require') ||
+          msgLower.includes('authentication require') ||
+          (msgLower.includes('please sign in') && type === 'error')
+        ) {
+          window.dispatchEvent(
+            new CustomEvent('inbox:auth-required', {
+              detail: { title, message: options?.message },
+            })
+          );
+        }
+      }
+
       setTimeout(() => {
         removeToast(id);
       }, duration);

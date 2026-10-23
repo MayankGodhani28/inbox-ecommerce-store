@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User, Address } from '../types';
-import { authService, DEMO_USERS } from '../services/authService';
+import { authService } from '../services/authService';
 import { useToast } from './ToastContext';
 import { useTranslation } from './LanguageContext';
 
@@ -9,27 +9,46 @@ interface AuthContextType {
   defaultAddress: Address | null;
   isAuthenticated: boolean;
   isAdmin: boolean;
+  isSuperAdmin: boolean;
+  isLoading: boolean;
+  refreshUser: () => Promise<User | null>;
   login: (email: string, password?: string) => Promise<User>;
-  register: (name: string, email: string, phone: string) => Promise<User>;
-  logout: () => void;
+  register: (name: string, email: string, password: string, phone?: string) => Promise<User>;
+  logout: () => Promise<void>;
   updateProfile: (updates: Partial<User>) => Promise<User>;
   addAddress: (address: Omit<Address, 'id'>) => Promise<Address>;
   deleteAddress: (id: string) => Promise<void>;
   setDefaultAddress: (id: string) => Promise<void>;
-  switchDemoRole: (role: 'customer' | 'admin') => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(() => authService.getCurrentUser());
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const { showToast } = useToast();
-  const { t, tRole } = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
-    // Keep user updated
-    const cur = authService.getCurrentUser();
-    setUser(cur);
+    let isMounted = true;
+    authService
+      .getCurrentUser()
+      .then((currentUser) => {
+        if (isMounted) {
+          setUser(currentUser);
+          setIsLoading(false);
+        }
+      })
+      .catch(() => {
+        if (isMounted) {
+          setUser(null);
+          setIsLoading(false);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const login = async (email: string, password?: string): Promise<User> => {
@@ -47,12 +66,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const register = async (name: string, email: string, phone: string): Promise<User> => {
+  const register = async (name: string, email: string, password: string, phone?: string): Promise<User> => {
     try {
-      const newUser = await authService.register(name, email, phone);
+      const newUser = await authService.register(name, email, password, phone);
       setUser(newUser);
       showToast(t('toast.welcomeNewUser', { name: newUser.name }), {
-        message: 'Your demo account is ready.',
+        message: 'Your account is ready.',
         type: 'success',
       });
       return newUser;
@@ -62,8 +81,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const logout = () => {
-    authService.logout();
+  const logout = async () => {
+    await authService.logout();
     setUser(null);
     showToast(t('toast.loggedOut'), { message: t('toast.loggedOutDesc'), type: 'info' });
   };
@@ -77,7 +96,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const addAddress = async (addr: Omit<Address, 'id'>): Promise<Address> => {
     const newAddr = await authService.addAddress(addr);
-    const refreshed = authService.getCurrentUser();
+    const refreshed = await authService.getCurrentUser();
     setUser(refreshed);
     showToast(t('toast.addressAdded'), { message: t('toast.addressAddedDesc'), type: 'success' });
     return newAddr;
@@ -85,30 +104,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const deleteAddress = async (id: string): Promise<void> => {
     await authService.deleteAddress(id);
-    const refreshed = authService.getCurrentUser();
+    const refreshed = await authService.getCurrentUser();
     setUser(refreshed);
     showToast(t('toast.addressRemoved'), { type: 'info' });
   };
 
   const setDefaultAddress = async (id: string): Promise<void> => {
     await authService.setDefaultAddress(id);
-    const refreshed = authService.getCurrentUser();
+    const refreshed = await authService.getCurrentUser();
     setUser(refreshed);
     showToast(t('toast.defaultAddressUpdated'), { type: 'success' });
   };
 
-  const switchDemoRole = (role: 'customer' | 'admin') => {
-    const targetUser = DEMO_USERS.find((u) => u.role === role) || DEMO_USERS[0];
-    localStorage.setItem('inbox_auth_user_v1', JSON.stringify(targetUser));
-    setUser(targetUser);
-    showToast(t('toast.roleSwitched', { role: tRole(role) }), {
-      message: t('toast.roleSwitchedDesc', { name: targetUser.name, email: targetUser.email }),
-      type: 'info',
-    });
+  const refreshUser = async (): Promise<User | null> => {
+    try {
+      const refreshed = await authService.getCurrentUser();
+      setUser(refreshed);
+      return refreshed;
+    } catch {
+      return null;
+    }
   };
 
   const isAuthenticated = !!user;
-  const isAdmin = user?.role === 'admin';
+  const isSuperAdmin = user?.role === 'superadmin';
+  const isAdmin = user?.role === 'admin' || user?.role === 'superadmin';
   const defaultAddress = user?.addresses?.find((a) => a.isDefault) || user?.addresses?.[0] || null;
 
   return (
@@ -118,6 +138,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         defaultAddress,
         isAuthenticated,
         isAdmin,
+        isSuperAdmin,
+        isLoading,
+        refreshUser,
         login,
         register,
         logout,
@@ -125,7 +148,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         addAddress,
         deleteAddress,
         setDefaultAddress,
-        switchDemoRole,
       }}
     >
       {children}

@@ -2,8 +2,8 @@ import { TranslationDictionary } from '../types';
 
 export const nl: TranslationDictionary = {
   // Navigation & Header
-  'nav.demoTitle': 'Inbox Infotech Demo',
-  'nav.demoSubtitle': 'Volledig MERN-gereed prototype',
+  'nav.demoTitle': 'Inbox Infotech Store',
+  'nav.demoSubtitle': 'Officiële E-Commerce Webwinkel',
   'nav.viewingAs': 'Weergave als:',
   'nav.adminBadge': '🛡️ Beheerder (Volledige toegang)',
   'nav.customerBadge': '👤 Klant',
@@ -29,7 +29,7 @@ export const nl: TranslationDictionary = {
   'nav.allProducts': 'Alle producten',
   'nav.browseAllProducts': 'Bekijk alle producten',
   'nav.trackOrders': 'Bestellingen volgen',
-  'nav.adminDashboardDemo': 'Beheerdersdashboard (Demo)',
+  'nav.adminDashboardDemo': 'Beheerdersdashboard',
   'nav.browseByCategory': 'Bladeren per categorie',
   'nav.flashDealsPromo': 'Flash deals (tot 35% korting)',
 
@@ -237,7 +237,7 @@ export const nl: TranslationDictionary = {
   'cart.couponPlaceholder': 'Voer actiecode in (bijv. SAVE10)',
   'cart.apply': 'Toepassen',
   'cart.couponApplied': 'Toegepaste korting: {code}',
-  'cart.availableCodes': 'Beschikbare demo-actiecodes:',
+  'cart.availableCodes': 'Beschikbare actiecodes:',
   'cart.clickToApply': 'Klik om {code} toe te passen ({desc})',
   'cart.proceedCheckout': 'Doorgaan naar afrekenen',
   'cart.secureCheckoutBadge': '256-bits SSL-beveiligde betaling',
@@ -299,7 +299,7 @@ export const nl: TranslationDictionary = {
   'checkout.processing': 'Bestelling wordt verwerkt...',
   'checkout.orderSummary': 'Besteloverzicht ({count} artikelen)',
   'checkout.discountLabel': 'Korting ({code})',
-  'checkout.shippingGuarantee': 'Gegarandeerd veilige en betrouwbare demo-betaling.',
+  'checkout.shippingGuarantee': 'Gegarandeerd veilige en betrouwbare betaling.',
 
   // Order Success Page
   'orderSuccess.noOrderTitle': 'Geen recente bestelling gevonden',
@@ -414,7 +414,9 @@ export const nl: TranslationDictionary = {
   'admin.totalOrders': 'Totaal bestellingen',
   'admin.catalogItems': 'Producten in catalogus',
   'admin.lowStockAlerts': 'Lage voorraadmeldingen',
+  'admin.quickStatPending': 'In behandeling',
   'admin.quickStatCompleted': 'Afgehandelde orders',
+  'admin.actionEdit': 'Bewerken',
   'admin.recentOrders': 'Recente bestellingen',
   'admin.viewAllOrders': 'Alle bestellingen bekijken →',
   'admin.orderId': 'Bestel-ID',
@@ -496,8 +498,8 @@ export const nl: TranslationDictionary = {
   'footer.stayUpdatedDesc': 'Meld u aan voor 15% kortingscode WELCOME15 en ontvang meldingen over flash deals.',
   'footer.emailPlaceholder': 'Uw e-mailadres',
   'footer.subscribeBtn': 'Inschrijven op nieuwsbrief',
-  'footer.copyright': 'Alle rechten voorbehouden. Gebouwd als een complete, responsieve full-stack demopresentatie.',
-  'footer.acceptedPayments': 'Geaccepteerde demo-betaalmethoden:',
+  'footer.copyright': 'Alle rechten voorbehouden. Veilige full-stack e-commerce-platform.',
+  'footer.acceptedPayments': 'Geaccepteerde betaalmethoden:',
 
   // Toasts
   'toast.subscribedNewsletter': 'Succesvol ingeschreven op nieuwsbrief!',

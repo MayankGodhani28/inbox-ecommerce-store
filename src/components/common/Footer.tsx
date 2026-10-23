@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BrandLogo } from './BrandLogo';
 import { useToast } from '../../context/ToastContext';
 import { useTranslation } from '../../context/LanguageContext';
+import { apiClient } from '../../services/apiClient';
 import { Mail, Phone, MapPin, ShieldCheck, Truck, RotateCcw, Headphones, Send } from 'lucide-react';
 
 interface FooterProps {
@@ -12,18 +13,34 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   const { showToast } = useToast();
   const { t, tCategory } = useTranslation();
   const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [isSubscribing, setIsSubscribing] = useState(false);
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newsletterEmail || !newsletterEmail.includes('@')) {
       showToast(t('toast.validEmailRequired'), { type: 'error' });
       return;
     }
-    showToast(t('toast.subscribedNewsletter'), {
-      message: t('toast.subscribedNewsletterDesc'),
-      type: 'success',
-    });
-    setNewsletterEmail('');
+
+    try {
+      setIsSubscribing(true);
+      await apiClient.post('/api/newsletter/subscribe', {
+        email: newsletterEmail.trim(),
+      });
+
+      showToast(t('toast.subscribedNewsletter'), {
+        message: t('toast.subscribedNewsletterDesc'),
+        type: 'success',
+      });
+      setNewsletterEmail('');
+    } catch (err: any) {
+      showToast('Subscription failed', {
+        message: err?.message || 'Unable to subscribe email at this time',
+        type: 'error',
+      });
+    } finally {
+      setIsSubscribing(false);
+    }
   };
 
   return (
@@ -131,8 +148,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('admin')} className="text-blue-400 hover:text-blue-300 font-semibold cursor-pointer">
-                  {t('nav.adminDashboardDemo')}
+                <button onClick={() => onNavigate('sell')} className="hover:text-white transition-colors cursor-pointer">
+                  Sell on inBox
+                </button>
+              </li>
+              <li>
+                <button onClick={() => onNavigate('admin')} className="text-slate-500 hover:text-slate-300 transition-colors text-[11px] cursor-pointer">
+                  Merchant Portal
                 </button>
               </li>
             </ul>
@@ -192,10 +214,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               />
               <button
                 type="submit"
-                className="w-full py-2.5 px-4 bg-[#E84A27] hover:bg-[#d63f1f] text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                disabled={isSubscribing}
+                className="w-full py-2.5 px-4 bg-[#E84A27] hover:bg-[#d63f1f] disabled:opacity-60 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
               >
                 <Send className="w-3.5 h-3.5" />
-                {t('footer.subscribeBtn')}
+                {isSubscribing ? 'Subscribing...' : t('footer.subscribeBtn')}
               </button>
             </form>
           </div>
@@ -212,9 +235,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <span className="text-slate-400 font-semibold">{t('footer.acceptedPayments')}</span>
             <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-semibold">Visa</span>
             <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-semibold">Mastercard</span>
-            <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-semibold">UPI</span>
-            <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-semibold">Paytm / GPay</span>
-            <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-semibold">COD</span>
+            <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-semibold">Amex</span>
+            <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-semibold">Cash on Delivery</span>
           </div>
         </div>
       </div>
