@@ -1361,7 +1361,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         <header className="h-14 bg-white border-b border-[#E1E3E5] px-6 flex items-center justify-between gap-4 sticky top-0 z-20 shadow-xs">
           {/* Breadcrumb / Title */}
           <div className="flex items-center gap-3">
-            <div className="lg:hidden flex items-center gap-2">
+            <div className="flex lg:hidden items-center gap-2">
               <div onClick={() => onNavigate('home')} className="cursor-pointer">
                 <BrandLogo size="sm" />
               </div>
@@ -1426,7 +1426,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         </header>
 
         {/* Mobile Navigation Bar */}
-        <div className="lg:hidden flex items-center gap-1 px-3 py-2 bg-[#1A1A1A] border-b border-[#2C2C2C] overflow-x-auto text-white">
+        <div className="flex lg:hidden items-center gap-1 px-3 py-2 bg-[#1A1A1A] border-b border-[#2C2C2C] overflow-x-auto text-white">
           {[
             { id: 'overview', label: 'Home', icon: Home },
             { id: 'orders', label: `Orders (${orders.length})`, icon: ShoppingCart },

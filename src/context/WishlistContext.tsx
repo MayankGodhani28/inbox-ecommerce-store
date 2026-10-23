@@ -32,7 +32,9 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     try {
       const stored = localStorage.getItem(WISHLIST_STORAGE_KEY);
       if (stored) return JSON.parse(stored);
-    } catch {}
+    } catch (_err) {
+      /* ignore invalid storage format */
+    }
     return [];
   });
 
@@ -112,13 +114,14 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         type: 'info',
       });
       setWishlist((prev) => prev.filter((item) => item.id !== product.id));
-    } else {
-      showToast(t('toast.savedToWishlist'), {
-        message: t('toast.savedToWishlistDesc', { name: product.name }),
-        type: 'success',
-      });
-      setWishlist((prev) => [...prev, product]);
+      return;
     }
+
+    showToast(t('toast.savedToWishlist'), {
+      message: t('toast.savedToWishlistDesc', { name: product.name }),
+      type: 'success',
+    });
+    setWishlist((prev) => [...prev, product]);
   };
 
   const removeFromWishlist = async (productId: string): Promise<void> => {
