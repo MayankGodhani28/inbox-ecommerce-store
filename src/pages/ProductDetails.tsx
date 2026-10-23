@@ -64,34 +64,18 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
 
   // Fetch product and its dynamic reviews
   useEffect(() => {
-    let isMounted = true;
-    async function loadData() {
-      try {
-        const found = await productService.getProductById(productId);
-        if (isMounted && found) {
-          setProduct(found);
-          setSelectedImageIndex(0);
-          setQuantity(1);
-          if (found.colors && found.colors.length > 0) setSelectedColor(found.colors[0]);
-          if (found.sizes && found.sizes.length > 0) setSelectedSize(found.sizes[0]);
-        }
-      } catch (err) {
-        console.error('Failed to load product details:', err);
+    productService.getProductById(productId).then((found) => {
+      if (found) {
+        setProduct(found);
+        setSelectedImageIndex(0);
+        setQuantity(1);
+        if (found.colors && found.colors.length > 0) setSelectedColor(found.colors[0]);
+        if (found.sizes && found.sizes.length > 0) setSelectedSize(found.sizes[0]);
       }
-
-      try {
-        const revs = await productService.getReviewsForProduct(productId);
-        if (isMounted) {
-          setReviews(revs);
-        }
-      } catch (err) {
-        console.error('Failed to load product reviews:', err);
-      }
-    }
-    loadData();
-    return () => {
-      isMounted = false;
-    };
+    });
+    productService.getReviewsForProduct(productId).then((revs) => {
+      setReviews(revs);
+    });
   }, [productId]);
 
   if (!product) {

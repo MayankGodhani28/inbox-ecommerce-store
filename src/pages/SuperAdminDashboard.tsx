@@ -64,7 +64,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
   const [isLoading, setIsLoading] = useState(true);
 
   // Filters & Search
-  const [appFilter, setAppFilter] = useState<'ALL' | 'PENDING' | 'APPROVED' | 'REJECTED' | 'SUSPENDED'>('PENDING');
+  const [appFilter, setAppFilter] = useState<'ALL' | 'PENDING' | 'APPROVED' | 'REJECTED'>('PENDING');
   const [searchTerm, setSearchTerm] = useState('');
 
   // Rejection modal
@@ -339,8 +339,8 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
       !searchTerm ||
       app.storeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       app.legalName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      Boolean(app.taxId?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      Boolean(app.user?.email && app.user.email.toLowerCase().includes(searchTerm.toLowerCase()));
+      app.taxId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (app.user?.email && app.user.email.toLowerCase().includes(searchTerm.toLowerCase()));
     return matchStatus && matchSearch;
   });
 

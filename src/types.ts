@@ -149,7 +149,6 @@ export interface User {
 export interface SellerApplication {
   id: string;
   userId?: string | null;
-  user?: { id: string; email: string; name: string } | null;
   storeName: string;
   legalName: string;
   email: string;
@@ -160,9 +159,6 @@ export interface SellerApplication {
   description?: string | null;
   status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'SUSPENDED';
   rejectionReason?: string | null;
-  reviewNotes?: string | null;
-  reviewedAt?: string | null;
-  reviewedBy?: string | null;
   createdAt: string;
 }
 

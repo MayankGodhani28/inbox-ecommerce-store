@@ -222,7 +222,7 @@ export const Cart: React.FC<CartProps> = ({ onNavigate, onSelectProduct }) => {
                     {/* Total item price */}
                     <div className="text-right min-w-[70px]">
                       <div className="text-sm font-black text-slate-900">
-                        ${((item.product?.price || 0) * Math.max(0, Math.floor(Number(item.quantity) || 0))).toFixed(2)}
+                        ${(item.product.price * item.quantity).toFixed(2)}
                       </div>
                       <div className="text-[11px] text-slate-400">
                         ${item.product.price.toFixed(2)} each
@@ -316,7 +316,7 @@ export const Cart: React.FC<CartProps> = ({ onNavigate, onSelectProduct }) => {
         <div className="lg:col-span-4 flex flex-col gap-6 sticky top-24">
           {/* Coupon Code Box */}
           <div className="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs">
-            <label className="text-xs font-bold text-slate-900 mb-2 flex items-center gap-1.5">
+            <label className="text-xs font-bold text-slate-900 block mb-2 flex items-center gap-1.5">
               <Tag className="w-3.5 h-3.5 text-orange-600" />
               {t('cart.haveCoupon')}
             </label>

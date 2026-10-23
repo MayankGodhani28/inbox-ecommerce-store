@@ -129,9 +129,7 @@ export const Login: React.FC<LoginProps> = ({ onNavigate, redirectTarget }) => {
         if (!email.trim()) {
           throw new Error('Please enter your email to receive recovery instructions.');
         }
-        await new Promise<void>((resolve) => {
-          setTimeout(resolve, 600);
-        });
+        await new Promise((resolve) => setTimeout(resolve, 600));
         setForgotSuccess(true);
       }
     } catch (err: any) {

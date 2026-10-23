@@ -241,7 +241,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
       {/* Mobile Drawer */}
       {isOpenMobile && (
-        <div className="fixed inset-0 z-50 flex lg:hidden">
+        <div className="fixed inset-0 z-50 lg:hidden flex">
           <div
             className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity"
             onClick={onCloseMobile}

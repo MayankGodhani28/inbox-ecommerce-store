@@ -13,7 +13,7 @@ import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-  plugins: [react() as any],
+  plugins: [react()],
 
   test: {
     // Use jsdom to simulate browser environment for React components
@@ -46,6 +46,6 @@ export default defineConfig({
     },
 
     // Friendly reporter so test output is easy to read
-    reporters: ['verbose'],
+    reporter: 'verbose',
   },
 });

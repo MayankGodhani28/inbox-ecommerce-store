@@ -19,30 +19,30 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>(() => {
+  const [language, setLanguageState] = useState<Language>(() => {
     try {
       const stored = localStorage.getItem(LANGUAGE_STORAGE_KEY) as Language;
       if (stored === 'en' || stored === 'de' || stored === 'nl') {
         return stored;
       }
-    } catch (_err) {
+    } catch {
       // ignore
     }
     return 'en';
   });
 
-  const handleSetLanguage = useCallback((lang: Language) => {
+  const setLanguage = useCallback((lang: Language) => {
     if (lang === 'en' || lang === 'de' || lang === 'nl') {
-      setLanguage(lang);
+      setLanguageState(lang);
       try {
         localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
-      } catch (_err) {
+      } catch {
         // ignore
       }
       // Update HTML lang attribute
       document.documentElement.lang = lang;
     }
-  }, [setLanguage]);
+  }, []);
 
   useEffect(() => {
     document.documentElement.lang = language;
@@ -55,7 +55,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
       if (params) {
         Object.entries(params).forEach(([paramKey, paramVal]) => {
-          text = text.replaceAll(`{${paramKey}}`, String(paramVal));
+          text = text.replace(new RegExp(`\\{${paramKey}\\}`, 'g'), String(paramVal));
         });
       }
       return text;
@@ -115,7 +115,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     <LanguageContext.Provider
       value={{
         language,
-        setLanguage: handleSetLanguage,
+        setLanguage,
         currentLanguageOption,
         languages: AVAILABLE_LANGUAGES,
         t,

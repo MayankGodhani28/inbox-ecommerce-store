@@ -122,7 +122,7 @@ export const OrderSuccess: React.FC<OrderSuccessProps> = ({ order: initialOrder,
                   </div>
                 </div>
                 <span className="font-extrabold text-slate-900">
-                  ${((it.price || 0) * Math.max(0, Math.floor(Number(it.quantity) || 0))).toFixed(2)}
+                  ${(it.price * it.quantity).toFixed(2)}
                 </span>
               </div>
             ))}

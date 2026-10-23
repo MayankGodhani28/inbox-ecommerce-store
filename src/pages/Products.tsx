@@ -267,7 +267,7 @@ export const Products: React.FC<ProductsProps> = ({
           {/* Mobile Filter Toggle */}
           <button
             onClick={() => setMobileFilterOpen(true)}
-            className="flex lg:hidden items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-bold shadow-xs hover:bg-slate-50 shrink-0 cursor-pointer"
+            className="lg:hidden flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-bold shadow-xs hover:bg-slate-50 shrink-0 cursor-pointer"
           >
             <SlidersHorizontal className="w-4 h-4 text-orange-600" />
             <span>{t('catalog.filtersButton')}</span>

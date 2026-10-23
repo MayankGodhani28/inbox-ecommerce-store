@@ -64,9 +64,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           throw new Error('Please enter your email to receive recovery instructions.');
         }
         // Simulate password reset link
-        await new Promise<void>((resolve) => {
-          setTimeout(resolve, 600);
-        });
+        await new Promise((resolve) => setTimeout(resolve, 600));
         setForgotSuccess(true);
       }
     } catch (err: any) {

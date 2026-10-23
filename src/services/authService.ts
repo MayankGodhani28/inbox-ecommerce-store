@@ -5,7 +5,7 @@ import { apiClient } from './apiClient';
 try {
   localStorage.removeItem('inbox_auth_user_v1');
   localStorage.removeItem('inbox_all_users_v1');
-} catch (_err) {
+} catch {
   // localStorage might be unavailable or restricted
 }
 
@@ -14,7 +14,7 @@ export const authService = {
     try {
       const data = await apiClient.get<{ user: User }>('/api/auth/me');
       return data?.user || null;
-    } catch (_err) {
+    } catch {
       return null;
     }
   },

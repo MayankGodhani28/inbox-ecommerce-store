@@ -144,9 +144,9 @@ describe('REGRESSION #003: Admin status update reads correct field from request 
 //  Test: Products must be invisible after seller suspension
 // ═══════════════════════════════════════════════════════
 
-function getVisibleProducts<T extends { isArchived: boolean }>(
-  products: T[],
-): T[] {
+function getVisibleProducts(
+  products: Array<{ id: string; isArchived: boolean }>,
+): Array<{ id: string; isArchived: boolean }> {
   // Customer storefront only shows non-archived products
   return products.filter((p) => !p.isArchived);
 }
