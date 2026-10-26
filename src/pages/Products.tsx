@@ -253,13 +253,13 @@ export const Products: React.FC<ProductsProps> = ({
               placeholder={t('catalog.searchPlaceholder')}
               className="w-full pl-9 pr-8 py-2 text-xs rounded-xl bg-white border border-slate-200 focus:outline-none focus:border-orange-500 shadow-xs"
             />
-            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-3" />
+            <Search className="size-3.5 text-slate-400 absolute left-3 top-3" />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
                 className="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600 cursor-pointer"
               >
-                <X className="w-3.5 h-3.5" />
+                <X className="size-3.5" />
               </button>
             )}
           </div>
@@ -269,7 +269,7 @@ export const Products: React.FC<ProductsProps> = ({
             onClick={() => setMobileFilterOpen(true)}
             className="lg:hidden flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-bold shadow-xs hover:bg-slate-50 shrink-0 cursor-pointer"
           >
-            <SlidersHorizontal className="w-4 h-4 text-orange-600" />
+            <SlidersHorizontal className="size-4 text-orange-600" />
             <span>{t('catalog.filtersButton')}</span>
           </button>
         </div>
@@ -307,7 +307,7 @@ export const Products: React.FC<ProductsProps> = ({
                 }`}
                 title="Grid View"
               >
-                <Grid className="w-4 h-4" />
+                <Grid className="size-4" />
               </button>
               <button
                 onClick={() => setViewMode('list')}
@@ -318,14 +318,14 @@ export const Products: React.FC<ProductsProps> = ({
                 }`}
                 title="List View"
               >
-                <List className="w-4 h-4" />
+                <List className="size-4" />
               </button>
             </div>
 
             {/* Sort Dropdown */}
             <div className="flex items-center gap-2 text-xs">
-              <span className="text-slate-400 font-semibold hidden sm:inline flex items-center gap-1">
-                <ArrowUpDown className="w-3.5 h-3.5" /> {t('catalog.sortBy')}
+              <span className="text-slate-400 font-semibold hidden sm:inline-flex items-center gap-1">
+                <ArrowUpDown className="size-3.5" /> {t('catalog.sortBy')}
               </span>
               <select
                 value={sortBy}
@@ -356,7 +356,7 @@ export const Products: React.FC<ProductsProps> = ({
                 <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-orange-50 text-orange-700 font-semibold text-[11px] border border-orange-200">
                   {t('catalog.searchFilter', { query: searchQuery })}
                   <button onClick={() => setSearchQuery('')} className="hover:text-orange-900 cursor-pointer">
-                    <X className="w-3 h-3" />
+                    <X className="size-3" />
                   </button>
                 </span>
               )}
@@ -368,7 +368,7 @@ export const Products: React.FC<ProductsProps> = ({
                     onClick={() => setFilters({ ...filters, category: '' })}
                     className="hover:text-slate-900 cursor-pointer"
                   >
-                    <X className="w-3 h-3" />
+                    <X className="size-3" />
                   </button>
                 </span>
               )}
@@ -388,7 +388,7 @@ export const Products: React.FC<ProductsProps> = ({
                     }
                     className="hover:text-slate-900 cursor-pointer"
                   >
-                    <X className="w-3 h-3" />
+                    <X className="size-3" />
                   </button>
                 </span>
               ))}
@@ -400,7 +400,7 @@ export const Products: React.FC<ProductsProps> = ({
                     onClick={() => setFilters({ ...filters, discountMin: 0 })}
                     className="hover:text-red-900 cursor-pointer"
                   >
-                    <X className="w-3 h-3" />
+                    <X className="size-3" />
                   </button>
                 </span>
               )}
@@ -417,8 +417,8 @@ export const Products: React.FC<ProductsProps> = ({
           {/* Products Render Grid / List */}
           {paginatedProducts.length === 0 ? (
             <div className="p-12 text-center bg-white rounded-3xl border border-slate-200 shadow-xs">
-              <div className="w-16 h-16 bg-orange-50 text-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Search className="w-8 h-8" />
+              <div className="size-16 bg-orange-50 text-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Search className="size-8" />
               </div>
               <h3 className="text-base font-bold text-slate-800">{t('catalog.noProductsFound')}</h3>
               <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
@@ -471,14 +471,14 @@ export const Products: React.FC<ProductsProps> = ({
                   className="p-2 rounded-xl border border-slate-200 text-slate-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-50 cursor-pointer"
                   title={t('catalog.previous')}
                 >
-                  <ChevronLeft className="w-4 h-4" />
+                  <ChevronLeft className="size-4" />
                 </button>
 
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                   <button
                     key={page}
                     onClick={() => setCurrentPage(page)}
-                    className={`w-8 h-8 rounded-xl font-bold text-xs transition-colors cursor-pointer ${
+                    className={`size-8 rounded-xl font-bold text-xs transition-colors cursor-pointer ${
                       currentPage === page
                         ? 'bg-[#E84A27] text-white shadow-xs'
                         : 'border border-slate-200 text-slate-600 hover:bg-slate-50'
@@ -494,7 +494,7 @@ export const Products: React.FC<ProductsProps> = ({
                   className="p-2 rounded-xl border border-slate-200 text-slate-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-50 cursor-pointer"
                   title={t('catalog.next')}
                 >
-                  <ChevronRight className="w-4 h-4" />
+                  <ChevronRight className="size-4" />
                 </button>
               </div>
             </div>
@@ -512,7 +512,7 @@ export const Products: React.FC<ProductsProps> = ({
                 onClick={() => setMobileFilterOpen(false)}
                 className="p-1 rounded-lg text-slate-400 hover:text-slate-600 cursor-pointer"
               >
-                <X className="w-5 h-5" />
+                <X className="size-5" />
               </button>
             </div>
 

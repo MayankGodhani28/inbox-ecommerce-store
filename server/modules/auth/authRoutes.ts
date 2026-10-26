@@ -34,7 +34,7 @@ function checkRateLimit(key: string): { allowed: boolean; remainingSec: number }
     return { allowed: false, remainingSec: Math.ceil((record.resetAt - now) / 1000) };
   }
 
-  record.count++;
+  record.count += 1;
   return { allowed: true, remainingSec: 0 };
 }
 
@@ -89,9 +89,9 @@ authRouter.post('/register', csrfProtection, async (req: Request, res: Response)
     return;
   }
 
-  if (!password || typeof password !== 'string' || password.length < 8) {
+  if (!password || typeof password !== 'string' || (password.length < 8 || Buffer.byteLength(password, 'utf8') > 72)) {
     res.status(400).json({
-      error: { code: 'WEAK_PASSWORD', message: 'Password must be at least 8 characters long', requestId },
+      error: { code: 'WEAK_PASSWORD', message: 'Password must be at least 8 characters and at most 72 UTF-8 bytes', requestId },
     });
     return;
   }

@@ -48,6 +48,7 @@ config:
     timeout: 10             # requests that take >10s are considered failed
     defaults:
       headers:
+        X-Requested-With: XMLHttpRequest
         Content-Type: "application/json"
         Accept: "application/json"
 

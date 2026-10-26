@@ -47,37 +47,37 @@ export const Login: React.FC<LoginProps> = ({ onNavigate, redirectTarget }) => {
     switch (cleanTarget) {
       case 'checkout':
         return {
-          icon: <ShoppingBag className="w-4 h-4 text-orange-600" />,
+          icon: <ShoppingBag className="size-4 text-orange-600" />,
           title: 'Checkout Authentication Required',
           message: 'Please sign in or create an account to finalize and place your order.',
         };
       case 'admin':
         return {
-          icon: <ShieldCheck className="w-4 h-4 text-emerald-600" />,
+          icon: <ShieldCheck className="size-4 text-emerald-600" />,
           title: 'Store Admin Access Required',
           message: 'Please sign in with authorized store administrator credentials.',
         };
       case 'order-tracking':
         return {
-          icon: <Truck className="w-4 h-4 text-indigo-600" />,
+          icon: <Truck className="size-4 text-indigo-600" />,
           title: 'Private Order Tracking',
           message: 'Sign in to access your package checkpoints and live delivery dispatch info.',
         };
       case 'orders':
         return {
-          icon: <ShoppingBag className="w-4 h-4 text-blue-600" />,
+          icon: <ShoppingBag className="size-4 text-blue-600" />,
           title: 'Order History Scoped to Your Account',
           message: 'Sign in to review your past orders, tracking IDs, and download tax invoices.',
         };
       case 'profile':
         return {
-          icon: <UserIcon className="w-4 h-4 text-purple-600" />,
+          icon: <UserIcon className="size-4 text-purple-600" />,
           title: 'Account Settings',
           message: 'Sign in to update your shipping addresses, contact details, and preferences.',
         };
       default:
         return {
-          icon: <KeyRound className="w-4 h-4 text-slate-600" />,
+          icon: <KeyRound className="size-4 text-slate-600" />,
           title: 'Authentication Required',
           message: 'Please sign in to proceed with your requested action.',
         };
@@ -157,7 +157,7 @@ export const Login: React.FC<LoginProps> = ({ onNavigate, redirectTarget }) => {
           onClick={() => (redirectTarget ? onNavigate(redirectTarget.split(':')[0]) : onNavigate('home'))}
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 transition-colors cursor-pointer"
         >
-          <ArrowLeft className="w-3.5 h-3.5" />
+          <ArrowLeft className="size-3.5" />
           <span>{redirectTarget ? 'Back to previous page' : 'Return to Store'}</span>
         </button>
 
@@ -206,7 +206,7 @@ export const Login: React.FC<LoginProps> = ({ onNavigate, redirectTarget }) => {
             <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200/60">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1">
-                  <Sparkles className="w-3 h-3 text-orange-500" /> Quick Demo Sign-In
+                  <Sparkles className="size-3 text-orange-500" /> Quick Demo Sign-In
                 </span>
                 <span className="text-[10px] text-slate-400">1-Click Fill</span>
               </div>
@@ -269,15 +269,15 @@ export const Login: React.FC<LoginProps> = ({ onNavigate, redirectTarget }) => {
           <div className="p-6">
             {errorMsg && (
               <div className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-rose-600 shrink-0" />
+                <span className="size-1.5 rounded-full bg-rose-600 shrink-0" />
                 <span className="flex-1">{errorMsg}</span>
               </div>
             )}
 
             {forgotSuccess ? (
               <div className="text-center py-6">
-                <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <CheckCircle2 className="w-6 h-6" />
+                <div className="size-12 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <CheckCircle2 className="size-6" />
                 </div>
                 <h3 className="text-sm font-bold text-slate-800">Check your inbox</h3>
                 <p className="text-xs text-slate-500 mt-1 max-w-xs mx-auto">
@@ -310,7 +310,7 @@ export const Login: React.FC<LoginProps> = ({ onNavigate, redirectTarget }) => {
                           placeholder="e.g. Mayank Godhani"
                           className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-[#E84A27] focus:bg-white transition-colors"
                         />
-                        <UserIcon className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                        <UserIcon className="size-4 text-slate-400 absolute left-3 top-3" />
                       </div>
                     </div>
 
@@ -324,7 +324,7 @@ export const Login: React.FC<LoginProps> = ({ onNavigate, redirectTarget }) => {
                           placeholder="e.g. +91 98765 43210"
                           className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-[#E84A27] focus:bg-white transition-colors"
                         />
-                        <Phone className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                        <Phone className="size-4 text-slate-400 absolute left-3 top-3" />
                       </div>
                     </div>
                   </>
@@ -342,7 +342,7 @@ export const Login: React.FC<LoginProps> = ({ onNavigate, redirectTarget }) => {
                       placeholder="you@example.com"
                       className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-[#E84A27] focus:bg-white transition-colors"
                     />
-                    <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                    <Mail className="size-4 text-slate-400 absolute left-3 top-3" />
                   </div>
                 </div>
 
@@ -370,13 +370,13 @@ export const Login: React.FC<LoginProps> = ({ onNavigate, redirectTarget }) => {
                         placeholder="••••••••"
                         className="w-full pl-9 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-[#E84A27] focus:bg-white transition-colors"
                       />
-                      <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                      <Lock className="size-4 text-slate-400 absolute left-3 top-3" />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 cursor-pointer"
                       >
-                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                       </button>
                     </div>
                   </div>
@@ -397,7 +397,7 @@ export const Login: React.FC<LoginProps> = ({ onNavigate, redirectTarget }) => {
                         {mode === 'register' && 'Create Account & Continue'}
                         {mode === 'forgot' && 'Send Recovery Instructions'}
                       </span>
-                      <ArrowRight className="w-4 h-4" />
+                      <ArrowRight className="size-4" />
                     </>
                   )}
                 </button>

@@ -1,3 +1,4 @@
+import { formatCatalogProduct as formatProduct } from '../../utils/productSerializer.js';
 import { Router, Request, Response } from 'express';
 import { prisma } from '../../db/prisma.js';
 import { optionalAuth, requireAuth, AuthenticatedRequest } from '../../middleware/auth.js';
@@ -5,31 +6,7 @@ import { Prisma } from '@prisma/client';
 
 export const catalogRouter = Router();
 
-function formatProduct(p: any) {
-  return {
-    id: p.id,
-    name: p.name,
-    brand: p.brand,
-    category: p.category,
-    description: p.description,
-    price: p.price / 100,
-    originalPrice: p.originalPrice / 100,
-    discount: p.discount,
-    rating: p.rating,
-    reviewCount: p.reviewCount,
-    stock: p.stock,
-    images: Array.isArray(p.images) ? p.images : [],
-    colors: Array.isArray(p.colors) ? p.colors : [],
-    sizes: Array.isArray(p.sizes) ? p.sizes : [],
-    specifications: typeof p.specifications === 'object' && p.specifications !== null ? p.specifications : {},
-    isTrending: p.isTrending,
-    isBestSeller: p.isBestSeller,
-    isNewArrival: p.isNewArrival,
-    isDealOfDay: p.isDealOfDay,
-    isArchived: p.isArchived,
-    createdAt: p.createdAt.toISOString(),
-  };
-}
+
 
 // GET /api/products - Search, filter, sort, paginate
 catalogRouter.get('/', optionalAuth, async (req: AuthenticatedRequest, res: Response): Promise<void> => {
@@ -195,7 +172,7 @@ catalogRouter.post('/:id/reviews', requireAuth, async (req: AuthenticatedRequest
       OR: [{ paymentStatus: 'Paid' }, { status: 'Delivered' }],
     },
   });
-  const verifiedPurchase = !!orderWithItem;
+  const verifiedPurchase = Boolean(orderWithItem);
 
   const sanitizedTitle = typeof title === 'string' ? title.trim().slice(0, 120) : '';
   const sanitizedComment = comment.trim().slice(0, 2000);

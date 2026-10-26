@@ -35,11 +35,13 @@ export const Orders: React.FC<OrdersProps> = ({ onNavigate, onSelectProduct }) =
 
   useEffect(() => {
     let isMounted = true;
+    setOrders([]);
+    if (!user) return;
     orderService.getOrders().then((data) => {
       if (isMounted) {
         setOrders(data);
       }
-    });
+    }).catch((error) => { console.error('Could not load orders:', error); });
     return () => {
       isMounted = false;
     };
@@ -61,8 +63,8 @@ export const Orders: React.FC<OrdersProps> = ({ onNavigate, onSelectProduct }) =
   if (!user) {
     return (
       <div className="max-w-xl mx-auto px-4 py-16 text-center">
-        <div className="w-16 h-16 bg-orange-50 text-[#E84A27] rounded-full flex items-center justify-center mx-auto mb-4">
-          <Package className="w-8 h-8" />
+        <div className="size-16 bg-orange-50 text-[#E84A27] rounded-full flex items-center justify-center mx-auto mb-4">
+          <Package className="size-8" />
         </div>
         <h2 className="text-xl font-bold text-slate-900">Sign in to view orders</h2>
         <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
@@ -91,7 +93,7 @@ export const Orders: React.FC<OrdersProps> = ({ onNavigate, onSelectProduct }) =
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 mb-6">
         <button onClick={() => onNavigate('home')} className="hover:text-slate-700 cursor-pointer">{t('orders.breadcrumbHome')}</button>
-        <ChevronRight className="w-3 h-3" />
+        <ChevronRight className="size-3" />
         <span className="text-slate-800">{t('orders.breadcrumbOrders')}</span>
       </div>
 
@@ -113,7 +115,7 @@ export const Orders: React.FC<OrdersProps> = ({ onNavigate, onSelectProduct }) =
             placeholder={t('orders.searchPlaceholder')}
             className="pl-8 pr-3 py-1.5 text-xs bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-orange-500 shadow-xs"
           />
-          <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
+          <Search className="size-3.5 text-slate-400 absolute left-2.5 top-2.5" />
         </div>
       </div>
 
@@ -141,7 +143,7 @@ export const Orders: React.FC<OrdersProps> = ({ onNavigate, onSelectProduct }) =
       {/* Orders List */}
       {filteredOrders.length === 0 ? (
         <div className="p-12 text-center bg-white rounded-3xl border border-slate-200 shadow-xs">
-          <Package className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+          <Package className="size-12 text-slate-300 mx-auto mb-3" />
           <h3 className="text-base font-bold text-slate-800">{t('orders.noOrdersTitle')}</h3>
           <p className="text-xs text-slate-500 mt-1">
             {searchOrderId ? t('orders.noOrdersSearch') : t('orders.noOrdersSection')}
@@ -194,7 +196,7 @@ export const Orders: React.FC<OrdersProps> = ({ onNavigate, onSelectProduct }) =
                         src={it.image}
                         alt={it.name}
                         onClick={() => onSelectProduct(it.productId)}
-                        className="w-14 h-14 object-cover rounded-xl border border-slate-200 shrink-0 cursor-pointer hover:opacity-90"
+                        className="size-14 object-cover rounded-xl border border-slate-200 shrink-0 cursor-pointer hover:opacity-90"
                       />
                       <div>
                         <h4
@@ -219,7 +221,7 @@ export const Orders: React.FC<OrdersProps> = ({ onNavigate, onSelectProduct }) =
                     onClick={() => onNavigate('order-tracking', order.id)}
                     className="flex-1 sm:flex-none px-4 py-2 bg-[#E84A27] hover:bg-[#d63f1f] text-white text-xs font-bold rounded-xl shadow-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                   >
-                    <Truck className="w-3.5 h-3.5" />
+                    <Truck className="size-3.5" />
                     {t('orders.trackPackage')}
                   </button>
 
@@ -227,7 +229,7 @@ export const Orders: React.FC<OrdersProps> = ({ onNavigate, onSelectProduct }) =
                     onClick={() => onNavigate('order-success', order.id)}
                     className="flex-1 sm:flex-none px-4 py-2 border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold rounded-xl flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                   >
-                    <Printer className="w-3.5 h-3.5" />
+                    <Printer className="size-3.5" />
                     {t('orderSuccess.printInvoice')}
                   </button>
                 </div>

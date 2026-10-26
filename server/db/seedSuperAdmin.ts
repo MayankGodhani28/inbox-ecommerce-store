@@ -2,12 +2,17 @@ import { prisma } from './prisma.js';
 import bcrypt from 'bcryptjs';
 
 async function setup() {
-  const passwordHash = await bcrypt.hash('SuperAdmin2026!', 10);
+  const email = process.env.SUPER_ADMIN_EMAIL?.trim().toLowerCase();
+  const password = process.env.SUPER_ADMIN_PASSWORD;
+  if (!email || !password || password.length < 12 || Buffer.byteLength(password, 'utf8') > 72) {
+    throw new Error('Set SUPER_ADMIN_EMAIL and a unique SUPER_ADMIN_PASSWORD (12 characters minimum, 72 UTF-8 bytes maximum)');
+  }
+  const passwordHash = await bcrypt.hash(password, 12);
   const superAdmin = await prisma.user.upsert({
-    where: { email: 'superadmin@inbox.com' },
+    where: { email },
     update: { role: 'SUPER_ADMIN', name: 'Executive Super Admin' },
     create: {
-      email: 'superadmin@inbox.com',
+      email,
       name: 'Executive Super Admin',
       passwordHash,
       role: 'SUPER_ADMIN',
@@ -65,6 +70,7 @@ async function setup() {
     await setup();
   } catch (err) {
     console.error('Setup error:', err);
+    process.exitCode = 1;
   } finally {
     await prisma.$disconnect();
   }

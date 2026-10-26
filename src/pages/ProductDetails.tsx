@@ -62,20 +62,31 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [reviews, setReviews] = useState<ProductReview[]>([]);
 
-  // Fetch product and its dynamic reviews
   useEffect(() => {
-    productService.getProductById(productId).then((found) => {
-      if (found) {
-        setProduct(found);
+    let active = true;
+    setProduct(null);
+    setReviews([]);
+    setSelectedColor(undefined);
+    setSelectedSize(undefined);
+    const load = async () => {
+      try {
+        const [found, revs] = await Promise.all([
+          productService.getProductById(productId),
+          productService.getReviewsForProduct(productId),
+        ]);
+        if (!active) return;
+        setProduct(found || null);
+        setReviews(revs);
         setSelectedImageIndex(0);
         setQuantity(1);
-        if (found.colors && found.colors.length > 0) setSelectedColor(found.colors[0]);
-        if (found.sizes && found.sizes.length > 0) setSelectedSize(found.sizes[0]);
+        setSelectedColor(found?.colors?.[0]);
+        setSelectedSize(found?.sizes?.[0]);
+      } catch (error) {
+        if (active) console.error('Could not load product details:', error);
       }
-    });
-    productService.getReviewsForProduct(productId).then((revs) => {
-      setReviews(revs);
-    });
+    };
+    void load();
+    return () => { active = false; };
   }, [productId]);
 
   if (!product) {
@@ -177,11 +188,11 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 mb-6 flex-wrap">
         <button onClick={() => onNavigate('home')} className="hover:text-slate-700 cursor-pointer">{t('catalog.breadcrumbHome')}</button>
-        <ChevronRight className="w-3 h-3" />
+        <ChevronRight className="size-3" />
         <button onClick={() => onNavigate('products', product.category)} className="hover:text-slate-700 cursor-pointer">
           {tCategory(product.category)}
         </button>
-        <ChevronRight className="w-3 h-3" />
+        <ChevronRight className="size-3" />
         <span className="text-slate-800 line-clamp-1">{product.name}</span>
       </div>
 
@@ -194,7 +205,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
             <img
               src={product.images[selectedImageIndex] || product.images[0]}
               alt={product.name}
-              className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+              className="size-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
             />
 
             {/* Badges */}
@@ -222,7 +233,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
                 }`}
                 title={inWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
               >
-                <Heart className={`w-4 h-4 ${inWishlist ? 'fill-current' : ''}`} />
+                <Heart className={`size-4 ${inWishlist ? 'fill-current' : ''}`} />
               </button>
 
               <button
@@ -230,7 +241,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
                 className="p-2.5 rounded-full bg-white/90 text-slate-600 hover:text-slate-900 hover:bg-white backdrop-blur-md shadow-md transition-all cursor-pointer"
                 title={t('details.share')}
               >
-                <Share2 className="w-4 h-4" />
+                <Share2 className="size-4" />
               </button>
             </div>
           </div>
@@ -242,13 +253,13 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
                 <button
                   key={idx}
                   onClick={() => setSelectedImageIndex(idx)}
-                  className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 transition-all shrink-0 cursor-pointer ${
+                  className={`relative size-20 rounded-xl overflow-hidden border-2 transition-all shrink-0 cursor-pointer ${
                     selectedImageIndex === idx
                       ? 'border-[#E84A27] shadow-sm ring-2 ring-orange-100'
                       : 'border-slate-200 hover:border-slate-300 opacity-75 hover:opacity-100'
                   }`}
                 >
-                  <img src={img} alt={`Thumb ${idx}`} className="w-full h-full object-cover" />
+                  <img src={img} alt={`Thumb ${idx}`} className="size-full object-cover" />
                 </button>
               ))}
             </div>
@@ -282,7 +293,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
             {/* Ratings & Reviews summary */}
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-1 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">
-                <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
+                <Star className="size-3.5 fill-amber-400 text-amber-500" />
                 <span className="text-xs font-black text-amber-900">
                   {product.reviewCount > 0 ? product.rating.toFixed(1) : '0.0'}
                 </span>
@@ -294,7 +305,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
               </span>
               <span className="text-slate-300">•</span>
               <span className="text-xs text-emerald-600 font-semibold flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5" /> {t('product.hundredGenuine')}
+                <ShieldCheck className="size-3.5" /> {t('product.hundredGenuine')}
               </span>
             </div>
 
@@ -355,7 +366,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
                     <button
                       key={s}
                       onClick={() => setSelectedSize(s)}
-                      className={`w-10 h-10 text-xs font-bold rounded-xl border flex items-center justify-center transition-all cursor-pointer ${
+                      className={`size-10 text-xs font-bold rounded-xl border flex items-center justify-center transition-all cursor-pointer ${
                         selectedSize === s
                           ? 'border-orange-500 bg-orange-50 text-orange-700 shadow-xs'
                           : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
@@ -375,7 +386,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
                 <button
                   disabled={quantity <= 1}
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="w-8 h-8 rounded-lg bg-white shadow-xs text-slate-700 hover:bg-slate-100 disabled:opacity-40 font-bold text-sm cursor-pointer"
+                  className="size-8 rounded-lg bg-white shadow-xs text-slate-700 hover:bg-slate-100 disabled:opacity-40 font-bold text-sm cursor-pointer"
                 >
                   -
                 </button>
@@ -385,7 +396,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
                 <button
                   disabled={quantity >= product.stock}
                   onClick={() => setQuantity((q) => Math.min(product.stock, q + 1))}
-                  className="w-8 h-8 rounded-lg bg-white shadow-xs text-slate-700 hover:bg-slate-100 disabled:opacity-40 font-bold text-sm cursor-pointer"
+                  className="size-8 rounded-lg bg-white shadow-xs text-slate-700 hover:bg-slate-100 disabled:opacity-40 font-bold text-sm cursor-pointer"
                 >
                   +
                 </button>
@@ -397,7 +408,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
                 onClick={handleAddToCart}
                 className="flex-1 py-3 px-5 rounded-xl bg-[#E84A27] hover:bg-[#d63f1f] text-white font-extrabold text-xs shadow-md active:scale-98 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
-                <ShoppingCart className="w-4 h-4" />
+                <ShoppingCart className="size-4" />
                 <span>{t('product.addToCart')}</span>
               </button>
 
@@ -413,8 +424,8 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
 
             {/* Pincode / Delivery Estimator */}
             <div className="mt-4 pt-4 border-t border-slate-100">
-              <label className="text-xs font-bold text-slate-700 block mb-1.5 flex items-center gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-orange-600" />
+              <label className="text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                <MapPin className="size-3.5 text-orange-600" />
                 {t('details.deliveryAvailability')}
               </label>
               <form onSubmit={handleCheckPincode} className="flex gap-2">
@@ -442,17 +453,17 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
             {/* Guarantees row */}
             <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-slate-100 text-center">
               <div className="flex flex-col items-center">
-                <Truck className="w-4 h-4 text-orange-600 mb-1" />
+                <Truck className="size-4 text-orange-600 mb-1" />
                 <span className="text-[10px] font-bold text-slate-700">{t('product.freeShippingNotice')}</span>
                 <span className="text-[9px] text-slate-400">{t('details.freeDeliveryOver')}</span>
               </div>
               <div className="flex flex-col items-center">
-                <RotateCcw className="w-4 h-4 text-orange-600 mb-1" />
+                <RotateCcw className="size-4 text-orange-600 mb-1" />
                 <span className="text-[10px] font-bold text-slate-700">{t('product.sevenDayReturn')}</span>
                 <span className="text-[9px] text-slate-400">{t('footer.easyReturnsSub')}</span>
               </div>
               <div className="flex flex-col items-center">
-                <Award className="w-4 h-4 text-orange-600 mb-1" />
+                <Award className="size-4 text-orange-600 mb-1" />
                 <span className="text-[10px] font-bold text-slate-700">{t('product.hundredGenuine')}</span>
                 <span className="text-[9px] text-slate-400">{t('footer.genuineBrandsSub')}</span>
               </div>
@@ -475,7 +486,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
           >
             {t('details.tabDesc')}
             {activeTab === 'desc' && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#E84A27]" />
+              <span className="absolute bottom-0 inset-x-0 h-0.5 bg-[#E84A27]" />
             )}
           </button>
 
@@ -489,7 +500,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
           >
             {t('details.tabSpecs')}
             {activeTab === 'specs' && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#E84A27]" />
+              <span className="absolute bottom-0 inset-x-0 h-0.5 bg-[#E84A27]" />
             )}
           </button>
 
@@ -503,7 +514,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
           >
             {t('details.tabReviews', { count: reviews.length })}
             {activeTab === 'reviews' && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#E84A27]" />
+              <span className="absolute bottom-0 inset-x-0 h-0.5 bg-[#E84A27]" />
             )}
           </button>
         </div>
@@ -515,7 +526,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
               <h3 className="text-base font-bold text-slate-900">{t('details.aboutItem')}</h3>
               <p>{product.description}</p>
               <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center gap-3">
-                <Award className="w-5 h-5 text-orange-600 shrink-0" />
+                <Award className="size-5 text-orange-600 shrink-0" />
                 <span className="text-xs text-slate-600">
                   {t('details.aboutItem')} — {product.brand}
                 </span>
@@ -647,7 +658,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
                           <span className="font-bold text-xs text-slate-900">{rev.userName}</span>
                           {rev.verifiedPurchase && (
                             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                              <Check className="w-2.5 h-2.5 text-emerald-600" />
+                              <Check className="size-2.5 text-emerald-600" />
                               Verified Purchase
                             </span>
                           )}
@@ -659,7 +670,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
                           {[...Array(5)].map((_, i) => (
                             <Star
                               key={i}
-                              className={`w-3.5 h-3.5 ${
+                              className={`size-3.5 ${
                                 i < rev.rating ? 'fill-current' : 'text-slate-200'
                               }`}
                             />
@@ -674,7 +685,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
                           onClick={() => handleMarkHelpful(rev.id)}
                           className="inline-flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-slate-900 transition-colors cursor-pointer"
                         >
-                          <ThumbsUp className="w-3.5 h-3.5" />
+                          <ThumbsUp className="size-3.5" />
                           <span>Helpful ({rev.helpfulCount || 0})</span>
                         </button>
                       </div>

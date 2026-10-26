@@ -51,7 +51,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
           className="absolute top-4 right-4 z-10 p-2 rounded-full bg-slate-100/80 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer"
           aria-label="Close"
         >
-          <X className="w-5 h-5" />
+          <X className="size-5" />
         </button>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 sm:p-8">
@@ -61,7 +61,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
               <img
                 src={product.images[selectedImageIndex] || product.images[0]}
                 alt={product.name}
-                className="w-full h-full object-cover object-center transition-all duration-300"
+                className="size-full object-cover object-center transition-all duration-300"
               />
               {product.discount > 0 && (
                 <div className="absolute top-3 left-3 bg-[#E84A27] text-white text-xs font-bold px-2.5 py-1 rounded-md shadow-sm">
@@ -77,13 +77,13 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                   <button
                     key={idx}
                     onClick={() => setSelectedImageIndex(idx)}
-                    className={`relative w-16 h-16 rounded-lg overflow-hidden border-2 shrink-0 transition-all cursor-pointer ${
+                    className={`relative size-16 rounded-lg overflow-hidden border-2 shrink-0 transition-all cursor-pointer ${
                       selectedImageIndex === idx
                         ? 'border-[#E84A27] ring-2 ring-[#E84A27]/20 scale-105'
                         : 'border-slate-200 opacity-70 hover:opacity-100'
                     }`}
                   >
-                    <img src={img} alt="Thumbnail" className="w-full h-full object-cover" />
+                    <img src={img} alt="Thumbnail" className="size-full object-cover" />
                   </button>
                 ))}
               </div>
@@ -107,7 +107,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                 <RatingStars rating={product.rating} showCount count={product.reviewCount} />
                 <span className="text-xs text-slate-400">|</span>
                 <span className="text-xs font-medium text-emerald-600 flex items-center gap-1">
-                  <Check className="w-3.5 h-3.5" /> {t('product.inStock', { count: product.stock })}
+                  <Check className="size-3.5" /> {t('product.inStock', { count: product.stock })}
                 </span>
               </div>
 
@@ -210,7 +210,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                   onClick={handleAddToCart}
                   className="flex-1 flex items-center justify-center gap-2 bg-[#E84A27] hover:bg-[#d63f1f] text-white py-3 px-6 rounded-xl font-bold shadow-md shadow-orange-500/20 active:scale-[0.99] transition-all cursor-pointer"
                 >
-                  <ShoppingBag className="w-4 h-4" />
+                  <ShoppingBag className="size-4" />
                   {t('product.addToCart')}
                 </button>
                 <button
@@ -222,7 +222,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                   }`}
                   aria-label={t('nav.savedWishlist')}
                 >
-                  <Heart className={`w-5 h-5 ${isWished ? 'fill-rose-500 text-rose-500' : ''}`} />
+                  <Heart className={`size-5 ${isWished ? 'fill-rose-500 text-rose-500' : ''}`} />
                 </button>
               </div>
 
@@ -233,22 +233,22 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                 }}
                 className="w-full flex items-center justify-center gap-2 text-xs font-semibold text-slate-600 hover:text-orange-600 py-1 transition-colors cursor-pointer"
               >
-                <Eye className="w-3.5 h-3.5" />
+                <Eye className="size-3.5" />
                 {t('product.viewFullSpecs')}
               </button>
 
               {/* Value props */}
               <div className="grid grid-cols-3 gap-2 pt-3 border-t border-slate-100 text-[11px] text-slate-500 text-center">
                 <div className="flex flex-col items-center gap-1">
-                  <Truck className="w-4 h-4 text-slate-600" />
+                  <Truck className="size-4 text-slate-600" />
                   <span>{t('product.freeShippingNotice')}</span>
                 </div>
                 <div className="flex flex-col items-center gap-1">
-                  <RotateCcw className="w-4 h-4 text-slate-600" />
+                  <RotateCcw className="size-4 text-slate-600" />
                   <span>{t('product.sevenDayReturn')}</span>
                 </div>
                 <div className="flex flex-col items-center gap-1">
-                  <ShieldCheck className="w-4 h-4 text-slate-600" />
+                  <ShieldCheck className="size-4 text-slate-600" />
                   <span>{t('product.hundredGenuine')}</span>
                 </div>
               </div>

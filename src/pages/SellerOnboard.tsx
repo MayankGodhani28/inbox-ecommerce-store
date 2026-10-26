@@ -130,14 +130,14 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
     <div className="min-h-screen bg-slate-50 text-slate-800 font-sans">
       {/* Top Hero Section (Clean Light Mode) */}
       <div className="relative border-b border-slate-200/80 bg-gradient-to-b from-orange-50/50 via-white to-slate-50 py-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-gradient-to-br from-orange-200/30 to-indigo-200/20 blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-gradient-to-tr from-indigo-200/30 to-emerald-100/20 blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-0 -mr-20 -mt-20 size-96 rounded-full bg-gradient-to-br from-orange-200/30 to-indigo-200/20 blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 size-80 rounded-full bg-gradient-to-tr from-indigo-200/30 to-emerald-100/20 blur-3xl pointer-events-none" />
 
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-10">
             <div className="max-w-2xl text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-100/80 border border-orange-200 text-[#E84A27] text-xs font-bold mb-6 shadow-xs">
-                <Sparkles className="w-4 h-4" />
+                <Sparkles className="size-4" />
                 <span>inBox Marketplace Seller Onboarding</span>
               </div>
               <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-slate-900 leading-tight">
@@ -150,8 +150,8 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
               {/* Value Props in Light Cards */}
               <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-100">
-                    <TrendingUp className="w-5 h-5" />
+                  <div className="size-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-100">
+                    <TrendingUp className="size-5" />
                   </div>
                   <div className="text-left">
                     <p className="text-xs font-bold text-slate-900">0% Setup Fee</p>
@@ -160,8 +160,8 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
                 </div>
 
                 <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
-                  <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0 border border-indigo-100">
-                    <Truck className="w-5 h-5" />
+                  <div className="size-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0 border border-indigo-100">
+                    <Truck className="size-5" />
                   </div>
                   <div className="text-left">
                     <p className="text-xs font-bold text-slate-900">Fast Logistics</p>
@@ -170,8 +170,8 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
                 </div>
 
                 <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
-                  <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 border border-amber-100">
-                    <ShieldCheck className="w-5 h-5" />
+                  <div className="size-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 border border-amber-100">
+                    <ShieldCheck className="size-5" />
                   </div>
                   <div className="text-left">
                     <p className="text-xs font-bold text-slate-900">Verified Sellers</p>
@@ -184,12 +184,12 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
             {/* Workflow Banner Graphic in Crisp Light Mode */}
             <div className="w-full lg:w-96 bg-white border border-slate-200/90 rounded-2xl p-6 shadow-md">
               <h3 className="text-xs font-extrabold uppercase tracking-wider text-indigo-700 mb-4 flex items-center gap-2">
-                <BadgeCheck className="w-4 h-4 text-indigo-600" />
+                <BadgeCheck className="size-4 text-indigo-600" />
                 Real-World Approval Pipeline
               </h3>
               <ol className="relative border-l border-slate-200 ml-3 space-y-6 text-left">
                 <li className="ml-5">
-                  <span className="absolute -left-2.5 flex items-center justify-center w-5 h-5 rounded-full bg-indigo-600 text-white text-[10px] font-bold shadow-xs">
+                  <span className="absolute -left-2.5 flex items-center justify-center size-5 rounded-full bg-indigo-600 text-white text-[10px] font-bold shadow-xs">
                     1
                   </span>
                   <h4 className="text-xs font-bold text-slate-900">Submit Merchant Application</h4>
@@ -198,7 +198,7 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
                   </p>
                 </li>
                 <li className="ml-5">
-                  <span className="absolute -left-2.5 flex items-center justify-center w-5 h-5 rounded-full bg-indigo-100 text-indigo-700 border border-indigo-300 text-[10px] font-bold">
+                  <span className="absolute -left-2.5 flex items-center justify-center size-5 rounded-full bg-indigo-100 text-indigo-700 border border-indigo-300 text-[10px] font-bold">
                     2
                   </span>
                   <h4 className="text-xs font-bold text-slate-900">Super Admin KYC Verification</h4>
@@ -207,7 +207,7 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
                   </p>
                 </li>
                 <li className="ml-5">
-                  <span className="absolute -left-2.5 flex items-center justify-center w-5 h-5 rounded-full bg-emerald-600 text-white text-[10px] font-bold shadow-xs">
+                  <span className="absolute -left-2.5 flex items-center justify-center size-5 rounded-full bg-emerald-600 text-white text-[10px] font-bold shadow-xs">
                     3
                   </span>
                   <h4 className="text-xs font-bold text-slate-900">Admin Privileges Granted</h4>
@@ -226,8 +226,8 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
         {/* State A: Already Approved Merchant */}
         {isAdmin && (
           <div className="bg-emerald-50 border border-emerald-200 rounded-3xl p-8 text-center mb-8 shadow-sm">
-            <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-emerald-200 shadow-inner">
-              <CheckCircle2 className="w-8 h-8" />
+            <div className="size-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-emerald-200 shadow-inner">
+              <CheckCircle2 className="size-8" />
             </div>
             <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-wider border border-emerald-200">
               Authorized Store Administrator
@@ -241,7 +241,7 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
                 onClick={() => onNavigate('admin')}
                 className="px-6 py-3 bg-[#008060] hover:bg-[#006e52] text-white rounded-xl text-xs font-bold transition-all shadow-md cursor-pointer flex items-center gap-2"
               >
-                <Store className="w-4 h-4" />
+                <Store className="size-4" />
                 Open Merchant Admin Panel
               </button>
               <button
@@ -257,8 +257,8 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
         {/* State B: Pending Application */}
         {!isAdmin && existingApp && existingApp.status === 'PENDING' && (
           <div className="bg-amber-50/70 border border-amber-200 rounded-3xl p-8 mb-8 text-center shadow-sm">
-            <div className="w-16 h-16 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-amber-300 animate-pulse">
-              <Clock className="w-8 h-8" />
+            <div className="size-16 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-amber-300 animate-pulse">
+              <Clock className="size-8" />
             </div>
             <span className="px-3.5 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold uppercase tracking-wider border border-amber-200">
               Status: Under Super Admin Review
@@ -302,8 +302,8 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
         {/* State C: Rejected Application */}
         {!isAdmin && existingApp && existingApp.status === 'REJECTED' && (
           <div className="bg-rose-50 border border-rose-200 rounded-3xl p-8 mb-8 text-center shadow-sm">
-            <div className="w-16 h-16 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-rose-300">
-              <XCircle className="w-8 h-8" />
+            <div className="size-16 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-rose-300">
+              <XCircle className="size-8" />
             </div>
             <span className="px-3.5 py-1 rounded-full bg-rose-100 text-rose-800 text-xs font-bold uppercase tracking-wider border border-rose-200">
               Application Requires Revision
@@ -312,9 +312,9 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
             <p className="text-sm text-slate-600 max-w-lg mx-auto mt-2">
               The Super Admin reviewed your application for <strong className="text-slate-900 font-bold">{existingApp.storeName}</strong> and left the following feedback:
             </p>
-            {existingApp.reviewNotes && (
+            {existingApp.rejectionReason && (
               <div className="max-w-md mx-auto my-4 p-3.5 rounded-xl bg-white border border-rose-200 text-rose-700 text-xs font-medium shadow-xs">
-                "{existingApp.reviewNotes}"
+                "{existingApp.rejectionReason}"
               </div>
             )}
             <p className="text-xs text-slate-500 mb-6">
@@ -334,8 +334,8 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
           <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-sm">
             <div className="border-b border-slate-100 pb-6 mb-8">
               <h2 className="text-xl sm:text-2xl font-black text-slate-900 flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-orange-100 text-[#E84A27] flex items-center justify-center">
-                  <Building2 className="w-5 h-5" />
+                <div className="size-8 rounded-lg bg-orange-100 text-[#E84A27] flex items-center justify-center">
+                  <Building2 className="size-5" />
                 </div>
                 Merchant Application Form
               </h2>
@@ -349,7 +349,7 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
               {!isAuthenticated && (
                 <div className="p-5 rounded-2xl bg-indigo-50/60 border border-indigo-100 space-y-4">
                   <div className="flex items-center gap-2 text-indigo-900 text-xs font-bold">
-                    <UserIcon className="w-4 h-4 text-indigo-600" />
+                    <UserIcon className="size-4 text-indigo-600" />
                     <span>Create Your Seller Master Account</span>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -363,7 +363,7 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
                         value={applicantName}
                         onChange={(e) => setApplicantName(e.target.value)}
                         placeholder="e.g. Alex Morgan"
-                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
                       />
                     </div>
                     <div>
@@ -376,7 +376,7 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
                         value={applicantEmail}
                         onChange={(e) => setApplicantEmail(e.target.value)}
                         placeholder="seller@yourbrand.com"
-                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
                       />
                     </div>
                     <div>
@@ -389,7 +389,7 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="••••••••"
-                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
                       />
                     </div>
                   </div>
@@ -399,8 +399,8 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
               {/* Store & Legal Details */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
-                    <Store className="w-3.5 h-3.5 text-indigo-600" />
+                  <label className="text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                    <Store className="size-3.5 text-indigo-600" />
                     Public Store Name *
                   </label>
                   <input
@@ -409,7 +409,7 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
                     value={storeName}
                     onChange={(e) => setStoreName(e.target.value)}
                     placeholder="e.g. Aura Sound & Tech"
-                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#E84A27] focus:ring-1 focus:ring-[#E84A27]"
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#E84A27] focus:ring-1 focus:ring-[#E84A27]"
                   />
                   <span className="text-[10px] text-slate-500 mt-1 block">
                     This will appear on your storefront and product listings.
@@ -417,8 +417,8 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
-                    <Building2 className="w-3.5 h-3.5 text-indigo-600" />
+                  <label className="text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                    <Building2 className="size-3.5 text-indigo-600" />
                     Registered Legal Entity Name *
                   </label>
                   <input
@@ -427,7 +427,7 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
                     value={legalName}
                     onChange={(e) => setLegalName(e.target.value)}
                     placeholder="e.g. Aura Acoustics Technologies LLC"
-                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#E84A27] focus:ring-1 focus:ring-[#E84A27]"
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#E84A27] focus:ring-1 focus:ring-[#E84A27]"
                   />
                   <span className="text-[10px] text-slate-500 mt-1 block">
                     Official business name registered with government authorities.
@@ -437,8 +437,8 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
-                    <FileText className="w-3.5 h-3.5 text-indigo-600" />
+                  <label className="text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                    <FileText className="size-3.5 text-indigo-600" />
                     Tax Identification / GSTIN / EIN *
                   </label>
                   <input
@@ -447,13 +447,13 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
                     value={taxId}
                     onChange={(e) => setTaxId(e.target.value)}
                     placeholder="e.g. 27AABCA1234F1Z5 or 12-3456789"
-                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#E84A27] focus:ring-1 focus:ring-[#E84A27] uppercase font-mono"
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#E84A27] focus:ring-1 focus:ring-[#E84A27] uppercase font-mono"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
-                    <Phone className="w-3.5 h-3.5 text-indigo-600" />
+                  <label className="text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                    <Phone className="size-3.5 text-indigo-600" />
                     Business Contact Phone *
                   </label>
                   <input
@@ -462,7 +462,7 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="+1 (555) 234-5678"
-                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#E84A27] focus:ring-1 focus:ring-[#E84A27]"
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#E84A27] focus:ring-1 focus:ring-[#E84A27]"
                   />
                 </div>
 
@@ -487,8 +487,8 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-indigo-600" />
+                <label className="text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                  <MapPin className="size-3.5 text-indigo-600" />
                   Registered Business Address *
                 </label>
                 <input
@@ -497,7 +497,7 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
                   value={businessAddress}
                   onChange={(e) => setBusinessAddress(e.target.value)}
                   placeholder="Street Address, City, State/Province, Postal Code, Country"
-                  className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#E84A27] focus:ring-1 focus:ring-[#E84A27]"
+                  className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#E84A27] focus:ring-1 focus:ring-[#E84A27]"
                 />
               </div>
 
@@ -510,14 +510,14 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Tell our Super Admin team about the products you manufacture or curate, expected monthly volume, or existing online presence..."
-                  className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#E84A27] focus:ring-1 focus:ring-[#E84A27]"
+                  className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#E84A27] focus:ring-1 focus:ring-[#E84A27]"
                 />
               </div>
 
               {/* Submit CTA */}
               <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-2 text-slate-500 text-xs">
-                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                  <ShieldCheck className="size-4 text-emerald-600" />
                   <span>By submitting, you agree to inBox Merchant Terms & SLAs.</span>
                 </div>
 
@@ -531,7 +531,7 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
                   ) : (
                     <>
                       <span>Submit Application for Review</span>
-                      <ArrowRight className="w-4 h-4" />
+                      <ArrowRight className="size-4" />
                     </>
                   )}
                 </button>

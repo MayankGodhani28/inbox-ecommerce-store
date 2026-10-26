@@ -6,6 +6,8 @@ import { useAuth } from './AuthContext';
 import { cartService } from '../services/cartService';
 import { pricingService, AuthoritativeQuote } from '../services/pricingService';
 
+import { isPositiveQuantity, sanitizeCart } from '../utils/cartValidation';
+
 const CART_STORAGE_KEY = 'inbox_cart_items_v1';
 const SAVED_STORAGE_KEY = 'inbox_saved_items_v1';
 const APPLIED_COUPON_KEY = 'inbox_applied_coupon_v1';
@@ -53,8 +55,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [cart, setCart] = useState<CartItem[]>(() => {
     try {
       const stored = localStorage.getItem(CART_STORAGE_KEY);
-      if (stored) return JSON.parse(stored);
-    } catch {}
+      if (stored) return sanitizeCart(JSON.parse(stored));
+    } catch { /* Invalid or inaccessible persisted data falls back to empty state. */ }
     return [];
   });
 
@@ -62,7 +64,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const stored = localStorage.getItem(SAVED_STORAGE_KEY);
       if (stored) return JSON.parse(stored);
-    } catch {}
+    } catch { /* Invalid or inaccessible persisted data falls back to empty state. */ }
     return [];
   });
 
@@ -70,12 +72,17 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const stored = localStorage.getItem(APPLIED_COUPON_KEY);
       if (stored) return JSON.parse(stored);
-    } catch {}
+    } catch { /* Invalid or inaccessible persisted data falls back to empty state. */ }
     return null;
   });
 
   const [deliveryMethod, setDeliveryMethod] = useState<'Standard' | 'Express'>('Standard');
-  const [serverQuote, setServerQuote] = useState<AuthoritativeQuote | null>(null);
+  const quoteKey = JSON.stringify([cart, deliveryMethod, appliedCoupon?.code]);
+  const [quoteState, setQuoteState] = useState<{ key: string; quote: AuthoritativeQuote } | null>(null);
+  const serverQuote = quoteState?.key === quoteKey ? quoteState.quote : null;
+  const setServerQuote = (quote: AuthoritativeQuote | null) => {
+    setQuoteState(quote ? { key: quoteKey, quote } : null);
+  };
 
   // Synchronize cart with server when authenticated or upon login
   const syncWithServer = useCallback(async () => {
@@ -86,7 +93,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const guestSavedJson = localStorage.getItem(SAVED_STORAGE_KEY);
 
       if (guestCartJson) {
-        const guestItems: CartItem[] = JSON.parse(guestCartJson);
+        const guestItems = sanitizeCart(JSON.parse(guestCartJson));
         if (guestItems.length > 0) {
           await cartService.mergeCart(
             guestItems.map((item) => ({
@@ -119,7 +126,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         cartService.getSavedItems(),
       ]);
 
-      setCart(cartRes.items);
+      setCart(sanitizeCart(cartRes.items));
       setSavedItems(savedRes.items);
     } catch (err) {
       console.error('Failed to sync cart with server:', err);
@@ -192,7 +199,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch (err) {
       console.error('Failed to calculate authoritative quote:', err);
     }
-  }, [cart, deliveryMethod, appliedCoupon, showToast]);
+  }, [cart, deliveryMethod, appliedCoupon, showToast, quoteKey]);
 
   useEffect(() => {
     fetchQuote();
@@ -205,13 +212,19 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     selectedSize?: string
   ): Promise<void> => {
     const validQty = Math.max(1, Math.floor(Number(quantity) || 1));
+    if (!isPositiveQuantity(validQty) || !isPositiveQuantity(product.stock)) {
+      showToast('Invalid quantity', { message: 'Choose a positive whole number for an available item.', type: 'error' });
+      return;
+    }
+    selectedColor = selectedColor || product.colors?.[0];
+    selectedSize = selectedSize || product.sizes?.[0];
     if (isAuthenticated) {
       try {
         const color = selectedColor || (product.colors ? product.colors[0] : '');
         const size = selectedSize || (product.sizes ? product.sizes[0] : '');
         await cartService.addItem(product.id, validQty, color, size);
         const refreshed = await cartService.getCart();
-        setCart(refreshed.items);
+        setCart(sanitizeCart(refreshed.items));
 
         showToast(t('toast.addedToCart'), {
           message: t('toast.addedToCartDesc', { name: product.name }),
@@ -269,6 +282,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       await removeFromCart(productId, color, size);
       return;
     }
+    if (!isPositiveQuantity(quantity)) {
+      showToast('Invalid quantity', { message: 'Quantity must be a positive whole number.', type: 'error' });
+      return;
+    }
 
     if (isAuthenticated) {
       const itemToUpdate = cart.find(
@@ -282,7 +299,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         try {
           await cartService.updateItemQuantity(itemToUpdate.id, validQty);
           const refreshed = await cartService.getCart();
-          setCart(refreshed.items);
+          setCart(sanitizeCart(refreshed.items));
           return;
         } catch (err: any) {
           showToast('Could not update quantity', { message: err?.message || 'Error', type: 'error' });
@@ -326,7 +343,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         await cartService.removeItem(itemToRemove.id);
         const refreshed = await cartService.getCart();
-        setCart(refreshed.items);
+        setCart(sanitizeCart(refreshed.items));
         return;
       } catch (err: any) {
         console.error('Failed to remove item on server:', err);
@@ -363,7 +380,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           cartService.getCart(),
           cartService.getSavedItems(),
         ]);
-        setCart(cartRes.items);
+        setCart(sanitizeCart(cartRes.items));
         setSavedItems(savedRes.items);
 
         showToast(t('toast.savedForLater'), {
@@ -403,7 +420,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           cartService.getCart(),
           cartService.getSavedItems(),
         ]);
-        setCart(cartRes.items);
+        setCart(sanitizeCart(cartRes.items));
         setSavedItems(savedRes.items);
         showToast(t('toast.addedToCart'), {
           message: t('toast.addedToCartDesc', { name: savedItem.product.name }),

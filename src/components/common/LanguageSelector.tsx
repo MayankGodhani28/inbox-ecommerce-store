@@ -60,7 +60,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
     return (
       <div className={`flex flex-col gap-1.5 ${className}`}>
         <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-          <Globe className="w-3.5 h-3.5" />
+          <Globe className="size-3.5" />
           <span>Language / Sprache / Taal</span>
         </div>
         <div className="grid grid-cols-3 gap-2">
@@ -98,7 +98,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
       >
         <span>{currentLanguageOption.flag}</span>
         <span>{currentLanguageOption.label}</span>
-        <ChevronDown className="w-3 h-3 text-slate-500" />
+        <ChevronDown className="size-3 text-slate-500" />
       </button>
 
       {isOpen && (

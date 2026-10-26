@@ -13,7 +13,7 @@ interface OrderSuccessProps {
 export const OrderSuccess: React.FC<OrderSuccessProps> = ({ order: initialOrder, orderId, onNavigate }) => {
   const { t, tPaymentMethod } = useTranslation();
   const [order, setOrder] = useState<Order | null>(initialOrder);
-  const [isLoading, setIsLoading] = useState(!initialOrder && !!(orderId || new URLSearchParams(window.location.search).get('orderId')));
+  const [isLoading, setIsLoading] = useState(!initialOrder && Boolean(orderId || new URLSearchParams(window.location.search).get('orderId')));
 
   useEffect(() => {
     if (initialOrder) {
@@ -27,6 +27,7 @@ export const OrderSuccess: React.FC<OrderSuccessProps> = ({ order: initialOrder,
         .then((found) => {
           if (found) setOrder(found);
         })
+        .catch((error) => { console.error('Could not load order:', error); })
         .finally(() => setIsLoading(false));
     }
   }, [initialOrder, orderId]);
@@ -34,7 +35,7 @@ export const OrderSuccess: React.FC<OrderSuccessProps> = ({ order: initialOrder,
   if (isLoading) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-24 text-center">
-        <div className="w-8 h-8 border-3 border-orange-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+        <div className="size-8 border-3 border-orange-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
         <p className="text-xs text-slate-500 font-semibold">Loading verified order receipt...</p>
       </div>
     );
@@ -62,8 +63,8 @@ export const OrderSuccess: React.FC<OrderSuccessProps> = ({ order: initialOrder,
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
       <div className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden p-6 sm:p-10 text-center">
         {/* Animated celebration icon */}
-        <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4">
-          <CheckCircle className="w-9 h-9" />
+        <div className="size-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4">
+          <CheckCircle className="size-9" />
         </div>
 
         <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-600">
@@ -110,7 +111,7 @@ export const OrderSuccess: React.FC<OrderSuccessProps> = ({ order: initialOrder,
                   <img
                     src={it.image}
                     alt={it.name}
-                    className="w-10 h-10 object-cover rounded-lg border border-slate-200"
+                    className="size-10 object-cover rounded-lg border border-slate-200"
                   />
                   <div>
                     <p className="font-bold text-slate-800 line-clamp-1">{it.name}</p>
@@ -145,7 +146,7 @@ export const OrderSuccess: React.FC<OrderSuccessProps> = ({ order: initialOrder,
             onClick={() => onNavigate('order-tracking', order.id)}
             className="px-5 py-2.5 bg-[#E84A27] hover:bg-[#d63f1f] text-white text-xs font-bold rounded-xl shadow-xs flex items-center gap-1.5 transition-colors cursor-pointer"
           >
-            <Truck className="w-4 h-4" />
+            <Truck className="size-4" />
             {t('orderSuccess.trackLive')}
           </button>
 
@@ -153,7 +154,7 @@ export const OrderSuccess: React.FC<OrderSuccessProps> = ({ order: initialOrder,
             onClick={handlePrintInvoice}
             className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer"
           >
-            <Printer className="w-4 h-4" />
+            <Printer className="size-4" />
             {t('orderSuccess.printInvoice')}
           </button>
 
@@ -162,7 +163,7 @@ export const OrderSuccess: React.FC<OrderSuccessProps> = ({ order: initialOrder,
             className="px-5 py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer"
           >
             <span>{t('orderSuccess.continueShopping')}</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="size-4" />
           </button>
         </div>
       </div>

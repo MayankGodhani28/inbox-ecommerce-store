@@ -56,6 +56,10 @@ export interface AuthoritativeQuote {
 }
 
 export async function calculateAuthoritativeQuote(request: QuoteRequest): Promise<AuthoritativeQuote> {
+  if ((request.items !== undefined && !Array.isArray(request.items))
+    || (request.couponCode !== undefined && typeof request.couponCode !== 'string')) {
+    throw Object.assign(new Error('Items must be an array and couponCode must be a string'), { status: 400 });
+  }
   const deliveryMethod = request.deliveryMethod === 'Express' ? 'Express' : 'Standard';
   const warnings: string[] = [];
 
@@ -82,12 +86,17 @@ export async function calculateAuthoritativeQuote(request: QuoteRequest): Promis
   let subtotalMinor = 0;
   let totalItemsCount = 0;
 
-  for (const it of inputItems) {
-    if (!it.productId) continue;
+  if (inputItems.length > 100 || inputItems.some((it) => !it
+    || typeof it.productId !== 'string' || !Number.isSafeInteger(it.quantity) || it.quantity <= 0)) {
+    throw Object.assign(new Error('At most 100 items with positive integer quantities are allowed'), { status: 400 });
+  }
+  const products = await prisma.product.findMany({
+    where: { id: { in: [...new Set(inputItems.map((item) => item.productId))] } },
+  });
+  const productsById = new Map(products.map((product) => [product.id, product]));
 
-    const product = await prisma.product.findUnique({
-      where: { id: it.productId },
-    });
+  for (const it of inputItems) {
+    const product = productsById.get(it.productId);
 
     if (!product || product.isArchived) {
       warnings.push(`Product "${it.productId}" is no longer available and was excluded from quote.`);
@@ -99,7 +108,7 @@ export async function calculateAuthoritativeQuote(request: QuoteRequest): Promis
       continue;
     }
 
-    let qty = Math.max(1, parseInt(String(it.quantity), 10) || 1);
+    let qty = it.quantity;
     if (qty > product.stock) {
       warnings.push(`Quantity for "${product.name}" was adjusted to available stock (${product.stock}).`);
       qty = product.stock;

@@ -44,13 +44,13 @@ export async function apiRequest<T = any>(
     defaultHeaders['Content-Type'] = 'application/json';
   }
 
+  const headers = new Headers(defaultHeaders);
+  new Headers(options.headers).forEach((value, key) => headers.set(key, value));
+  headers.set('X-Requested-With', 'XMLHttpRequest');
   const response = await fetch(url, {
     ...options,
     credentials: 'include',
-    headers: {
-      ...defaultHeaders,
-      ...options.headers,
-    },
+    headers,
   });
 
   const isJson = response.headers.get('content-type')?.includes('application/json');

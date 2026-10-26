@@ -33,4 +33,4 @@ async function main() {
   }
 }
 
-main().finally(() => prisma.$disconnect());
+main().catch((error) => { console.error('Order diagnosis failed:', error); process.exitCode = 1; }).finally(() => prisma.$disconnect());

@@ -125,8 +125,8 @@ export const OrderTracking: React.FC<OrderTrackingProps> = ({
   if (!user) {
     return (
       <div className="max-w-xl mx-auto px-4 py-16 text-center">
-        <div className="w-16 h-16 bg-orange-50 text-[#E84A27] rounded-full flex items-center justify-center mx-auto mb-4">
-          <ShieldAlert className="w-8 h-8" />
+        <div className="size-16 bg-orange-50 text-[#E84A27] rounded-full flex items-center justify-center mx-auto mb-4">
+          <ShieldAlert className="size-8" />
         </div>
         <h2 className="text-xl font-bold text-slate-900">Sign in to track orders</h2>
         <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
@@ -155,9 +155,9 @@ export const OrderTracking: React.FC<OrderTrackingProps> = ({
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 mb-6">
         <button onClick={() => onNavigate('home')} className="hover:text-slate-700 cursor-pointer">{t('tracking.breadcrumbHome')}</button>
-        <ChevronRight className="w-3 h-3" />
+        <ChevronRight className="size-3" />
         <button onClick={() => onNavigate('orders')} className="hover:text-slate-700 cursor-pointer">{t('tracking.breadcrumbOrders')}</button>
-        <ChevronRight className="w-3 h-3" />
+        <ChevronRight className="size-3" />
         <span className="text-slate-800">{t('tracking.breadcrumbTracking')}</span>
       </div>
 
@@ -165,7 +165,7 @@ export const OrderTracking: React.FC<OrderTrackingProps> = ({
       <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs mb-8">
         <form onSubmit={handleSearchSubmit} className="flex flex-col sm:flex-row items-center gap-3">
           <div className="relative flex-1 w-full">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+            <Search className="size-4 text-slate-400 absolute left-3.5 top-3" />
             <input
               type="text"
               value={searchId}
@@ -185,7 +185,7 @@ export const OrderTracking: React.FC<OrderTrackingProps> = ({
 
       {accessDenied && (
         <div className="p-8 text-center bg-rose-50 text-rose-800 rounded-2xl border border-rose-200 mb-6">
-          <ShieldAlert className="w-8 h-8 mx-auto mb-2 text-rose-600" />
+          <ShieldAlert className="size-8 mx-auto mb-2 text-rose-600" />
           <p className="font-bold text-sm">Access Denied</p>
           <p className="text-xs text-rose-600 mt-1">This order reference belongs to another account. You cannot view its tracking details.</p>
         </div>
@@ -243,13 +243,13 @@ export const OrderTracking: React.FC<OrderTrackingProps> = ({
 
                       {/* Icon circle */}
                       <div
-                        className={`relative z-10 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
+                        className={`relative z-10 size-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
                           isDone
                             ? 'bg-[#E84A27] text-white shadow-sm ring-4 ring-orange-100'
                             : 'bg-slate-100 text-slate-400'
                         }`}
                       >
-                        {isDone ? <CheckCircle2 className="w-4 h-4" /> : idx + 1}
+                        {isDone ? <CheckCircle2 className="size-4" /> : idx + 1}
                       </div>
 
                       <span
@@ -271,7 +271,7 @@ export const OrderTracking: React.FC<OrderTrackingProps> = ({
             {/* Activity Checkpoint Logs */}
             <div className="mt-4 pt-6 border-t border-slate-100">
               <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4 flex items-center gap-1.5">
-                <Clock className="w-4 h-4 text-orange-600" />
+                <Clock className="size-4 text-orange-600" />
                 {t('tracking.checkpointHistory')}
               </h3>
 
@@ -299,7 +299,7 @@ export const OrderTracking: React.FC<OrderTrackingProps> = ({
             {/* Shipping Destination */}
             <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
               <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                <MapPin className="w-4 h-4 text-orange-600" />
+                <MapPin className="size-4 text-orange-600" />
                 {t('tracking.shippingTo')}
               </h3>
               <p className="text-xs font-bold text-slate-800">{order.customerName}</p>
@@ -317,7 +317,7 @@ export const OrderTracking: React.FC<OrderTrackingProps> = ({
             {/* Package Contents */}
             <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
               <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                <Package className="w-4 h-4 text-orange-600" />
+                <Package className="size-4 text-orange-600" />
                 {t('tracking.itemsInShipment', { count: order.items.length })}
               </h3>
               <div className="flex flex-col gap-2 max-h-36 overflow-y-auto pr-1">
@@ -325,13 +325,13 @@ export const OrderTracking: React.FC<OrderTrackingProps> = ({
                   <div
                     key={`${it.productId}-${idx}`}
                     onClick={() => onSelectProduct(it.productId)}
-                    className="flex items-center justify-between text-xs py-1 hover:bg-slate-50 p-1 rounded-lg cursor-pointer"
+                    className="flex items-center justify-between text-xs p-1 hover:bg-slate-50 rounded-lg cursor-pointer"
                   >
                     <div className="flex items-center gap-2">
                       <img
                         src={it.image}
                         alt={it.name}
-                        className="w-8 h-8 object-cover rounded-md border border-slate-200"
+                        className="size-8 object-cover rounded-md border border-slate-200"
                       />
                       <span className="font-semibold text-slate-800 truncate max-w-[180px]">
                         {it.name}

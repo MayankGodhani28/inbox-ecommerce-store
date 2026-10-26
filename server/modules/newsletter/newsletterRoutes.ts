@@ -56,7 +56,7 @@ newsletterRouter.get('/status', async (req: Request, res: Response): Promise<voi
 
   res.status(200).json({
     data: {
-      isSubscribed: !!sub?.isActive,
+      isSubscribed: Boolean(sub?.isActive),
     },
   });
 });

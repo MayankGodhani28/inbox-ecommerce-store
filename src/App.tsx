@@ -30,7 +30,7 @@ import { SlidersHorizontal, Eye, ShieldCheck, Plus, Sparkles } from 'lucide-reac
 
 function parseRouteFromUrl(): { tab: string; param?: string } {
   if (typeof window === 'undefined') return { tab: 'home' };
-  const pathname = window.location.pathname;
+  const { pathname } = window.location;
   if (pathname === '/super-admin' || pathname.startsWith('/super-admin/')) {
     return { tab: 'super-admin' };
   }
@@ -90,7 +90,9 @@ function MainApp() {
 
   // Load products from PostgreSQL catalog
   const refreshProducts = () => {
-    productService.getProducts().then((data) => setProducts(data));
+    productService.getProducts().then((data) => setProducts(data)).catch((error) => {
+      console.error('Could not refresh catalog:', error);
+    });
   };
 
   useEffect(() => {

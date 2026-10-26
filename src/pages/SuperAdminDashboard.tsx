@@ -64,7 +64,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
   const [isLoading, setIsLoading] = useState(true);
 
   // Filters & Search
-  const [appFilter, setAppFilter] = useState<'ALL' | 'PENDING' | 'APPROVED' | 'REJECTED' | 'SUSPENDED'>('PENDING');
+  const [appFilter, setAppFilter] = useState<'ALL' | SellerApplication['status']>('PENDING');
   const [searchTerm, setSearchTerm] = useState('');
 
   // Rejection modal
@@ -223,10 +223,10 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
       <div className="min-h-screen bg-slate-50 text-slate-900 font-sans antialiased flex items-center justify-center px-4 py-12">
         {/* Super Admin Direct Login Card */}
         <div className="max-w-md w-full bg-white border border-slate-200 rounded-3xl p-8 sm:p-10 shadow-xl relative overflow-hidden animate-in fade-in zoom-in-95 duration-150">
-          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-purple-600 to-indigo-600" />
+          <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-purple-600 to-indigo-600" />
 
-          <div className="w-14 h-14 bg-purple-50 text-purple-700 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-purple-200 shadow-inner">
-            <Lock className="w-7 h-7" />
+          <div className="size-14 bg-purple-50 text-purple-700 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-purple-200 shadow-inner">
+            <Lock className="size-7" />
           </div>
 
           <div className="text-center mb-6">
@@ -258,7 +258,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
 
           {masterLoginError && (
             <div className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 shrink-0 text-rose-600" />
+              <AlertTriangle className="size-4 shrink-0 text-rose-600" />
               <span>{masterLoginError}</span>
             </div>
           )}
@@ -267,14 +267,14 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">Super Admin Email</label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                <Mail className="size-4 text-slate-400 absolute left-3 top-3" />
                 <input
                   type="email"
                   required
                   value={masterEmail}
                   onChange={(e) => setMasterEmail(e.target.value)}
                   placeholder="superadmin@inbox.com"
-                  className="w-full pl-9 pr-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
+                  className="w-full pl-9 pr-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
                 />
               </div>
             </div>
@@ -282,21 +282,21 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">Master Password</label>
               <div className="relative">
-                <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                <Lock className="size-4 text-slate-400 absolute left-3 top-3" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   required
                   value={masterPassword}
                   onChange={(e) => setMasterPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-9 pr-10 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
+                  className="w-full pl-9 pr-10 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-3 text-slate-400 hover:text-slate-600 cursor-pointer"
                 >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                 </button>
               </div>
             </div>
@@ -306,7 +306,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
               disabled={isMasterLoggingIn}
               className="w-full py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 disabled:opacity-60 text-white rounded-xl text-xs font-bold transition-all shadow-md cursor-pointer flex items-center justify-center gap-2"
             >
-              <ShieldCheck className="w-4 h-4" />
+              <ShieldCheck className="size-4" />
               <span>{isMasterLoggingIn ? 'Verifying Super Admin...' : 'Sign In as Super Admin'}</span>
             </button>
           </form>
@@ -340,7 +340,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
       app.storeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       app.legalName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       Boolean(app.taxId?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      Boolean(app.user?.email && app.user.email.toLowerCase().includes(searchTerm.toLowerCase()));
+      Boolean((app.email || app.user?.email || '').toLowerCase().includes(searchTerm.toLowerCase()));
     return matchStatus && matchSearch;
   });
 
@@ -352,7 +352,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 sm:px-8 py-3.5 flex items-center justify-between shadow-xs">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center text-white font-black text-sm shadow-md shadow-indigo-600/20">
+            <div className="size-9 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center text-white font-black text-sm shadow-md shadow-indigo-600/20">
               ⚡
             </div>
             <div>
@@ -371,7 +371,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
         <div className="flex items-center gap-3">
           <div className="hidden md:flex items-center gap-3 px-3.5 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-[11px]">
             <span className="flex items-center gap-1.5 text-slate-600">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="font-mono text-[10px]">PostgreSQL :5432</span>
             </span>
             <span className="text-slate-300">|</span>
@@ -383,7 +383,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
             className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold transition-colors cursor-pointer border border-slate-200 shadow-xs"
             title="Preview merchant admin view"
           >
-            <Store className="w-3.5 h-3.5 text-[#008060]" />
+            <Store className="size-3.5 text-[#008060]" />
             <span>Merchant Admin</span>
           </button>
 
@@ -391,7 +391,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
             onClick={() => onNavigate('home')}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold transition-colors cursor-pointer border border-slate-200 shadow-xs"
           >
-            <ArrowUpRight className="w-3.5 h-3.5 text-indigo-600" />
+            <ArrowUpRight className="size-3.5 text-indigo-600" />
             <span className="hidden sm:inline">Storefront</span>
           </button>
 
@@ -400,7 +400,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
             className="p-2 rounded-xl text-slate-500 hover:text-rose-600 hover:bg-slate-100 transition-colors cursor-pointer"
             title="Log Out"
           >
-            <LogOut className="w-4 h-4" />
+            <LogOut className="size-4" />
           </button>
         </div>
       </header>
@@ -416,7 +416,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
               <span className="text-[11px] font-bold uppercase tracking-wider text-amber-800">
                 Pending Verification
               </span>
-              <Clock className="w-4 h-4 text-amber-600" />
+              <Clock className="size-4 text-amber-600" />
             </div>
             <p className="text-2xl sm:text-3xl font-black text-slate-900 mt-2">
               {metrics?.pendingApplications ?? 0}
@@ -430,7 +430,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
               <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                 Store Admins / Sellers
               </span>
-              <Store className="w-4 h-4 text-indigo-600" />
+              <Store className="size-4 text-indigo-600" />
             </div>
             <p className="text-2xl sm:text-3xl font-black text-slate-900 mt-2">
               {metrics?.totalAdmins ?? 0}
@@ -444,7 +444,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
               <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                 Total Applications
               </span>
-              <FileText className="w-4 h-4 text-emerald-600" />
+              <FileText className="size-4 text-emerald-600" />
             </div>
             <p className="text-2xl sm:text-3xl font-black text-slate-900 mt-2">
               {metrics?.totalApplications ?? 0}
@@ -460,7 +460,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
               <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                 Platform Shoppers
               </span>
-              <Users className="w-4 h-4 text-purple-600" />
+              <Users className="size-4 text-purple-600" />
             </div>
             <p className="text-2xl sm:text-3xl font-black text-slate-900 mt-2">
               {metrics?.totalCustomers ?? 0}
@@ -480,7 +480,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
               }`}
             >
-              <Clock className="w-3.5 h-3.5" />
+              <Clock className="size-3.5" />
               <span>Seller Verification Queue</span>
               {metrics && metrics.pendingApplications > 0 && (
                 <span className="px-1.5 py-0.5 rounded-full bg-amber-400 text-slate-950 text-[10px] font-black">
@@ -497,7 +497,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
               }`}
             >
-              <Users className="w-3.5 h-3.5" />
+              <Users className="size-3.5" />
               <span>Admin & Seller Directory</span>
               <span className="px-1.5 py-0.5 rounded-full bg-slate-200 text-slate-700 text-[10px] font-bold">
                 {admins.length}
@@ -512,7 +512,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
               }`}
             >
-              <Layers className="w-3.5 h-3.5" />
+              <Layers className="size-3.5" />
               <span>Marketplace Architecture</span>
             </button>
           </div>
@@ -523,7 +523,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
             className="p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer"
             title="Refresh Data"
           >
-            <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`size-4 ${isLoading ? 'animate-spin' : ''}`} />
           </button>
         </div>
       </div>
@@ -552,13 +552,13 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
             </div>
 
             <div className="relative w-full sm:w-72">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search className="size-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search store, tax ID, email..."
-                className="w-full pl-9 pr-3 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-600 shadow-xs"
+                className="w-full pl-9 pr-3 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-indigo-600 shadow-xs"
               />
             </div>
           </div>
@@ -566,7 +566,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
           {/* Applications List */}
           {filteredApps.length === 0 ? (
             <div className="p-12 text-center bg-white border border-slate-200 rounded-3xl shadow-xs">
-              <CheckCircle2 className="w-12 h-12 text-emerald-500 mx-auto mb-3 opacity-60" />
+              <CheckCircle2 className="size-12 text-emerald-500 mx-auto mb-3 opacity-60" />
               <h3 className="text-base font-bold text-slate-900">No Applications Found</h3>
               <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
                 No merchant applications match the selected filter. Any incoming submissions from <code className="text-indigo-600 font-bold">/sell</code> will populate here automatically.
@@ -583,7 +583,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                     {/* Left: Store & Business Details */}
                     <div className="space-y-3 flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-2.5">
-                        <span className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-sm shrink-0 border border-indigo-100">
+                        <span className="size-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-sm shrink-0 border border-indigo-100">
                           🏬
                         </span>
                         <h3 className="text-base font-black text-slate-900">{app.storeName}</h3>
@@ -611,7 +611,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                       {/* Metadata Grid */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 text-xs text-slate-600">
                         <div className="flex items-center gap-1.5">
-                          <Building2 className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                          <Building2 className="size-3.5 text-slate-400 shrink-0" />
                           <span className="truncate">
                             <span className="text-slate-400 font-medium">Legal: </span>
                             <span className="text-slate-800 font-semibold">{app.legalName}</span>
@@ -619,7 +619,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                         </div>
 
                         <div className="flex items-center gap-1.5 font-mono">
-                          <FileText className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                          <FileText className="size-3.5 text-amber-600 shrink-0" />
                           <span>
                             <span className="text-slate-400 font-sans font-medium">Tax ID: </span>
                             <span className="text-amber-800 font-bold bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">
@@ -629,17 +629,17 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                         </div>
 
                         <div className="flex items-center gap-1.5">
-                          <Mail className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                          <span className="truncate text-slate-800 font-mono text-[11px]">{app.user?.email || 'Registered Seller'}</span>
+                          <Mail className="size-3.5 text-slate-400 shrink-0" />
+                          <span className="truncate text-slate-800 font-mono text-[11px]">{app.email || 'Registered Seller'}</span>
                         </div>
 
                         <div className="flex items-center gap-1.5">
-                          <Phone className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                          <Phone className="size-3.5 text-slate-400 shrink-0" />
                           <span className="text-slate-800">{app.phone}</span>
                         </div>
 
                         <div className="flex items-center gap-1.5 sm:col-span-2">
-                          <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                          <MapPin className="size-3.5 text-slate-400 shrink-0" />
                           <span className="truncate text-slate-700">{app.businessAddress}</span>
                         </div>
                       </div>
@@ -652,10 +652,10 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                       )}
 
                       {/* Review Notes (if rejected or reviewed) */}
-                      {app.reviewNotes && (
+                      {app.rejectionReason && (
                         <p className="text-xs text-rose-800 bg-rose-50 p-3 rounded-xl border border-rose-200">
                           <strong className="text-rose-900">Super Admin Note: </strong>
-                          {app.reviewNotes}
+                          {app.rejectionReason}
                         </p>
                       )}
 
@@ -674,7 +674,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                             disabled={isProcessingAction}
                             className="w-full sm:w-auto px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer flex items-center justify-center gap-1.5"
                           >
-                            <CheckCircle2 className="w-4 h-4" />
+                            <CheckCircle2 className="size-4" />
                             <span>Approve & Grant Admin</span>
                           </button>
 
@@ -686,7 +686,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                             disabled={isProcessingAction}
                             className="w-full sm:w-auto px-4 py-2 bg-white hover:bg-rose-50 hover:text-rose-700 border border-slate-300 hover:border-rose-300 text-slate-700 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center justify-center gap-1.5"
                           >
-                            <XCircle className="w-4 h-4" />
+                            <XCircle className="size-4" />
                             <span>Reject</span>
                           </button>
                         </>
@@ -695,7 +695,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                       {app.status === 'APPROVED' && (
                         <div className="flex items-center gap-2">
                           <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold">
-                            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                            <CheckCircle2 className="size-4 text-emerald-600" />
                             <span>Active</span>
                           </div>
                           <button
@@ -704,7 +704,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                             className="px-3 py-1.5 bg-white hover:bg-rose-50 hover:text-rose-700 border border-slate-300 hover:border-rose-300 text-rose-600 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5"
                             title="Suspend store catalog and merchant privileges"
                           >
-                            <Ban className="w-3.5 h-3.5 text-rose-500" />
+                            <Ban className="size-3.5 text-rose-500" />
                             <span>Suspend Store</span>
                           </button>
                         </div>
@@ -713,7 +713,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                       {app.status === 'SUSPENDED' && (
                         <div className="flex items-center gap-2">
                           <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-bold">
-                            <AlertTriangle className="w-4 h-4 text-rose-600" />
+                            <AlertTriangle className="size-4 text-rose-600" />
                             <span>Suspended</span>
                           </div>
                           <button
@@ -722,7 +722,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                             className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 shadow-xs"
                             title="Reinstate store catalog and admin privileges"
                           >
-                            <CheckCircle2 className="w-3.5 h-3.5" />
+                            <CheckCircle2 className="size-3.5" />
                             <span>Unsuspend Store</span>
                           </button>
                         </div>
@@ -734,7 +734,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                           disabled={isProcessingAction}
                           className="px-3 py-1.5 bg-white hover:bg-emerald-50 hover:text-emerald-800 border border-slate-300 text-slate-600 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5"
                         >
-                          <CheckCircle2 className="w-3.5 h-3.5" />
+                          <CheckCircle2 className="size-3.5" />
                           <span>Reconsider & Approve</span>
                         </button>
                       )}
@@ -786,7 +786,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                       <tr key={adm.id} className="hover:bg-slate-50/80 transition-colors">
                         <td className="py-3.5 px-4">
                           <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-lg bg-[#008060] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+                            <div className="size-8 rounded-lg bg-[#008060] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
                               {adm.name?.[0]?.toUpperCase() || 'A'}
                             </div>
                             <div>
@@ -847,12 +847,12 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                             >
                               {isSuspended ? (
                                 <>
-                                  <CheckCircle2 className="w-3.5 h-3.5" />
+                                  <CheckCircle2 className="size-3.5" />
                                   <span>Unsuspend Store</span>
                                 </>
                               ) : (
                                 <>
-                                  <Ban className="w-3.5 h-3.5" />
+                                  <Ban className="size-3.5" />
                                   <span>Suspend Store</span>
                                 </>
                               )}
@@ -891,7 +891,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
                 <div className="flex items-center gap-2 text-indigo-700 font-bold text-xs">
-                  <Store className="w-4 h-4 text-indigo-600" />
+                  <Store className="size-4 text-indigo-600" />
                   <span>Public Onboarding Portal: <code className="bg-white px-1.5 py-0.5 rounded border border-slate-200">/sell</code></span>
                 </div>
                 <p className="text-xs text-slate-600 leading-relaxed">
@@ -904,7 +904,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
 
               <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
                 <div className="flex items-center gap-2 text-purple-700 font-bold text-xs">
-                  <ShieldCheck className="w-4 h-4 text-purple-600" />
+                  <ShieldCheck className="size-4 text-purple-600" />
                   <span>Super Admin Verification: <code className="bg-white px-1.5 py-0.5 rounded border border-slate-200">/super-admin</code></span>
                 </div>
                 <p className="text-xs text-slate-600 leading-relaxed">
@@ -948,7 +948,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
           <div className="bg-white border border-slate-200 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-rose-600 font-bold text-sm">
-                <AlertTriangle className="w-5 h-5" />
+                <AlertTriangle className="size-5" />
                 <span>Reject Seller Application</span>
               </div>
               <button
@@ -968,7 +968,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
               value={rejectReason}
               onChange={(e) => setRejectReason(e.target.value)}
               placeholder="e.g. Tax identification number could not be verified with tax authority records. Please provide a valid GSTIN/EIN."
-              className="w-full p-3 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500"
+              className="w-full p-3 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500"
             />
 
             <div className="flex items-center justify-end gap-3 pt-2">

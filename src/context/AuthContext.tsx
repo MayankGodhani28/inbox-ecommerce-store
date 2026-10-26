@@ -126,7 +126,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const isAuthenticated = !!user;
+  const isAuthenticated = Boolean(user);
   const isSuperAdmin = user?.role === 'superadmin';
   const isAdmin = user?.role === 'admin' || user?.role === 'superadmin';
   const defaultAddress = user?.addresses?.find((a) => a.isDefault) || user?.addresses?.[0] || null;

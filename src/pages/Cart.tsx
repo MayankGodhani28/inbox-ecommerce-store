@@ -71,8 +71,8 @@ export const Cart: React.FC<CartProps> = ({ onNavigate, onSelectProduct }) => {
   if (items.length === 0 && savedForLater.length === 0) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 w-full text-center">
-        <div className="w-20 h-20 bg-orange-50 text-[#E84A27] rounded-full flex items-center justify-center mx-auto mb-4">
-          <ShoppingBag className="w-10 h-10" />
+        <div className="size-20 bg-orange-50 text-[#E84A27] rounded-full flex items-center justify-center mx-auto mb-4">
+          <ShoppingBag className="size-10" />
         </div>
         <h2 className="text-2xl font-bold text-slate-900">{t('cart.emptyTitle')}</h2>
         <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
@@ -93,7 +93,7 @@ export const Cart: React.FC<CartProps> = ({ onNavigate, onSelectProduct }) => {
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 mb-6">
         <button onClick={() => onNavigate('home')} className="hover:text-slate-700 cursor-pointer">{t('cart.breadcrumbHome')}</button>
-        <ChevronRight className="w-3 h-3" />
+        <ChevronRight className="size-3" />
         <span className="text-slate-800">{t('cart.breadcrumbCart')}</span>
       </div>
 
@@ -120,7 +120,7 @@ export const Cart: React.FC<CartProps> = ({ onNavigate, onSelectProduct }) => {
           <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
             <div className="flex items-center justify-between text-xs mb-2">
               <span className="font-semibold text-slate-700 flex items-center gap-1.5">
-                <Truck className="w-4 h-4 text-orange-600" />
+                <Truck className="size-4 text-orange-600" />
                 {amountNeededForFreeShipping === 0 ? (
                   <span className="text-emerald-600 font-bold">
                     {t('cart.unlockedFreeShipping')}
@@ -155,7 +155,7 @@ export const Cart: React.FC<CartProps> = ({ onNavigate, onSelectProduct }) => {
                       src={item.product.images[0]}
                       alt={item.product.name}
                       onClick={() => onSelectProduct(item.product.id)}
-                      className="w-20 h-20 object-cover rounded-xl border border-slate-200 shrink-0 cursor-pointer hover:opacity-90"
+                      className="size-20 object-cover rounded-xl border border-slate-200 shrink-0 cursor-pointer hover:opacity-90"
                     />
                     <div>
                       <span className="text-[11px] font-bold text-orange-600 uppercase">
@@ -201,10 +201,10 @@ export const Cart: React.FC<CartProps> = ({ onNavigate, onSelectProduct }) => {
                     <div className="flex items-center border border-slate-200 rounded-xl bg-slate-50 p-1">
                       <button
                         onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                        className="w-7 h-7 rounded-lg bg-white shadow-xs text-slate-700 hover:bg-slate-100 font-bold text-xs flex items-center justify-center cursor-pointer"
+                        className="size-7 rounded-lg bg-white shadow-xs text-slate-700 hover:bg-slate-100 font-bold text-xs flex items-center justify-center cursor-pointer"
                         title="Decrease"
                       >
-                        <Minus className="w-3 h-3" />
+                        <Minus className="size-3" />
                       </button>
                       <span className="w-8 text-center font-bold text-xs text-slate-900">
                         {item.quantity}
@@ -212,10 +212,10 @@ export const Cart: React.FC<CartProps> = ({ onNavigate, onSelectProduct }) => {
                       <button
                         disabled={item.quantity >= item.product.stock}
                         onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                        className="w-7 h-7 rounded-lg bg-white shadow-xs text-slate-700 hover:bg-slate-100 font-bold text-xs flex items-center justify-center disabled:opacity-40 cursor-pointer"
+                        className="size-7 rounded-lg bg-white shadow-xs text-slate-700 hover:bg-slate-100 font-bold text-xs flex items-center justify-center disabled:opacity-40 cursor-pointer"
                         title="Increase"
                       >
-                        <Plus className="w-3 h-3" />
+                        <Plus className="size-3" />
                       </button>
                     </div>
 
@@ -236,14 +236,14 @@ export const Cart: React.FC<CartProps> = ({ onNavigate, onSelectProduct }) => {
                         className="p-2 text-slate-400 hover:text-orange-600 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"
                         title={t('cart.saveForLater')}
                       >
-                        <Bookmark className="w-4 h-4" />
+                        <Bookmark className="size-4" />
                       </button>
                       <button
                         onClick={() => removeFromCart(item.product.id)}
                         className="p-2 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"
                         title={t('cart.remove')}
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="size-4" />
                       </button>
                     </div>
                   </div>
@@ -260,7 +260,7 @@ export const Cart: React.FC<CartProps> = ({ onNavigate, onSelectProduct }) => {
           {savedForLater.length > 0 && (
             <div className="mt-6 pt-6 border-t border-slate-200">
               <h2 className="text-base font-bold text-slate-900 mb-3 flex items-center gap-2">
-                <Bookmark className="w-4 h-4 text-orange-600" />
+                <Bookmark className="size-4 text-orange-600" />
                 {t('cart.savedForLater', { count: savedForLater.length })}
               </h2>
 
@@ -275,7 +275,7 @@ export const Cart: React.FC<CartProps> = ({ onNavigate, onSelectProduct }) => {
                         src={item.product.images[0]}
                         alt={item.product.name}
                         onClick={() => onSelectProduct(item.product.id)}
-                        className="w-14 h-14 object-cover rounded-xl border border-slate-200 shrink-0 cursor-pointer"
+                        className="size-14 object-cover rounded-xl border border-slate-200 shrink-0 cursor-pointer"
                       />
                       <div>
                         <h4
@@ -302,7 +302,7 @@ export const Cart: React.FC<CartProps> = ({ onNavigate, onSelectProduct }) => {
                         className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg cursor-pointer"
                         title={t('cart.remove')}
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="size-4" />
                       </button>
                     </div>
                   </div>
@@ -316,8 +316,8 @@ export const Cart: React.FC<CartProps> = ({ onNavigate, onSelectProduct }) => {
         <div className="lg:col-span-4 flex flex-col gap-6 sticky top-24">
           {/* Coupon Code Box */}
           <div className="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs">
-            <label className="text-xs font-bold text-slate-900 block mb-2 flex items-center gap-1.5">
-              <Tag className="w-3.5 h-3.5 text-orange-600" />
+            <label className="text-xs font-bold text-slate-900 mb-2 flex items-center gap-1.5">
+              <Tag className="size-3.5 text-orange-600" />
               {t('cart.haveCoupon')}
             </label>
 
@@ -421,17 +421,17 @@ export const Cart: React.FC<CartProps> = ({ onNavigate, onSelectProduct }) => {
               className="w-full py-3.5 px-6 rounded-xl bg-[#E84A27] hover:bg-[#d63f1f] text-white font-black text-xs shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               <span>{t('cart.proceedCheckout')}</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="size-4" />
             </button>
 
             {/* Trust Badges */}
             <div className="pt-4 border-t border-slate-100 flex flex-col gap-2 text-[11px] text-slate-400">
               <div className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <ShieldCheck className="size-4 text-emerald-600" />
                 <span>{t('cart.secureCheckoutBadge')}</span>
               </div>
               <div className="flex items-center gap-2">
-                <RotateCcw className="w-4 h-4 text-orange-600" />
+                <RotateCcw className="size-4 text-orange-600" />
                 <span>{t('footer.easyReturnsTitle')}</span>
               </div>
             </div>

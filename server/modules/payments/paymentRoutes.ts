@@ -23,7 +23,7 @@ paymentRouter.get('/config', (_req: Request, res: Response): void => {
     data: {
       provider: 'stripe',
       publishableKey: env.STRIPE_PUBLISHABLE_KEY || null,
-      isEnabled: !!(env.STRIPE_SECRET_KEY && env.STRIPE_PUBLISHABLE_KEY),
+      isEnabled: Boolean(env.STRIPE_SECRET_KEY && env.STRIPE_PUBLISHABLE_KEY),
     },
   });
 });

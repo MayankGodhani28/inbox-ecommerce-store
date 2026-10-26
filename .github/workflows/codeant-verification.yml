@@ -1,0 +1,38 @@
+name: CodeAnt fixes verification
+on:
+  push:
+    branches: [Mayank]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: codeant-Mayank
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      DATABASE_URL: postgresql://postgres:test@localhost:5432/inbox_store
+      NODE_ENV: test
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - run: npm ci --no-audit --no-fund
+        id: install
+      - run: npm run prisma:generate
+      - run: npm run test:codeant
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+      - run: npm run lint
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+      - run: npm run server:typecheck
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+      - run: npm test
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+      - run: npm run build
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+      - run: npm run server:build
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}

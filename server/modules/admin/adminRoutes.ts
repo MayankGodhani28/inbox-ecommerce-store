@@ -1,3 +1,4 @@
+import { formatCatalogProduct as formatProduct } from '../../utils/productSerializer.js';
 import { Router, Response } from 'express';
 import { prisma } from '../../db/prisma.js';
 import { requireAuth, requireAdmin, AuthenticatedRequest } from '../../middleware/auth.js';
@@ -8,31 +9,7 @@ export const adminRouter = Router();
 adminRouter.use(requireAuth);
 adminRouter.use(requireAdmin);
 
-function formatProduct(p: any) {
-  return {
-    id: p.id,
-    name: p.name,
-    brand: p.brand,
-    category: p.category,
-    description: p.description,
-    price: p.price / 100,
-    originalPrice: p.originalPrice / 100,
-    discount: p.discount,
-    rating: p.rating,
-    reviewCount: p.reviewCount,
-    stock: p.stock,
-    images: Array.isArray(p.images) ? p.images : [],
-    colors: Array.isArray(p.colors) ? p.colors : [],
-    sizes: Array.isArray(p.sizes) ? p.sizes : [],
-    specifications: typeof p.specifications === 'object' && p.specifications !== null ? p.specifications : {},
-    isTrending: p.isTrending,
-    isBestSeller: p.isBestSeller,
-    isNewArrival: p.isNewArrival,
-    isDealOfDay: p.isDealOfDay,
-    isArchived: p.isArchived,
-    createdAt: p.createdAt.toISOString(),
-  };
-}
+
 
 function getSellerProductFilter(user: any) {
   const filters: any[] = [
@@ -129,10 +106,10 @@ adminRouter.post('/products', async (req: AuthenticatedRequest, res: Response): 
         sellerEmail: user.email,
         storeName: sellerStore,
       },
-      isTrending: !!isTrending,
-      isBestSeller: !!isBestSeller,
-      isNewArrival: !!isNewArrival,
-      isDealOfDay: !!isDealOfDay,
+      isTrending: Boolean(isTrending),
+      isBestSeller: Boolean(isBestSeller),
+      isNewArrival: Boolean(isNewArrival),
+      isDealOfDay: Boolean(isDealOfDay),
       isArchived: false,
     },
   });
@@ -220,11 +197,11 @@ adminRouter.patch('/products/:id', async (req: AuthenticatedRequest, res: Respon
   if (sizes !== undefined) updates.sizes = sizes;
   if (specifications !== undefined) updates.specifications = specifications;
   if (discount !== undefined) updates.discount = parseInt(discount, 10) || 0;
-  if (isTrending !== undefined) updates.isTrending = !!isTrending;
-  if (isBestSeller !== undefined) updates.isBestSeller = !!isBestSeller;
-  if (isNewArrival !== undefined) updates.isNewArrival = !!isNewArrival;
-  if (isDealOfDay !== undefined) updates.isDealOfDay = !!isDealOfDay;
-  if (isArchived !== undefined) updates.isArchived = !!isArchived;
+  if (isTrending !== undefined) updates.isTrending = Boolean(isTrending);
+  if (isBestSeller !== undefined) updates.isBestSeller = Boolean(isBestSeller);
+  if (isNewArrival !== undefined) updates.isNewArrival = Boolean(isNewArrival);
+  if (isDealOfDay !== undefined) updates.isDealOfDay = Boolean(isDealOfDay);
+  if (isArchived !== undefined) updates.isArchived = Boolean(isArchived);
 
   const updated = await prisma.product.update({
     where: { id: req.params.id },

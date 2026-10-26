@@ -1,3 +1,4 @@
+import 'express-async-errors';
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -62,12 +63,17 @@ export function createApp() {
   // CORS configuration
   app.use(
     cors({
-      origin: [env.CLIENT_ORIGIN, 'http://localhost:3000', 'http://127.0.0.1:3000'],
+      origin: [env.CLIENT_ORIGIN, ...(env.NODE_ENV === 'production' ? [] : ['http://localhost:3000', 'http://127.0.0.1:3000'])],
       credentials: true,
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'x-request-id', 'idempotency-key', 'x-csrf-token', 'x-xsrf-token'],
     })
   );
+
+  app.use(csrfProtection([
+    env.CLIENT_ORIGIN,
+    ...(env.NODE_ENV === 'production' ? [] : ['http://localhost:3000', 'http://127.0.0.1:3000']),
+  ]));
 
   // Cookie parser
   app.use(cookieParser());

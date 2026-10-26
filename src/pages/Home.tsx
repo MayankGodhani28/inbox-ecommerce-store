@@ -119,14 +119,14 @@ export const Home: React.FC<HomeProps> = ({
                   <img
                     src={slide.image}
                     alt={t(slide.titleKey)}
-                    className="w-full h-full object-cover object-center"
+                    className="size-full object-cover object-center"
                   />
                 </div>
 
                 {/* Slide Content */}
                 <div className="relative z-20 max-w-2xl px-6 sm:px-12 py-12 flex flex-col items-start gap-4">
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E84A27] text-white text-xs font-black tracking-wider uppercase shadow-md">
-                    <Flame className="w-3.5 h-3.5" />
+                    <Flame className="size-3.5" />
                     {t(slide.discountKey)}
                   </span>
 
@@ -144,7 +144,7 @@ export const Home: React.FC<HomeProps> = ({
                       className="px-6 py-3.5 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-extrabold text-sm shadow-lg hover:shadow-xl transition-all flex items-center gap-2 active:scale-95 cursor-pointer"
                     >
                       <span>{t(slide.ctaKey)}</span>
-                      <ArrowRight className="w-4 h-4 text-[#E84A27]" />
+                      <ArrowRight className="size-4 text-[#E84A27]" />
                     </button>
                     <button
                       onClick={() => onNavigate('products', 'deals')}
@@ -198,8 +198,8 @@ export const Home: React.FC<HomeProps> = ({
                 onClick={() => onNavigate('products', cat)}
                 className="group flex flex-col items-center justify-center p-4 bg-white rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md hover:border-orange-300 transition-all duration-200 text-center cursor-pointer"
               >
-                <div className="w-12 h-12 rounded-xl bg-orange-50 group-hover:bg-[#E84A27] text-2xl flex items-center justify-center transition-colors duration-200">
-                  <span className="transform group-hover:scale-110 transition-transform">
+                <div className="size-12 rounded-xl bg-orange-50 group-hover:bg-[#E84A27] text-2xl flex items-center justify-center transition-colors duration-200">
+                  <span className="group-hover:scale-110 transition-transform">
                     {CATEGORY_ICONS[cat]}
                   </span>
                 </div>
@@ -216,13 +216,13 @@ export const Home: React.FC<HomeProps> = ({
       {/* 3. FLASH DEALS / DEAL OF THE DAY */}
       <section className="max-w-[1500px] mx-auto px-4 sm:px-6 w-full">
         <div className="p-6 sm:p-8 bg-gradient-to-br from-orange-500 via-[#E84A27] to-red-700 rounded-3xl text-white shadow-xl relative overflow-hidden">
-          <div className="absolute right-0 top-0 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute right-0 top-0 size-96 bg-white/5 rounded-full blur-3xl pointer-events-none" />
 
           {/* Header with Countdown */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
             <div>
               <div className="flex items-center gap-2 text-orange-200 text-xs font-bold uppercase tracking-wider mb-1">
-                <Zap className="w-4 h-4 fill-current text-amber-300" />
+                <Zap className="size-4 fill-current text-amber-300" />
                 {t('home.flashOffer')}
               </div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
@@ -232,7 +232,7 @@ export const Home: React.FC<HomeProps> = ({
 
             {/* Countdown Box */}
             <div className="flex items-center gap-2 bg-black/25 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-white/15">
-              <Clock className="w-4 h-4 text-amber-300" />
+              <Clock className="size-4 text-amber-300" />
               <span className="text-xs font-semibold text-orange-100">{t('home.endsIn')}</span>
               <div className="flex items-center gap-1 text-sm font-mono font-bold">
                 <span className="bg-white/20 px-2 py-0.5 rounded">
@@ -269,7 +269,7 @@ export const Home: React.FC<HomeProps> = ({
         <div className="flex items-center justify-between mb-6">
           <div>
             <div className="flex items-center gap-1.5 text-xs font-bold text-orange-600 uppercase tracking-wider mb-1">
-              <TrendingUp className="w-4 h-4" />
+              <TrendingUp className="size-4" />
               {t('home.customerFavorites')}
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900">{t('home.trendingRightNow')}</h2>
@@ -302,7 +302,7 @@ export const Home: React.FC<HomeProps> = ({
               <img
                 src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=800&q=80"
                 alt="Audio Tech"
-                className="w-full h-full object-cover"
+                className="size-full object-cover"
               />
             </div>
             <div className="relative z-10">
@@ -322,7 +322,7 @@ export const Home: React.FC<HomeProps> = ({
                 className="px-5 py-2.5 rounded-xl bg-[#E84A27] hover:bg-[#d63f1f] text-white text-xs font-bold flex items-center gap-2 shadow-md cursor-pointer"
               >
                 <span>{t('home.promo1Cta')}</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <ArrowRight className="size-3.5" />
               </button>
             </div>
           </div>
@@ -332,7 +332,7 @@ export const Home: React.FC<HomeProps> = ({
               <img
                 src="https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?auto=format&fit=crop&w=800&q=80"
                 alt="Fitness & Strength"
-                className="w-full h-full object-cover"
+                className="size-full object-cover"
               />
             </div>
             <div className="relative z-10">
@@ -352,7 +352,7 @@ export const Home: React.FC<HomeProps> = ({
                 className="px-5 py-2.5 rounded-xl bg-[#009FE3] hover:bg-[#0284c7] text-white text-xs font-bold flex items-center gap-2 shadow-md cursor-pointer"
               >
                 <span>{t('home.promo2Cta')}</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <ArrowRight className="size-3.5" />
               </button>
             </div>
           </div>
@@ -364,7 +364,7 @@ export const Home: React.FC<HomeProps> = ({
         <div className="flex items-center justify-between mb-6">
           <div>
             <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-600 uppercase tracking-wider mb-1">
-              <Award className="w-4 h-4" />
+              <Award className="size-4" />
               {t('home.topRated')}
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900">{t('home.bestSellingEssentials')}</h2>
@@ -394,7 +394,7 @@ export const Home: React.FC<HomeProps> = ({
         <div className="flex items-center justify-between mb-6">
           <div>
             <div className="flex items-center gap-1.5 text-xs font-bold text-purple-600 uppercase tracking-wider mb-1">
-              <Sparkles className="w-4 h-4" />
+              <Sparkles className="size-4" />
               {t('home.justDropped')}
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900">{t('home.newArrivals')}</h2>
@@ -436,7 +436,7 @@ export const Home: React.FC<HomeProps> = ({
               <div>
                 <div className="flex items-center gap-1 text-amber-400 mb-3">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-current" />
+                    <Star key={i} className="size-4 fill-current" />
                   ))}
                 </div>
                 <p className="text-xs text-slate-600 leading-relaxed italic">
@@ -447,7 +447,7 @@ export const Home: React.FC<HomeProps> = ({
                 <img
                   src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
                   alt="Customer"
-                  className="w-9 h-9 rounded-full object-cover"
+                  className="size-9 rounded-full object-cover"
                 />
                 <div>
                   <p className="text-xs font-bold text-slate-900">Ananya Sen</p>
@@ -460,7 +460,7 @@ export const Home: React.FC<HomeProps> = ({
               <div>
                 <div className="flex items-center gap-1 text-amber-400 mb-3">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-current" />
+                    <Star key={i} className="size-4 fill-current" />
                   ))}
                 </div>
                 <p className="text-xs text-slate-600 leading-relaxed italic">
@@ -471,7 +471,7 @@ export const Home: React.FC<HomeProps> = ({
                 <img
                   src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80"
                   alt="Customer"
-                  className="w-9 h-9 rounded-full object-cover"
+                  className="size-9 rounded-full object-cover"
                 />
                 <div>
                   <p className="text-xs font-bold text-slate-900">Karthik Rao</p>
@@ -484,7 +484,7 @@ export const Home: React.FC<HomeProps> = ({
               <div>
                 <div className="flex items-center gap-1 text-amber-400 mb-3">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-current" />
+                    <Star key={i} className="size-4 fill-current" />
                   ))}
                 </div>
                 <p className="text-xs text-slate-600 leading-relaxed italic">
@@ -495,7 +495,7 @@ export const Home: React.FC<HomeProps> = ({
                 <img
                   src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80"
                   alt="Customer"
-                  className="w-9 h-9 rounded-full object-cover"
+                  className="size-9 rounded-full object-cover"
                 />
                 <div>
                   <p className="text-xs font-bold text-slate-900">Meera Patel</p>

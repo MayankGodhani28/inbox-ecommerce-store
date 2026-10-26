@@ -32,7 +32,7 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     try {
       const stored = localStorage.getItem(WISHLIST_STORAGE_KEY);
       if (stored) return JSON.parse(stored);
-    } catch {}
+    } catch { /* Invalid or inaccessible persisted data falls back to empty state. */ }
     return [];
   });
 

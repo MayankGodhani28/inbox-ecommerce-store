@@ -1,5 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import crypto from 'crypto';
+import { isSafeApiRequest } from '../security/requestPolicy.js';
 
 export const CSRF_COOKIE_NAME = 'inbox_csrf_token';
 export const CSRF_HEADER_NAME = 'x-csrf-token';
@@ -13,19 +14,38 @@ export function generateCsrfToken(): string {
 
 /**
  * CSRF Protection Middleware for Express applications.
- *
- * Implements the Double-Submit Cookie & Custom Request Header verification
- * pattern recommended by OWASP for Single Page Applications (SPAs) and REST APIs.
+ * Supports both factory syntax `csrfProtection(allowedOrigins)` and direct middleware `csrfProtection(req, res, next)`.
  */
-export function csrfProtection(req: Request, res: Response, next: NextFunction): void {
-  // 1. Safe HTTP methods (GET, HEAD, OPTIONS) do not modify server state
+export function csrfProtection(
+  allowedOriginsOrReq?: readonly string[] | Request,
+  res?: Response,
+  next?: NextFunction
+): any {
+  if (Array.isArray(allowedOriginsOrReq)) {
+    const allowedOrigins = allowedOriginsOrReq;
+    return (req: Request, resObj: Response, nextFn: NextFunction): void => {
+      if (!isSafeApiRequest(req.method, req.path, {
+        origin: req.get('origin'),
+        requestedWith: req.get('x-requested-with'),
+        fetchSite: req.get('sec-fetch-site'),
+      }, allowedOrigins)) {
+        resObj.status(403).json({ error: { code: 'CSRF_REJECTED', message: 'Request origin or CSRF header is invalid' } });
+        return;
+      }
+      nextFn();
+    };
+  }
+
+  // Direct middleware usage: csrfProtection(req, res, next)
+  const req = allowedOriginsOrReq as Request;
+  if (!res || !next) return;
+
   const safeMethods = ['GET', 'HEAD', 'OPTIONS'];
   if (safeMethods.includes(req.method)) {
-    // Seed CSRF cookie if not already set
     if (!req.cookies?.[CSRF_COOKIE_NAME]) {
       const token = generateCsrfToken();
       res.cookie(CSRF_COOKIE_NAME, token, {
-        httpOnly: false, // Accessible to client-side scripts to read and attach as header
+        httpOnly: false,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
         path: '/',
@@ -34,25 +54,17 @@ export function csrfProtection(req: Request, res: Response, next: NextFunction):
     return next();
   }
 
-  // 2. Exempt webhooks that authenticate via cryptographic provider signatures (e.g., Stripe)
   if (req.path.includes('/webhook') || req.originalUrl?.includes('/webhook')) {
     return next();
   }
 
-  // 3. State-changing requests: Validate CSRF tokens / Custom Header
   const headerToken = (req.headers[CSRF_HEADER_NAME] || req.headers['x-xsrf-token']) as string | undefined;
   const cookieToken = req.cookies?.[CSRF_COOKIE_NAME];
   const requestedWith = req.headers['x-requested-with'];
   const origin = req.headers['origin'];
 
-  // A. Matching Double-Submit Cookie + Header
   const tokenMatches = Boolean(headerToken && cookieToken && headerToken === cookieToken);
-
-  // B. Custom XMLHttpRequest Header: Browsers restrict cross-origin requests from setting
-  // custom headers without prior CORS preflight check approval.
   const isAjaxClient = requestedWith === 'XMLHttpRequest';
-
-  // C. Trusted local / same-origin in development
   const isLocalOrigin =
     typeof origin === 'string' &&
     (origin.includes('localhost') || origin.includes('127.0.0.1'));

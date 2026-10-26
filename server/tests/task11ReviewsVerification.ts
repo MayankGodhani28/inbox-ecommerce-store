@@ -1,3 +1,4 @@
+import { csrfFetch } from './httpClient.js';
 import { prisma } from '../db/prisma';
 
 const API_BASE = 'http://localhost:4000/api';
@@ -11,7 +12,7 @@ interface ApiResponse<T = any> {
 }
 
 async function request(path: string, options: RequestInit = {}): Promise<{ status: number; body: ApiResponse; headers: Headers }> {
-  const res = await fetch(`${API_BASE}${path}`, {
+  const res = await csrfFetch(`${API_BASE}${path}`, {
     ...options,
     headers: {
       'Content-Type': 'application/json',

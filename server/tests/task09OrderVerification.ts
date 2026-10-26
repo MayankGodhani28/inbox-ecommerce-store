@@ -1,3 +1,4 @@
+import { csrfFetch } from './httpClient.js';
 import { createApp } from '../app.js';
 import { prisma } from '../db/prisma.js';
 import type { Server } from 'http';
@@ -20,14 +21,14 @@ async function runOrderTests() {
 
   try {
     // 1. Register Customer A and Customer B
-    const regARes = await fetch(`${baseUrl}/api/auth/register`, {
+    const regARes = await csrfFetch(`${baseUrl}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: 'Order Customer A', email: customerAEmail, password }),
     });
     const cookieA = regARes.headers.get('set-cookie')!.split(';')[0];
 
-    const regBRes = await fetch(`${baseUrl}/api/auth/register`, {
+    const regBRes = await csrfFetch(`${baseUrl}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: 'Order Customer B', email: customerBEmail, password }),
@@ -64,7 +65,7 @@ async function runOrderTests() {
 
     // 3. Customer A places a Cash on Delivery order
     const idempotencyKeyA = `key_ord_${Date.now()}`;
-    const orderResA = await fetch(`${baseUrl}/api/orders`, {
+    const orderResA = await csrfFetch(`${baseUrl}/api/orders`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -104,7 +105,7 @@ async function runOrderTests() {
     console.log('✓ Product inventory was atomically decremented in database (stock: 1 -> 0).');
 
     // 4. Concurrency check: Customer B attempts to purchase the same out-of-stock item
-    const orderResB = await fetch(`${baseUrl}/api/orders`, {
+    const orderResB = await csrfFetch(`${baseUrl}/api/orders`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -125,7 +126,7 @@ async function runOrderTests() {
     console.log(`✓ Out-of-stock purchase attempt rejected safely (Status: ${orderResB.status}, message: "${orderErrB.message}").`);
 
     // 5. Idempotency & network retry check (double click / replay)
-    const replayRes = await fetch(`${baseUrl}/api/orders`, {
+    const replayRes = await csrfFetch(`${baseUrl}/api/orders`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -149,7 +150,7 @@ async function runOrderTests() {
     console.log('✓ Idempotent replay returned existing order without duplicate records or stock decrements.');
 
     // Idempotency conflict test: same key with different payload
-    const conflictRes = await fetch(`${baseUrl}/api/orders`, {
+    const conflictRes = await csrfFetch(`${baseUrl}/api/orders`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -169,7 +170,7 @@ async function runOrderTests() {
     console.log('✓ Idempotency key reuse with different payload strictly rejected with 400.');
 
     // 6. Cross-user isolation: Customer B cannot access Customer A order
-    const crossAccessRes = await fetch(`${baseUrl}/api/orders/${orderDataA.orderNumber}`, {
+    const crossAccessRes = await csrfFetch(`${baseUrl}/api/orders/${orderDataA.orderNumber}`, {
       headers: { Cookie: cookieB },
     });
     if (crossAccessRes.status !== 403) {
@@ -178,7 +179,7 @@ async function runOrderTests() {
     console.log('✓ Cross-user order isolation verified: Customer B cannot read Customer A order.');
 
     // 7. Pricing conflict check (expectedTotalMinor mismatch)
-    const pricingConflictRes = await fetch(`${baseUrl}/api/orders`, {
+    const pricingConflictRes = await csrfFetch(`${baseUrl}/api/orders`, {
       method: 'POST',
       headers: { Cookie: cookieA },
       body: JSON.stringify({
@@ -193,15 +194,16 @@ async function runOrderTests() {
     console.log('✓ Pricing conflict detected and guarded (price tampering prevented).');
 
     // 8. Admin status update and tracking number addition
-    const testAdminPassword = process.env.ADMIN_DEFAULT_PASSWORD || 'AdminSecure2026!';
-    const adminLoginRes = await fetch(`${baseUrl}/api/auth/login`, {
+    const testAdminPassword = process.env.ADMIN_DEFAULT_PASSWORD || process.env.TEST_ADMIN_PASSWORD || 'AdminSecure2026!';
+    const testAdminEmail = process.env.TEST_ADMIN_EMAIL || 'admin@inbox.com';
+    const adminLoginRes = await csrfFetch(`${baseUrl}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: 'admin@inbox.com', password: testAdminPassword }),
+      body: JSON.stringify({ email: testAdminEmail, password: testAdminPassword }),
     });
     const adminCookie = adminLoginRes.headers.get('set-cookie')!.split(';')[0];
 
-    const updateStatusRes = await fetch(`${baseUrl}/api/orders/${orderDataA.orderNumber}/status`, {
+    const updateStatusRes = await csrfFetch(`${baseUrl}/api/orders/${orderDataA.orderNumber}/status`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json', Cookie: adminCookie },
       body: JSON.stringify({

@@ -1,3 +1,4 @@
+import { csrfFetch } from '../tests/httpClient.js';
 import { performance } from 'perf_hooks';
 
 const BASE_URL = 'http://localhost:4000';
@@ -17,10 +18,10 @@ async function run() {
   let sessionCookie = '';
   const adminPassword = process.env.ADMIN_DEFAULT_PASSWORD || 'AdminSecure2026!';
   try {
-    const authRes = await fetch(`${BASE_URL}/api/auth/login`, {
+    const authRes = await csrfFetch(`${BASE_URL}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: 'admin@inbox.com', password: adminPassword }),
+      body: JSON.stringify({ email: process.env.BENCHMARK_EMAIL || 'admin@inbox.com', password: process.env.BENCHMARK_PASSWORD || adminPassword }),
     });
     const setCookie = authRes.headers.get('set-cookie');
     if (setCookie) {
@@ -34,10 +35,10 @@ async function run() {
   // 2. Fetch a sample product ID
   let sampleProductId = '';
   try {
-    const prodRes = await fetch(`${BASE_URL}/api/products?limit=1`);
+    const prodRes = await csrfFetch(`${BASE_URL}/api/products?limit=1`);
     const prodData = (await prodRes.json()) as any;
     sampleProductId = prodData?.data?.products?.[0]?.id || '';
-  } catch {}
+  } catch { /* fallback to empty */ }
 
   const benchmarks: Array<{
     category: string;
@@ -56,7 +57,7 @@ async function run() {
       category: 'Authentication',
       method: 'POST',
       path: '/api/auth/login',
-      body: { email: 'admin@inbox.com', password: adminPassword },
+      body: { email: process.env.BENCHMARK_EMAIL || 'admin@inbox.com', password: process.env.BENCHMARK_PASSWORD || adminPassword },
     },
 
     // User Profile & Addresses
@@ -120,21 +121,21 @@ async function run() {
 
     // Warm-up call
     try {
-      await fetch(`${BASE_URL}${b.path}`, {
+      await csrfFetch(`${BASE_URL}${b.path}`, {
         method: b.method,
         headers,
         body: b.body ? JSON.stringify(b.body) : undefined,
       });
-    } catch {}
+    } catch { /* Invalid or inaccessible persisted data falls back to empty state. */ }
 
     // Measured runs (3 iterations)
     const times: number[] = [];
     let lastStatus = 0;
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i += 1) {
       const t0 = performance.now();
       try {
-        const res = await fetch(`${BASE_URL}${b.path}`, {
+        const res = await csrfFetch(`${BASE_URL}${b.path}`, {
           method: b.method,
           headers,
           body: b.body ? JSON.stringify(b.body) : undefined,

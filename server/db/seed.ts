@@ -30,10 +30,10 @@ export async function seed() {
         colors: p.colors || [],
         sizes: p.sizes || [],
         specifications: p.specifications || {},
-        isTrending: !!p.isTrending,
-        isBestSeller: !!p.isBestSeller,
-        isNewArrival: !!p.isNewArrival,
-        isDealOfDay: !!p.isDealOfDay,
+        isTrending: Boolean(p.isTrending),
+        isBestSeller: Boolean(p.isBestSeller),
+        isNewArrival: Boolean(p.isNewArrival),
+        isDealOfDay: Boolean(p.isDealOfDay),
         isArchived: false,
       },
       create: {
@@ -52,14 +52,14 @@ export async function seed() {
         colors: p.colors || [],
         sizes: p.sizes || [],
         specifications: p.specifications || {},
-        isTrending: !!p.isTrending,
-        isBestSeller: !!p.isBestSeller,
-        isNewArrival: !!p.isNewArrival,
-        isDealOfDay: !!p.isDealOfDay,
+        isTrending: Boolean(p.isTrending),
+        isBestSeller: Boolean(p.isBestSeller),
+        isNewArrival: Boolean(p.isNewArrival),
+        isDealOfDay: Boolean(p.isDealOfDay),
         isArchived: false,
       },
     });
-    productsCount++;
+    productsCount += 1;
   }
   console.log(`[Seed] Successfully seeded ${productsCount} products.`);
 
@@ -77,7 +77,7 @@ export async function seed() {
         discountPercentage: c.discountPercentage || 0,
         minSpend: minSpendCents,
         maxDiscount: maxDiscountCents,
-        freeShipping: !!c.freeShipping,
+        freeShipping: Boolean(c.freeShipping),
         isActive: true,
       },
       create: {
@@ -86,11 +86,11 @@ export async function seed() {
         discountPercentage: c.discountPercentage || 0,
         minSpend: minSpendCents,
         maxDiscount: maxDiscountCents,
-        freeShipping: !!c.freeShipping,
+        freeShipping: Boolean(c.freeShipping),
         isActive: true,
       },
     });
-    couponsCount++;
+    couponsCount += 1;
   }
   console.log(`[Seed] Successfully seeded ${couponsCount} coupons.`);
   console.log('[Seed] Database seed completed successfully.');
