@@ -528,12 +528,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       }
     };
 
-    const handleFillAdminDemo = () => {
-      setAdminAuthEmail('admin@inbox.com');
-      setAdminAuthPassword('Admin2026!');
-      setAdminLoginError('');
-    };
-
     const handleApplySellerSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
       if (!storeName.trim() || !legalName.trim() || !taxId.trim() || !businessAddress.trim() || !phone.trim()) {
@@ -1180,21 +1174,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               <p className="text-xs text-slate-500 mb-4">
                 Access your merchant panel to manage product SKUs, adjust prices, and fulfill orders.
               </p>
-
-              {/* Demo Helper Button */}
-              <div className="mb-4 p-3 rounded-xl bg-emerald-50/60 border border-emerald-100 flex items-center justify-between">
-                <div>
-                  <p className="text-[11px] font-bold text-emerald-900">Demo Store Admin</p>
-                  <p className="text-[10px] text-emerald-700 font-mono">admin@inbox.com</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={handleFillAdminDemo}
-                  className="px-2.5 py-1.5 bg-[#008060] hover:bg-[#006e52] text-white rounded-lg text-[10px] font-bold transition-colors cursor-pointer shadow-xs"
-                >
-                  Fill Credentials
-                </button>
-              </div>
 
               {adminLoginError && (
                 <div className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium text-left flex items-center gap-2">
