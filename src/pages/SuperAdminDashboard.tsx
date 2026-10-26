@@ -64,7 +64,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
   const [isLoading, setIsLoading] = useState(true);
 
   // Filters & Search
-  const [appFilter, setAppFilter] = useState<'ALL' | 'PENDING' | 'APPROVED' | 'REJECTED'>('PENDING');
+  const [appFilter, setAppFilter] = useState<'ALL' | SellerApplication['status']>('PENDING');
   const [searchTerm, setSearchTerm] = useState('');
 
   // Rejection modal
@@ -339,8 +339,8 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
       !searchTerm ||
       app.storeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       app.legalName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      app.taxId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (app.user?.email && app.user.email.toLowerCase().includes(searchTerm.toLowerCase()));
+      (app.taxId || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      app.email.toLowerCase().includes(searchTerm.toLowerCase());
     return matchStatus && matchSearch;
   });
 
@@ -630,7 +630,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
 
                         <div className="flex items-center gap-1.5">
                           <Mail className="size-3.5 text-slate-400 shrink-0" />
-                          <span className="truncate text-slate-800 font-mono text-[11px]">{app.user?.email || 'Registered Seller'}</span>
+                          <span className="truncate text-slate-800 font-mono text-[11px]">{app.email || 'Registered Seller'}</span>
                         </div>
 
                         <div className="flex items-center gap-1.5">
@@ -652,10 +652,10 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                       )}
 
                       {/* Review Notes (if rejected or reviewed) */}
-                      {app.reviewNotes && (
+                      {app.rejectionReason && (
                         <p className="text-xs text-rose-800 bg-rose-50 p-3 rounded-xl border border-rose-200">
                           <strong className="text-rose-900">Super Admin Note: </strong>
-                          {app.reviewNotes}
+                          {app.rejectionReason}
                         </p>
                       )}
 

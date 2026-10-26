@@ -324,7 +324,7 @@ export const Products: React.FC<ProductsProps> = ({
 
             {/* Sort Dropdown */}
             <div className="flex items-center gap-2 text-xs">
-              <span className="text-slate-400 font-semibold hidden sm:inline items-center gap-1">
+              <span className="text-slate-400 font-semibold hidden sm:inline-flex items-center gap-1">
                 <ArrowUpDown className="size-3.5" /> {t('catalog.sortBy')}
               </span>
               <select

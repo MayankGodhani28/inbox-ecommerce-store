@@ -312,9 +312,9 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
             <p className="text-sm text-slate-600 max-w-lg mx-auto mt-2">
               The Super Admin reviewed your application for <strong className="text-slate-900 font-bold">{existingApp.storeName}</strong> and left the following feedback:
             </p>
-            {existingApp.reviewNotes && (
+            {existingApp.rejectionReason && (
               <div className="max-w-md mx-auto my-4 p-3.5 rounded-xl bg-white border border-rose-200 text-rose-700 text-xs font-medium shadow-xs">
-                "{existingApp.reviewNotes}"
+                "{existingApp.rejectionReason}"
               </div>
             )}
             <p className="text-xs text-slate-500 mb-6">

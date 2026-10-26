@@ -7,11 +7,11 @@ async function runVerification() {
   console.log('[Verification] Starting Task 03 database constraint tests...');
 
   // Test 1: Verify admin user exists and password hash works
-  const admin = await prisma.user.findUnique({ where: { email: 'admin@inbox.com' } });
+  const admin = await prisma.user.findUnique({ where: { email: process.env.TEST_ADMIN_EMAIL || 'admin@example.test' } });
   if (!admin || admin.role !== Role.ADMIN) {
     throw new Error('Admin user was not found or role is not ADMIN');
   }
-  const passwordValid = await bcrypt.compare('AdminSecure2026!', admin.passwordHash);
+  const passwordValid = await bcrypt.compare(process.env.TEST_ADMIN_PASSWORD || '', admin.passwordHash);
   if (!passwordValid) {
     throw new Error('Admin password hash verification failed');
   }
@@ -22,7 +22,7 @@ async function runVerification() {
   try {
     await prisma.user.create({
       data: {
-        email: 'admin@inbox.com',
+        email: process.env.TEST_ADMIN_EMAIL || 'admin@example.test',
         name: 'Imposter',
         passwordHash: 'dummyhash123',
       },

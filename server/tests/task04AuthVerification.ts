@@ -137,7 +137,7 @@ async function runAuthTests() {
     const adminLoginRes = await csrfFetch(`${baseUrl}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: 'admin@inbox.com', password: 'AdminSecure2026!' }),
+      body: JSON.stringify({ email: process.env.TEST_ADMIN_EMAIL || 'admin@example.test', password: process.env.TEST_ADMIN_PASSWORD || '' }),
     });
     if (adminLoginRes.status !== 200) {
       throw new Error(`Admin login failed with status ${adminLoginRes.status}`);

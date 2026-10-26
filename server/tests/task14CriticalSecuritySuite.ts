@@ -106,7 +106,7 @@ async function runTask14CriticalSecuritySuite() {
   const patchProfileRes = await request('/me', {
     method: 'PATCH',
     headers: { Cookie: attackerCookie },
-    body: JSON.stringify({ role: 'ADMIN', isAdmin: true, email: 'admin@inbox.com' }),
+    body: JSON.stringify({ role: 'ADMIN', isAdmin: true, email: process.env.TEST_ADMIN_EMAIL || 'admin@example.test' }),
   });
   const refreshedUser = await prisma.user.findUnique({ where: { email: attackerEmail } });
   if (refreshedUser?.role === 'ADMIN' || refreshedUser?.email !== attackerEmail) {

@@ -159,6 +159,8 @@ export interface SellerApplication {
   description?: string | null;
   status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'SUSPENDED';
   rejectionReason?: string | null;
+  reviewedAt?: string | null;
+  reviewedBy?: string | null;
   createdAt: string;
 }
 

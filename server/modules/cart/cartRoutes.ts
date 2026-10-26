@@ -1,3 +1,4 @@
+import { formatProduct } from '../../utils/productSerializer.js';
 import { Router, Response } from 'express';
 import { prisma } from '../../db/prisma.js';
 import { requireAuth, AuthenticatedRequest } from '../../middleware/auth.js';
@@ -6,29 +7,7 @@ export const cartRouter = Router();
 
 cartRouter.use(requireAuth);
 
-function formatProduct(p: any) {
-  return {
-    id: p.id,
-    name: p.name,
-    brand: p.brand,
-    category: p.category,
-    description: p.description,
-    price: p.price / 100,
-    originalPrice: p.originalPrice / 100,
-    discount: p.discount,
-    rating: p.rating,
-    reviewCount: p.reviewCount,
-    stock: p.stock,
-    images: Array.isArray(p.images) ? p.images : [],
-    colors: Array.isArray(p.colors) ? p.colors : [],
-    sizes: Array.isArray(p.sizes) ? p.sizes : [],
-    specifications: typeof p.specifications === 'object' && p.specifications !== null ? p.specifications : {},
-    isTrending: p.isTrending,
-    isBestSeller: p.isBestSeller,
-    isNewArrival: p.isNewArrival,
-    isDealOfDay: p.isDealOfDay,
-  };
-}
+
 
 function formatCartItem(item: any) {
   return {

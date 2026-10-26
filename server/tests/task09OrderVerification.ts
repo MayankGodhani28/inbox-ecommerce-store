@@ -197,7 +197,7 @@ async function runOrderTests() {
     const adminLoginRes = await csrfFetch(`${baseUrl}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: 'admin@inbox.com', password: 'AdminSecure2026!' }),
+      body: JSON.stringify({ email: process.env.TEST_ADMIN_EMAIL || 'admin@example.test', password: process.env.TEST_ADMIN_PASSWORD || '' }),
     });
     const adminCookie = adminLoginRes.headers.get('set-cookie')!.split(';')[0];
 

@@ -1,3 +1,4 @@
+import { formatCatalogProduct as formatProduct } from '../../utils/productSerializer.js';
 import { Router, Response } from 'express';
 import { prisma } from '../../db/prisma.js';
 import { requireAuth, requireAdmin, AuthenticatedRequest } from '../../middleware/auth.js';
@@ -8,31 +9,7 @@ export const adminRouter = Router();
 adminRouter.use(requireAuth);
 adminRouter.use(requireAdmin);
 
-function formatProduct(p: any) {
-  return {
-    id: p.id,
-    name: p.name,
-    brand: p.brand,
-    category: p.category,
-    description: p.description,
-    price: p.price / 100,
-    originalPrice: p.originalPrice / 100,
-    discount: p.discount,
-    rating: p.rating,
-    reviewCount: p.reviewCount,
-    stock: p.stock,
-    images: Array.isArray(p.images) ? p.images : [],
-    colors: Array.isArray(p.colors) ? p.colors : [],
-    sizes: Array.isArray(p.sizes) ? p.sizes : [],
-    specifications: typeof p.specifications === 'object' && p.specifications !== null ? p.specifications : {},
-    isTrending: p.isTrending,
-    isBestSeller: p.isBestSeller,
-    isNewArrival: p.isNewArrival,
-    isDealOfDay: p.isDealOfDay,
-    isArchived: p.isArchived,
-    createdAt: p.createdAt.toISOString(),
-  };
-}
+
 
 function getSellerProductFilter(user: any) {
   const filters: any[] = [
@@ -334,7 +311,7 @@ adminRouter.get('/metrics', async (req: AuthenticatedRequest, res: Response): Pr
     .filter((o) => o.paymentStatus === 'Paid')
     .reduce((sum, o) => {
       const sellerItemsTotal = o.items
-        .filter((it) => sellerProductIds.includes(it.productId))
+        .filter((it) => it.productId !== null && sellerProductIds.includes(it.productId))
         .reduce((s, it) => s + it.totalPrice, 0);
       return sum + sellerItemsTotal;
     }, 0);
@@ -391,7 +368,7 @@ adminRouter.get('/customers', async (req: AuthenticatedRequest, res: Response): 
     const u = o.user;
     if (!u) continue;
     const sellerItemsTotal = o.items
-      .filter((it) => sellerProductIds.includes(it.productId))
+      .filter((it) => it.productId !== null && sellerProductIds.includes(it.productId))
       .reduce((s, it) => s + it.totalPrice, 0);
 
     const existing = customerMap.get(u.id) || {
