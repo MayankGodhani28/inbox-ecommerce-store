@@ -19,6 +19,7 @@ export const superAdminRouter = Router();
 // POST /api/super-admin/seller-apply - Apply to become a marketplace seller / admin
 superAdminRouter.post('/seller-apply', optionalAuth, async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   const {
+    name,
     storeName,
     legalName,
     email,
@@ -81,10 +82,16 @@ superAdminRouter.post('/seller-apply', optionalAuth, async (req: AuthenticatedRe
       return;
     }
     const passwordHash = await bcrypt.hash(password, 12);
+    const applicantPersonName =
+      (typeof name === 'string' && name.trim()) ||
+      (typeof req.user?.name === 'string' && req.user.name.trim()) ||
+      (cleanEmail ? cleanEmail.split('@')[0] : '') ||
+      'Merchant';
+
     const newUser = await prisma.user.create({
       data: {
         email: cleanEmail,
-        name: typeof legalName === 'string' && legalName.trim() ? legalName.trim() : storeName.trim(),
+        name: applicantPersonName,
         phone: phone.trim(),
         passwordHash,
         role: Role.CUSTOMER,

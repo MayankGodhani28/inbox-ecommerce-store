@@ -454,10 +454,42 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     return matchesSearch && matchesCategory;
   });
 
+  const getDisplayCustomerName = (order: Order) => {
+    const store = (user?.storeName || '').trim().toLowerCase();
+    const isStore = (val?: string | null) => Boolean(val && store && val.trim().toLowerCase() === store);
+
+    if (order.customerName && !isStore(order.customerName)) {
+      return order.customerName;
+    }
+    if (order.shippingAddress?.fullName && !isStore(order.shippingAddress.fullName)) {
+      return order.shippingAddress.fullName;
+    }
+    if (order.customerEmail) {
+      const prefix = order.customerEmail.split('@')[0];
+      return prefix.charAt(0).toUpperCase() + prefix.slice(1);
+    }
+    return 'Customer';
+  };
+
+  const getDisplayCustomerItemName = (cust: CustomerRecord) => {
+    const store = (user?.storeName || '').trim().toLowerCase();
+    const isStore = Boolean(cust.name && store && cust.name.trim().toLowerCase() === store);
+    if (isStore || !cust.name) {
+      if (cust.email) {
+        const prefix = cust.email.split('@')[0];
+        return prefix.charAt(0).toUpperCase() + prefix.slice(1);
+      }
+      return 'Customer';
+    }
+    return cust.name;
+  };
+
   const filteredOrders = orders.filter((o) => {
     const query = (globalAdminSearch || orderSearch).toLowerCase();
+    const displayName = getDisplayCustomerName(o).toLowerCase();
     const matchesSearch =
       o.id.toLowerCase().includes(query) ||
+      displayName.includes(query) ||
       o.customerName.toLowerCase().includes(query) ||
       o.customerEmail.toLowerCase().includes(query);
     const matchesStatus =
@@ -467,7 +499,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
   const filteredCustomers = customers.filter((c) => {
     const query = (globalAdminSearch || customerSearch).toLowerCase();
+    const displayName = getDisplayCustomerItemName(c).toLowerCase();
     return (
+      displayName.includes(query) ||
       c.name.toLowerCase().includes(query) ||
       c.email.toLowerCase().includes(query) ||
       c.phone.toLowerCase().includes(query) ||
@@ -1737,7 +1771,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         orders.slice(0, 5).map((o) => (
                           <tr key={o.id} className="hover:bg-[#FAFBFB] transition-colors">
                             <td className="py-3 px-4 font-bold text-[#202223] font-mono">#{o.id}</td>
-                            <td className="py-3 px-4 font-semibold text-neutral-700">{o.customerName}</td>
+                            <td className="py-3 px-4 font-semibold text-neutral-700">{getDisplayCustomerName(o)}</td>
                             <td className="py-3 px-4">
                               <span
                                 className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
@@ -1831,7 +1865,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                           <span className="text-[10px] text-neutral-400 block">{new Date(ord.date).toLocaleDateString()}</span>
                         </td>
                         <td className="py-3 px-4">
-                          <span className="font-bold text-[#202223] block">{ord.customerName}</span>
+                          <span className="font-bold text-[#202223] block">{getDisplayCustomerName(ord)}</span>
                           <span className="text-[11px] text-neutral-400 block font-mono">{ord.customerEmail}</span>
                         </td>
                         <td className="py-3 px-4">
@@ -2093,13 +2127,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                           <div className="flex items-center gap-3">
                             <div className="size-9 rounded-full bg-neutral-100 border border-[#E1E3E5] flex items-center justify-center font-bold text-neutral-700">
                               {cust.avatarUrl ? (
-                                <img src={cust.avatarUrl} alt={cust.name} className="size-full object-cover rounded-full" />
+                                <img src={cust.avatarUrl} alt={getDisplayCustomerItemName(cust)} className="size-full object-cover rounded-full" />
                               ) : (
-                                cust.name.slice(0, 1).toUpperCase()
+                                getDisplayCustomerItemName(cust).slice(0, 1).toUpperCase()
                               )}
                             </div>
                             <div>
-                              <span className="font-bold text-[#202223] block">{cust.name}</span>
+                              <span className="font-bold text-[#202223] block">{getDisplayCustomerItemName(cust)}</span>
                               <span className="text-[11px] text-neutral-400 block font-mono">{cust.email}</span>
                             </div>
                           </div>

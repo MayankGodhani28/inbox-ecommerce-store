@@ -7,12 +7,29 @@ import { calculateAuthoritativeQuote } from '../checkout/pricingService.js';
 export const orderRouter = Router();
 
 export function formatOrder(o: any) {
+  const store = o.user?.storeName?.trim().toLowerCase();
+  const isStore = (val?: string | null) => Boolean(val && store && val.trim().toLowerCase() === store);
+
+  let resolvedCustomerName =
+    (!isStore(o.customerName) && o.customerName) ||
+    (!isStore(o.shippingAddress?.fullName) && o.shippingAddress?.fullName) ||
+    (!isStore(o.user?.name) && o.user?.name);
+
+  if (!resolvedCustomerName) {
+    if (o.customerEmail && typeof o.customerEmail === 'string') {
+      const prefix = o.customerEmail.split('@')[0];
+      resolvedCustomerName = prefix.charAt(0).toUpperCase() + prefix.slice(1);
+    } else {
+      resolvedCustomerName = o.customerName || 'Customer';
+    }
+  }
+
   return {
     id: o.orderNumber || o.id,
     internalId: o.id,
     orderNumber: o.orderNumber,
     userId: o.userId,
-    customerName: o.customerName,
+    customerName: resolvedCustomerName,
     customerEmail: o.customerEmail,
     customerPhone: o.customerPhone,
     date: o.createdAt.toISOString(),
@@ -229,12 +246,22 @@ orderRouter.post('/', requireAuth, async (req: AuthenticatedRequest, res: Respon
       const estDays = deliveryMethod === 'Express' ? 2 : 4;
       const estimatedDeliveryDate = new Date(Date.now() + estDays * 24 * 60 * 60 * 1000);
 
-      // 5. Create Order record
+      const store = req.user?.storeName?.trim().toLowerCase();
+      const isStore = (val?: string | null) => Boolean(val && store && val.trim().toLowerCase() === store);
+
+      const resolvedCustomerName =
+        (!isStore(customerName) && typeof customerName === 'string' && customerName.trim()) ||
+        (!isStore(shippingAddress?.fullName) && typeof shippingAddress?.fullName === 'string' && shippingAddress.fullName.trim()) ||
+        (!isStore(req.user?.name) && typeof req.user?.name === 'string' && req.user.name.trim()) ||
+        (customerEmail ? String(customerEmail).split('@')[0] : null) ||
+        (req.user?.email ? req.user.email.split('@')[0] : null) ||
+        'Customer';
+
       const order = await tx.order.create({
         data: {
           orderNumber,
           userId,
-          customerName: customerName || req.user!.name,
+          customerName: resolvedCustomerName,
           customerEmail: customerEmail || req.user!.email,
           customerPhone: customerPhone || req.user!.phone || '',
           currency: 'USD',

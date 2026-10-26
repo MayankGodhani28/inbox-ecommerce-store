@@ -48,7 +48,16 @@ export const Checkout: React.FC<CheckoutProps> = ({ onNavigate, onOrderPlaced })
   const [isProcessing, setIsProcessing] = useState(false);
 
   // Address Form state
-  const [fullName, setFullName] = useState(user?.name || 'Alex Sharma');
+  const initialCustomerName = (() => {
+    if (!user) return 'Alex Sharma';
+    if (user.storeName && (user.name === user.storeName || user.name.toLowerCase().includes(user.storeName.toLowerCase()))) {
+      const prefix = user.email.split('@')[0];
+      return prefix.charAt(0).toUpperCase() + prefix.slice(1);
+    }
+    return user.name || 'Alex Sharma';
+  })();
+
+  const [fullName, setFullName] = useState(initialCustomerName);
   const [email, setEmail] = useState(user?.email || 'alex.sharma@example.com');
   const [phone, setPhone] = useState(user?.phone || '+91 98765 43210');
   const [street, setStreet] = useState(defaultAddress?.street || '402, Skyline Heights, MG Road');

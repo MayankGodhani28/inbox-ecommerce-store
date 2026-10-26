@@ -320,7 +320,7 @@ adminRouter.get('/orders', async (req: AuthenticatedRequest, res: Response): Pro
         },
       },
     },
-    include: { items: true, statusHistory: true },
+    include: { items: true, statusHistory: true, user: true },
     orderBy: { createdAt: 'desc' },
   });
 
@@ -428,9 +428,14 @@ adminRouter.get('/customers', async (req: AuthenticatedRequest, res: Response): 
       .filter((it): it is typeof it & { productId: string } => Boolean(it.productId && sellerProductIds.includes(it.productId)))
       .reduce((s, it) => s + it.totalPrice, 0);
 
+    const isStoreName = Boolean(u.storeName && u.name && u.name.trim().toLowerCase() === u.storeName.trim().toLowerCase());
+    const customerDisplayName = isStoreName || !u.name
+      ? (u.email ? u.email.split('@')[0].charAt(0).toUpperCase() + u.email.split('@')[0].slice(1) : 'Customer')
+      : u.name;
+
     const existing = customerMap.get(u.id) || {
       id: u.id,
-      name: u.name,
+      name: customerDisplayName,
       email: u.email,
       phone: u.phone || 'N/A',
       role: u.role.toLowerCase(),
