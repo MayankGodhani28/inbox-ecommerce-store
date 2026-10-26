@@ -101,4 +101,23 @@ export const productService = {
     );
     return data.helpfulCount;
   },
+
+  // Upload product image to Cloudinary (Admin/Seller only)
+  async uploadImage(file: File): Promise<{
+    url: string;
+    publicId: string;
+    format: string;
+    width: number;
+    height: number;
+  }> {
+    const formData = new FormData();
+    formData.append('image', file);
+    return apiClient.upload<{
+      url: string;
+      publicId: string;
+      format: string;
+      width: number;
+      height: number;
+    }>('/api/admin/upload', formData);
+  },
 };

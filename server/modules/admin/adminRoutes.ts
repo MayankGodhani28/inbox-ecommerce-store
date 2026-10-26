@@ -3,6 +3,8 @@ import { Router, Response } from 'express';
 import { prisma } from '../../db/prisma.js';
 import { requireAuth, requireAdmin, AuthenticatedRequest } from '../../middleware/auth.js';
 import { formatOrder } from '../orders/orderRoutes.js';
+import { singleImageUpload } from '../../middleware/upload.js';
+import { uploadImageToCloudinary, isCloudinaryConfigured } from '../../config/cloudinary.js';
 
 export const adminRouter = Router();
 
@@ -116,6 +118,61 @@ adminRouter.post('/products', async (req: AuthenticatedRequest, res: Response): 
 
   res.status(201).json({ data: { product: formatProduct(newProduct) } });
 });
+
+// POST /api/admin/upload - Upload product image to Cloudinary
+adminRouter.post(
+  '/upload',
+  singleImageUpload('image'),
+  async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    const file = (req as any).file as Express.Multer.File | undefined;
+    if (!file || !file.buffer) {
+      res.status(400).json({
+        error: { code: 'INVALID_INPUT', message: 'No image file uploaded. Please select an image file.' },
+      });
+      return;
+    }
+
+    if (!isCloudinaryConfigured()) {
+      res.status(503).json({
+        error: {
+          code: 'CLOUDINARY_NOT_CONFIGURED',
+          message:
+            'Cloudinary is not configured. Please add CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET (or CLOUDINARY_URL) to your .env file.',
+        },
+      });
+      return;
+    }
+
+    try {
+      const user = req.user!;
+      const cleanUserId = user.id.replace(/[^a-zA-Z0-9_-]/g, '');
+      const publicId = `prod_${cleanUserId}_${Date.now()}`;
+
+      const uploadResult = await uploadImageToCloudinary(file.buffer, {
+        folder: 'inbox-products',
+        publicId,
+      });
+
+      res.status(200).json({
+        data: {
+          url: uploadResult.url,
+          publicId: uploadResult.publicId,
+          format: uploadResult.format,
+          width: uploadResult.width,
+          height: uploadResult.height,
+          bytes: uploadResult.bytes,
+        },
+      });
+    } catch (err: any) {
+      res.status(502).json({
+        error: {
+          code: 'CLOUDINARY_UPLOAD_FAILED',
+          message: err?.message || 'Failed to upload image to Cloudinary',
+        },
+      });
+    }
+  }
+);
 
 // PATCH /api/admin/products/:id - Update product
 adminRouter.patch('/products/:id', async (req: AuthenticatedRequest, res: Response): Promise<void> => {

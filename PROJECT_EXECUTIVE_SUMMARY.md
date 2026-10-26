@@ -514,4 +514,27 @@ npm run load:spike
 > ```
 
 ---
+
+## ☁️ Cloudinary Product Image Upload Architecture
+
+### Overview
+Merchants and administrators can upload product images directly from their device when adding or editing products in the Merchant Admin Dashboard ([`AdminDashboard.tsx`](file:///c:/Users/Mayank%20godhani/OneDrive/Desktop/work/inBox/inbox-ecommerce-store/src/pages/AdminDashboard.tsx)).
+
+### Key Features
+1. **Interactive Upload Dropzone & File Picker:** Supports drag-and-drop and file browsing for `JPG`, `PNG`, `WEBP`, `GIF`, and `AVIF` formats (up to 10MB).
+2. **Instant Live Preview:** Displays the newly uploaded product thumbnail directly inside the product SKU modal.
+3. **Dual Input Mode:** Toggle seamlessly between **Cloudinary Upload** and **Direct Image URL** depending on merchant workflow.
+4. **Zero Local Storage Leakage:** Files are processed completely in-memory using `multer.memoryStorage()` and streamed directly to Cloudinary's optimized media CDN with automatic format and quality conversion (`fetch_format: auto, quality: auto`).
+5. **Secure Dedicated API:** Protected behind authentication & admin authorization at `POST /api/admin/upload`.
+
+### Environment Configuration (`.env`)
+```env
+# Cloudinary Image Upload Configuration
+CLOUDINARY_CLOUD_NAME=fx8jzgrg
+CLOUDINARY_API_KEY=885969465511578
+CLOUDINARY_API_SECRET=3gT2SUtagNZ8KEvmqELjEjaVAEA
+CLOUDINARY_URL=cloudinary://885969465511578:3gT2SUtagNZ8KEvmqELjEjaVAEA@fx8jzgrg
+```
+
+---
 *Report Generated for inBox E-Commerce Engineering Team.*

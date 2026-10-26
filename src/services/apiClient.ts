@@ -100,4 +100,10 @@ export const apiClient = {
     }),
   delete: <T = any>(url: string, options?: RequestInit) =>
     apiRequest<T>(url, { ...options, method: 'DELETE' }),
+  upload: <T = any>(url: string, formData: FormData, options?: RequestInit) =>
+    apiRequest<T>(url, {
+      ...options,
+      method: 'POST',
+      body: formData,
+    }),
 };

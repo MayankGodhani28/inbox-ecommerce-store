@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Product, Order, OrderStatus, ProductCategory, SellerApplication } from '../types';
 import { productService } from '../services/productService';
 import { orderService } from '../services/orderService';
@@ -52,6 +52,9 @@ import {
   EyeOff,
   KeyRound,
   ChevronDown,
+  UploadCloud,
+  Image as ImageIcon,
+  Loader2,
 } from 'lucide-react';
 
 interface AdminDashboardProps {
@@ -206,6 +209,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [pImage, setPImage] = useState('');
   const [pDesc, setPDesc] = useState('');
 
+  // Image Upload state for Cloudinary
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [uploadError, setUploadError] = useState('');
+  const [imageInputMode, setImageInputMode] = useState<'upload' | 'url'>('upload');
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
   // Search & filter states
   const [globalAdminSearch, setGlobalAdminSearch] = useState('');
   const [productSearch, setProductSearch] = useState('');
@@ -278,6 +287,41 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     }
   };
 
+  // Handle Cloudinary Image File Upload
+  const handleImageFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+      showToast('File Too Large', { message: 'Image must be less than 10MB', type: 'error' });
+      return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+      showToast('Invalid File', { message: 'Please select a valid image file (JPG, PNG, WEBP, GIF, AVIF)', type: 'error' });
+      return;
+    }
+
+    try {
+      setIsUploadingImage(true);
+      setUploadError('');
+      const result = await productService.uploadImage(file);
+      if (result && result.url) {
+        setPImage(result.url);
+        showToast('Image Uploaded', { message: 'Image successfully uploaded to Cloudinary!', type: 'success' });
+      }
+    } catch (err: any) {
+      const msg = err?.message || 'Failed to upload image to Cloudinary';
+      setUploadError(msg);
+      showToast('Upload Failed', { message: msg, type: 'error' });
+    } finally {
+      setIsUploadingImage(false);
+      if (e.target) {
+        e.target.value = '';
+      }
+    }
+  };
+
   // Open add product modal
   const handleOpenAddProduct = () => {
     if (user?.sellerStatus === 'SUSPENDED') {
@@ -294,8 +338,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     setPPrice('199.99');
     setPOriginalPrice('249.99');
     setPStock('25');
-    setPImage('https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80');
+    setPImage('');
     setPDesc('High quality product specifications and features.');
+    setUploadError('');
+    setIsUploadingImage(false);
+    setImageInputMode('upload');
     setIsProductModalOpen(true);
   };
 
@@ -310,12 +357,23 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     setPStock(prod.stock.toString());
     setPImage(prod.images[0] || '');
     setPDesc(prod.description);
+    setUploadError('');
+    setIsUploadingImage(false);
+    setImageInputMode(prod.images[0] ? 'upload' : 'upload');
     setIsProductModalOpen(true);
   };
 
   // Save product (Add or Edit)
   const handleSaveProduct = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isUploadingImage) {
+      showToast('Uploading', { message: 'Please wait until the image finishes uploading to Cloudinary', type: 'error' });
+      return;
+    }
+    if (!pImage || pImage.trim() === '') {
+      showToast('Validation Error', { message: 'Please upload a product image or provide an image URL', type: 'error' });
+      return;
+    }
     const priceNum = parseFloat(pPrice);
     const origPriceNum = parseFloat(pOriginalPrice);
     const stockNum = parseInt(pStock, 10);
@@ -2263,15 +2321,123 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               </div>
 
               <div>
-                <label className="font-bold text-neutral-700 block mb-1">Image URL</label>
-                <input
-                  type="url"
-                  required
-                  value={pImage}
-                  onChange={(e) => setPImage(e.target.value)}
-                  placeholder="https://images.unsplash.com/..."
-                  className="w-full px-3 py-2 rounded-lg border border-[#D2D5D8] focus:outline-none focus:border-[#008060]"
-                />
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="font-bold text-neutral-700">Product Image</label>
+                  <div className="flex items-center gap-1 bg-neutral-100 p-0.5 rounded-md text-[11px]">
+                    <button
+                      type="button"
+                      onClick={() => setImageInputMode('upload')}
+                      className={`px-2 py-0.5 rounded font-medium transition-colors cursor-pointer ${
+                        imageInputMode === 'upload'
+                          ? 'bg-white text-emerald-700 shadow-xs'
+                          : 'text-neutral-500 hover:text-neutral-800'
+                      }`}
+                    >
+                      ☁️ Cloudinary Upload
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setImageInputMode('url')}
+                      className={`px-2 py-0.5 rounded font-medium transition-colors cursor-pointer ${
+                        imageInputMode === 'url'
+                          ? 'bg-white text-emerald-700 shadow-xs'
+                          : 'text-neutral-500 hover:text-neutral-800'
+                      }`}
+                    >
+                      🔗 Direct URL
+                    </button>
+                  </div>
+                </div>
+
+                {imageInputMode === 'upload' ? (
+                  <div className="space-y-2">
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleImageFileChange}
+                      accept="image/png,image/jpeg,image/jpg,image/webp,image/gif,image/avif"
+                      className="hidden"
+                      id="product-image-file-input"
+                    />
+
+                    <div
+                      onClick={() => !isUploadingImage && fileInputRef.current?.click()}
+                      className={`border-2 border-dashed rounded-lg p-3 text-center cursor-pointer transition-all ${
+                        isUploadingImage
+                          ? 'border-emerald-300 bg-emerald-50/50 cursor-wait'
+                          : 'border-neutral-300 hover:border-emerald-500 hover:bg-neutral-50'
+                      }`}
+                    >
+                      {isUploadingImage ? (
+                        <div className="flex flex-col items-center justify-center py-2">
+                          <Loader2 className="size-6 text-[#008060] animate-spin mb-1.5" />
+                          <span className="font-semibold text-neutral-700">Uploading to Cloudinary...</span>
+                          <span className="text-[10px] text-neutral-400">Optimizing format and quality</span>
+                        </div>
+                      ) : pImage ? (
+                        <div className="flex items-center gap-3 text-left">
+                          <img
+                            src={pImage}
+                            alt="Uploaded Preview"
+                            className="size-14 rounded-md object-cover border border-neutral-200 shadow-xs flex-shrink-0"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80';
+                            }}
+                          />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-1.5 text-emerald-700 font-semibold text-xs">
+                              <CheckCircle2 className="size-3.5 text-emerald-600" />
+                              <span>Image Ready</span>
+                            </div>
+                            <p className="text-[11px] text-neutral-500 truncate" title={pImage}>
+                              {pImage}
+                            </p>
+                            <span className="text-[10px] text-emerald-600 font-medium underline mt-0.5 inline-block">
+                              Click to choose a different image
+                            </span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col items-center justify-center py-2 text-neutral-500">
+                          <UploadCloud className="size-6 text-neutral-400 mb-1" />
+                          <span className="font-semibold text-neutral-700">Click to upload product image</span>
+                          <span className="text-[10px] text-neutral-400">JPG, PNG, WEBP, GIF, AVIF up to 10MB</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {uploadError && (
+                      <div className="p-2 bg-rose-50 border border-rose-200 rounded-md text-[11px] text-rose-700 flex items-start gap-1.5">
+                        <AlertTriangle className="size-3.5 text-rose-500 flex-shrink-0 mt-0.5" />
+                        <span>{uploadError}</span>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div>
+                    <input
+                      type="url"
+                      required
+                      value={pImage}
+                      onChange={(e) => setPImage(e.target.value)}
+                      placeholder="https://images.unsplash.com/..."
+                      className="w-full px-3 py-2 rounded-lg border border-[#D2D5D8] focus:outline-none focus:border-[#008060]"
+                    />
+                    {pImage && (
+                      <div className="mt-1.5 flex items-center gap-2">
+                        <img
+                          src={pImage}
+                          alt="Preview"
+                          className="size-10 rounded border border-neutral-200 object-cover"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80';
+                          }}
+                        />
+                        <span className="text-[11px] text-neutral-500 truncate">{pImage}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
 
               <div>
@@ -2288,9 +2454,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               <div className="flex gap-2 mt-2">
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 bg-[#008060] hover:bg-[#006e52] text-white font-bold rounded-lg text-xs shadow-xs transition-colors cursor-pointer"
+                  disabled={isUploadingImage}
+                  className="flex-1 py-2.5 bg-[#008060] hover:bg-[#006e52] disabled:bg-neutral-300 disabled:cursor-not-allowed text-white font-bold rounded-lg text-xs shadow-xs transition-colors cursor-pointer flex items-center justify-center gap-1.5"
                 >
-                  Save Product
+                  {isUploadingImage ? (
+                    <>
+                      <Loader2 className="size-3.5 animate-spin" />
+                      Uploading Image...
+                    </>
+                  ) : (
+                    'Save Product'
+                  )}
                 </button>
                 <button
                   type="button"
