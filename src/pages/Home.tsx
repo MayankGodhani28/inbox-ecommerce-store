@@ -124,31 +124,31 @@ export const Home: React.FC<HomeProps> = ({
                 </div>
 
                 {/* Slide Content */}
-                <div className="relative z-20 max-w-2xl px-6 sm:px-12 py-12 flex flex-col items-start gap-4">
+                <div className="relative z-20 max-w-2xl px-5 sm:px-12 py-10 sm:py-14 flex flex-col items-start gap-3 sm:gap-4">
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E84A27] text-white text-xs font-black tracking-wider uppercase shadow-md">
                     <Flame className="size-3.5" />
                     {t(slide.discountKey)}
                   </span>
 
-                  <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
+                  <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-tight">
                     {t(slide.titleKey)}
                   </h1>
 
-                  <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-lg">
+                  <p className="text-xs sm:text-base text-slate-300 leading-relaxed max-w-lg">
                     {t(slide.subtitleKey)}
                   </p>
 
-                  <div className="flex flex-wrap items-center gap-3.5 mt-2">
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-2 w-full sm:w-auto">
                     <button
                       onClick={() => onNavigate('products', slide.category)}
-                      className="px-6 py-3.5 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-extrabold text-sm shadow-lg hover:shadow-xl transition-all flex items-center gap-2 active:scale-95 cursor-pointer"
+                      className="px-6 py-3.5 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-extrabold text-sm shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
                     >
                       <span>{t(slide.ctaKey)}</span>
                       <ArrowRight className="size-4 text-[#E84A27]" />
                     </button>
                     <button
                       onClick={() => onNavigate('products', 'deals')}
-                      className="px-5 py-3.5 rounded-xl bg-white/15 hover:bg-white/25 text-white font-bold text-sm border border-white/20 backdrop-blur-md transition-colors cursor-pointer"
+                      className="px-5 py-3.5 rounded-xl bg-white/15 hover:bg-white/25 text-white font-bold text-sm border border-white/20 backdrop-blur-md transition-colors text-center cursor-pointer"
                     >
                       {t('home.viewAllDeals')}
                     </button>

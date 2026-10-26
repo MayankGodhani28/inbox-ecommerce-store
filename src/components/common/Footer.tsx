@@ -47,7 +47,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
     <footer className="bg-slate-950 text-slate-400 text-xs border-t border-slate-900 mt-20">
       {/* Guarantees Strip */}
       <div className="border-b border-slate-800/80 py-8 px-4 sm:px-6">
-        <div className="max-w-[1500px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-slate-300">
+        <div className="max-w-[1500px] mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-slate-300">
           <div className="flex items-center gap-3.5">
             <div className="size-11 rounded-2xl bg-orange-500/10 border border-orange-500/20 text-[#E84A27] flex items-center justify-center shrink-0">
               <Truck className="size-5" />

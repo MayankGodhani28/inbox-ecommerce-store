@@ -224,18 +224,18 @@ export const OrderTracking: React.FC<OrderTrackingProps> = ({
             </div>
 
             {/* Stepper Timeline */}
-            <div className="py-8">
-              <div className="grid grid-cols-2 sm:grid-cols-6 gap-4">
+            <div className="py-6 sm:py-8 overflow-x-auto no-scrollbar">
+              <div className="min-w-[580px] sm:min-w-0 grid grid-cols-6 gap-4">
                 {STEP_DEFINITIONS.map((s, idx) => {
                   const isDone = currentStepIndex >= idx;
                   const isCurrent = currentStepIndex === idx;
 
                   return (
                     <div key={s.status} className="flex flex-col items-center text-center relative">
-                      {/* Connecting line (desktop) */}
+                      {/* Connecting line */}
                       {idx < STEP_DEFINITIONS.length - 1 && (
                         <div
-                          className={`hidden sm:block absolute top-4 left-1/2 w-full h-1 z-0 ${
+                          className={`absolute top-4 left-1/2 w-full h-1 z-0 ${
                             currentStepIndex > idx ? 'bg-orange-500' : 'bg-slate-200'
                           }`}
                         />
@@ -259,7 +259,7 @@ export const OrderTracking: React.FC<OrderTrackingProps> = ({
                       >
                         {t(s.labelKey)}
                       </span>
-                      <span className="text-[10px] text-slate-400 mt-0.5 hidden sm:block">
+                      <span className="text-[10px] text-slate-400 mt-0.5">
                         {t(s.descKey)}
                       </span>
                     </div>

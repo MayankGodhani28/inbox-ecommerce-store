@@ -133,20 +133,9 @@ superAdminRouter.post('/seller-apply', optionalAuth, async (req: AuthenticatedRe
 });
 
 // GET /api/super-admin/my-application - Check status of current seller application
-superAdminRouter.get('/my-application', optionalAuth, async (req: AuthenticatedRequest, res: Response): Promise<void> => {
-  const rawEmail = typeof req.query.email === 'string' ? req.query.email.trim().toLowerCase() : undefined;
-  // Strict validation against allowlisted email pattern to guard against SSRF / URL injection
-  const EMAIL_ALLOWLIST_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
-  const validatedEmail = rawEmail && EMAIL_ALLOWLIST_REGEX.test(rawEmail) && !rawEmail.includes('://') ? rawEmail : undefined;
-  const userEmail = req.user?.email || validatedEmail;
-
-  if (!userEmail) {
-    res.status(200).json({ data: { application: null } });
-    return;
-  }
-
+superAdminRouter.get('/my-application', requireAuth, async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   const application = await prisma.sellerApplication.findFirst({
-    where: req.user ? { userId: req.user.id } : { email: userEmail },
+    where: { userId: req.user!.id, email: req.user!.email },
     orderBy: { createdAt: 'desc' },
   });
   res.status(200).json({ data: { application } });

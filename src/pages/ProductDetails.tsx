@@ -542,12 +542,12 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
                   {Object.entries(product.specifications).map(([key, val], idx) => (
                     <div
                       key={key}
-                      className={`grid grid-cols-2 p-3 text-xs ${
+                      className={`grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-4 p-3 text-xs ${
                         idx % 2 === 0 ? 'bg-slate-50/70' : 'bg-white'
                       }`}
                     >
                       <span className="font-bold text-slate-700">{key}</span>
-                      <span className="text-slate-600">{String(val)}</span>
+                      <span className="text-slate-600 break-words">{String(val)}</span>
                     </div>
                   ))}
                 </div>

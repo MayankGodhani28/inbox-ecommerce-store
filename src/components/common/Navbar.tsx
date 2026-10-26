@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { BrandLogo } from './BrandLogo';
 import { LanguageSelector } from './LanguageSelector';
 import { useTranslation } from '../../context/LanguageContext';
@@ -15,6 +16,7 @@ import {
   Menu,
   X,
   ChevronDown,
+  ChevronRight,
   Package,
   LogOut,
   MapPin,
@@ -105,18 +107,19 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
       {/* Top Presentation & Utilities Bar */}
-      <div className="bg-slate-900 text-slate-300 text-xs py-1.5 px-4 sm:px-6">
-        <div className="max-w-[1500px] mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div className="bg-slate-900 text-slate-300 text-xs py-1.5 px-3 sm:px-6">
+        <div className="max-w-[1500px] mx-auto flex items-center justify-between gap-2">
           {/* Left: Presentation notice */}
-          <div className="flex items-center gap-2">
-            <span className="flex size-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-[11px] text-slate-300">
-              <strong className="text-white font-semibold">{t('nav.demoTitle')}</strong> — {t('nav.demoSubtitle')}
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="flex size-2 rounded-full bg-emerald-400 shrink-0 animate-pulse" />
+            <span className="text-[11px] text-slate-300 truncate">
+              <strong className="text-white font-semibold">{t('nav.demoTitle')}</strong>
+              <span className="hidden sm:inline"> — {t('nav.demoSubtitle')}</span>
             </span>
           </div>
 
           {/* Right: Language Selector + Quick Demo Persona Switcher */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             {/* 3-Language Selector: ENG, GER, DUT */}
             <LanguageSelector variant="segmented" />
 
@@ -131,10 +134,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {isAdmin && (
                   <button
                     onClick={() => onNavigate('admin')}
-                    className="px-3 py-1 rounded-lg text-[11px] font-extrabold bg-[#009FE3] hover:bg-[#0087c2] text-white transition-all cursor-pointer shadow-sm flex items-center gap-1.5"
+                    className="px-2.5 sm:px-3 py-1 rounded-lg text-[11px] font-extrabold bg-[#009FE3] hover:bg-[#0087c2] text-white transition-all cursor-pointer shadow-sm flex items-center gap-1.5"
                   >
                     <ShieldCheck className="size-3.5" />
-                    <span>Admin Portal</span>
+                    <span className="hidden xs:inline">Admin Portal</span>
+                    <span className="xs:hidden">Admin</span>
                   </button>
                 )}
               </div>
@@ -370,10 +374,29 @@ export const Navbar: React.FC<NavbarProps> = ({
               {t('nav.go')}
             </button>
           </form>
+
+          {/* Quick horizontal categories swipe bar on mobile */}
+          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-2 mt-1">
+            <button
+              onClick={() => onNavigate('products')}
+              className="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-orange-50 hover:text-orange-600 text-slate-700 text-[11px] font-bold shrink-0 transition-colors cursor-pointer"
+            >
+              {t('nav.allProducts')}
+            </button>
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => onNavigate('products', cat)}
+                className="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-orange-50 hover:text-orange-600 text-slate-700 text-[11px] font-medium shrink-0 transition-colors cursor-pointer"
+              >
+                {tCategory(cat)}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Sub-Navigation: Categories Bar */}
+      {/* Sub-Navigation: Categories Bar (Desktop) */}
       <div className="hidden md:block bg-slate-50/80 border-t border-slate-200/60 px-4 sm:px-6">
         <div className="max-w-[1500px] mx-auto flex items-center justify-between text-xs font-semibold text-slate-700">
           <div className="flex items-center gap-1 overflow-x-auto py-2">
@@ -419,101 +442,180 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* Mobile Menu Drawer */}
-      {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-x-0 top-[110px] bottom-0 bg-slate-900/40 backdrop-blur-sm z-50">
-          <div className="bg-white border-b border-slate-200 p-5 shadow-2xl max-h-[85vh] overflow-y-auto flex flex-col gap-4 animate-fade-in">
-            {/* Mobile Language Switcher */}
-            <div className="pb-3 border-b border-slate-100">
-              <LanguageSelector variant="mobile" />
-            </div>
+      {/* Mobile Menu Drawer (Slide-over with overlay) */}
+      {mobileMenuOpen &&
+        createPortal(
+          <div className="md:hidden fixed inset-0 z-50 flex justify-end bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+            {/* Backdrop click to close */}
+            <div
+              className="flex-1"
+              onClick={() => setMobileMenuOpen(false)}
+              aria-label="Close menu backdrop"
+            />
 
-            <div className="flex flex-col gap-1">
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">{t('nav.mainPages')}</span>
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onNavigate('home');
-                }}
-                className="text-left py-2 text-sm font-bold text-slate-800 cursor-pointer"
-              >
-                {t('nav.home')}
-              </button>
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onNavigate('products');
-                }}
-                className="text-left py-2 text-sm font-bold text-slate-800 cursor-pointer"
-              >
-                {t('nav.browseAllProducts')}
-              </button>
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onNavigate('cart');
-                }}
-                className="text-left py-2 text-sm font-bold text-slate-800 flex items-center justify-between cursor-pointer"
-              >
-                <span>{t('nav.shoppingCart')}</span>
-                <span className="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-bold">
-                  {totalItemsCount}
-                </span>
-              </button>
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onNavigate('wishlist');
-                }}
-                className="text-left py-2 text-sm font-bold text-slate-800 flex items-center justify-between cursor-pointer"
-              >
-                <span>{t('nav.savedWishlist')}</span>
-                <span className="text-xs bg-rose-100 text-rose-700 px-2 py-0.5 rounded-full font-bold">
-                  {wishlistCount}
-                </span>
-              </button>
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onNavigate('orders');
-                }}
-                className="text-left py-2 text-sm font-bold text-slate-800 cursor-pointer"
-              >
-                {t('nav.trackOrders')}
-              </button>
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onNavigate('admin');
-                }}
-                className="text-left py-2 text-sm font-bold text-blue-600 cursor-pointer"
-              >
-                {t('nav.adminDashboardDemo')}
-              </button>
-            </div>
+            {/* Drawer container */}
+            <div className="w-full max-w-xs sm:max-w-sm bg-white h-full shadow-2xl flex flex-col justify-between overflow-y-auto animate-scale">
+              {/* Header */}
+              <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+                <BrandLogo size="sm" />
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-1.5 rounded-xl text-slate-500 hover:bg-slate-100 hover:text-slate-900 cursor-pointer"
+                  aria-label="Close menu"
+                >
+                  <X className="size-5" />
+                </button>
+              </div>
 
-            <div className="border-t border-slate-100 pt-3">
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
-                {t('nav.browseByCategory')}
-              </span>
-              <div className="grid grid-cols-2 gap-2">
-                {CATEGORIES.map((cat) => (
+              {/* Scrollable Body */}
+              <div className="p-4 flex-1 flex flex-col gap-4 overflow-y-auto">
+                {/* User Account / Auth Card */}
+                {isAuthenticated && user ? (
+                  <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="size-9 rounded-full bg-[#E84A27] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+                        {user.name.charAt(0).toUpperCase()}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-xs font-bold text-slate-900 truncate">{user.name}</p>
+                        <p className="text-[11px] text-slate-500 truncate">{user.email}</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        logout();
+                      }}
+                      className="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg cursor-pointer"
+                      title={t('nav.signOut')}
+                    >
+                      <LogOut className="size-4" />
+                    </button>
+                  </div>
+                ) : (
                   <button
-                    key={cat}
                     onClick={() => {
                       setMobileMenuOpen(false);
-                      onNavigate('products', cat);
+                      onOpenAuthModal ? onOpenAuthModal() : onNavigate('login');
                     }}
-                    className="text-left p-2 rounded-lg bg-slate-50 text-xs font-semibold text-slate-700 hover:bg-orange-50 hover:text-orange-600 cursor-pointer"
+                    className="w-full py-2.5 px-4 bg-[#E84A27] hover:bg-[#d63f1f] text-white font-extrabold text-xs rounded-xl shadow-md flex items-center justify-center gap-2 cursor-pointer transition-colors"
                   >
-                    {tCategory(cat)}
+                    <UserIcon className="size-4" />
+                    <span>{t('nav.signInRegister')}</span>
                   </button>
-                ))}
+                )}
+
+                {/* Main Navigation links */}
+                <div className="flex flex-col gap-1">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{t('nav.mainPages')}</span>
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      onNavigate('home');
+                    }}
+                    className="text-left px-3 py-2 rounded-xl text-xs font-bold text-slate-800 hover:bg-slate-50 flex items-center justify-between cursor-pointer"
+                  >
+                    <span>{t('nav.home')}</span>
+                    <ChevronRight className="size-3.5 text-slate-400" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      onNavigate('products');
+                    }}
+                    className="text-left px-3 py-2 rounded-xl text-xs font-bold text-slate-800 hover:bg-slate-50 flex items-center justify-between cursor-pointer"
+                  >
+                    <span>{t('nav.browseAllProducts')}</span>
+                    <ChevronRight className="size-3.5 text-slate-400" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      onNavigate('cart');
+                    }}
+                    className="text-left px-3 py-2 rounded-xl text-xs font-bold text-slate-800 hover:bg-slate-50 flex items-center justify-between cursor-pointer"
+                  >
+                    <span>{t('nav.shoppingCart')}</span>
+                    <span className="text-[11px] bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-bold">
+                      {totalItemsCount}
+                    </span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      onNavigate('wishlist');
+                    }}
+                    className="text-left px-3 py-2 rounded-xl text-xs font-bold text-slate-800 hover:bg-slate-50 flex items-center justify-between cursor-pointer"
+                  >
+                    <span>{t('nav.savedWishlist')}</span>
+                    <span className="text-[11px] bg-rose-100 text-rose-700 px-2 py-0.5 rounded-full font-bold">
+                      {wishlistCount}
+                    </span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      onNavigate('orders');
+                    }}
+                    className="text-left px-3 py-2 rounded-xl text-xs font-bold text-slate-800 hover:bg-slate-50 flex items-center justify-between cursor-pointer"
+                  >
+                    <span>{t('nav.trackOrders')}</span>
+                    <ChevronRight className="size-3.5 text-slate-400" />
+                  </button>
+                  {isAuthenticated && (
+                    <button
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        onNavigate('profile');
+                      }}
+                      className="text-left px-3 py-2 rounded-xl text-xs font-bold text-slate-800 hover:bg-slate-50 flex items-center justify-between cursor-pointer"
+                    >
+                      <span>{t('nav.myProfile')}</span>
+                      <ChevronRight className="size-3.5 text-slate-400" />
+                    </button>
+                  )}
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      onNavigate('admin');
+                    }}
+                    className="text-left px-3 py-2 rounded-xl text-xs font-bold text-emerald-700 hover:bg-emerald-50 flex items-center justify-between cursor-pointer"
+                  >
+                    <span>{t('nav.adminDashboardDemo')}</span>
+                    <span className="text-[10px] px-1.5 py-0.5 bg-emerald-100 text-emerald-800 rounded font-bold">Portal</span>
+                  </button>
+                </div>
+
+                {/* Categories Grid */}
+                <div className="border-t border-slate-100 pt-3">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
+                    {t('nav.browseByCategory')}
+                  </span>
+                  <div className="grid grid-cols-2 gap-2">
+                    {CATEGORIES.map((cat) => (
+                      <button
+                        key={cat}
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          onNavigate('products', cat);
+                        }}
+                        className="text-left p-2 rounded-xl bg-slate-50 text-[11px] font-semibold text-slate-700 hover:bg-orange-50 hover:text-orange-600 cursor-pointer transition-colors"
+                      >
+                        {tCategory(cat)}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom Footer in Drawer: Language Selector */}
+              <div className="p-4 border-t border-slate-100 bg-slate-50/50">
+                <LanguageSelector variant="mobile" />
               </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
     </header>
   );
 };

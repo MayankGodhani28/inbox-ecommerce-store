@@ -280,6 +280,7 @@ export const Products: React.FC<ProductsProps> = ({
         {/* Desktop Sidebar (Cols 1-3) */}
         <div className="hidden lg:block lg:col-span-3 sticky top-24">
           <FilterSidebar
+            variant="desktop"
             filters={filters}
             onFilterChange={(f: FilterState) => {
               setFilters(f);
@@ -502,41 +503,21 @@ export const Products: React.FC<ProductsProps> = ({
         </div>
       </div>
 
-      {/* Mobile Filters Drawer Modal */}
-      {mobileFilterOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm lg:hidden">
-          <div className="relative w-full max-w-md bg-white rounded-3xl p-6 shadow-2xl max-h-[85vh] overflow-y-auto">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-200 mb-4">
-              <h3 className="text-base font-bold text-slate-900">{t('filters.filterProducts')}</h3>
-              <button
-                onClick={() => setMobileFilterOpen(false)}
-                className="p-1 rounded-lg text-slate-400 hover:text-slate-600 cursor-pointer"
-              >
-                <X className="size-5" />
-              </button>
-            </div>
-
-            <FilterSidebar
-              filters={filters}
-              onFilterChange={(f: FilterState) => {
-                setFilters(f);
-                setCurrentPage(1);
-              }}
-              onResetFilters={handleResetFilters}
-              availableBrands={availableBrands}
-              categories={CATEGORIES}
-              totalProductsCount={sortedProducts.length}
-            />
-
-            <button
-              onClick={() => setMobileFilterOpen(false)}
-              className="mt-6 w-full py-3 bg-[#E84A27] text-white font-bold rounded-xl text-xs shadow-md cursor-pointer"
-            >
-              {t('filters.showResults', { count: sortedProducts.length })}
-            </button>
-          </div>
-        </div>
-      )}
+      {/* Mobile Filters Drawer */}
+      <FilterSidebar
+        variant="mobile-drawer"
+        isOpenMobile={mobileFilterOpen}
+        onCloseMobile={() => setMobileFilterOpen(false)}
+        filters={filters}
+        onFilterChange={(f: FilterState) => {
+          setFilters(f);
+          setCurrentPage(1);
+        }}
+        onResetFilters={handleResetFilters}
+        availableBrands={availableBrands}
+        categories={CATEGORIES}
+        totalProductsCount={sortedProducts.length}
+      />
     </div>
   );
 };

@@ -13,6 +13,7 @@ interface FilterSidebarProps {
   totalProductsCount: number;
   isOpenMobile?: boolean;
   onCloseMobile?: () => void;
+  variant?: 'desktop' | 'mobile-drawer' | 'both';
 }
 
 export const FilterSidebar: React.FC<FilterSidebarProps> = ({
@@ -24,6 +25,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   totalProductsCount,
   isOpenMobile = false,
   onCloseMobile,
+  variant = 'both',
 }) => {
   const { t, tCategory } = useTranslation();
 
@@ -232,27 +234,34 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
     </div>
   );
 
+  const showDesktop = variant === 'desktop' || variant === 'both';
+  const showMobile = variant === 'mobile-drawer' || variant === 'both';
+
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden lg:block w-64 shrink-0 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm h-fit sticky top-24">
-        {content}
-      </aside>
+      {showDesktop && (
+        <aside className="w-full bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs h-fit">
+          {content}
+        </aside>
+      )}
 
       {/* Mobile Drawer */}
-      {isOpenMobile && (
-        <div className="fixed inset-0 z-50 lg:hidden flex">
+      {showMobile && isOpenMobile && (
+        <div className="fixed inset-0 z-50 lg:hidden flex justify-end bg-slate-900/60 backdrop-blur-xs animate-fade-in">
           <div
-            className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity"
+            className="flex-1"
             onClick={onCloseMobile}
+            aria-label="Close filter backdrop"
           />
-          <div className="relative ml-auto size-full max-w-xs bg-white p-6 shadow-2xl overflow-y-auto z-10 flex flex-col justify-between">
+          <div className="relative w-full max-w-xs sm:max-w-sm bg-white p-6 shadow-2xl overflow-y-auto z-10 flex flex-col justify-between animate-scale">
             <div>
               <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
                 <span className="font-bold text-slate-900 text-base">{t('filters.filterProducts')}</span>
                 <button
                   onClick={onCloseMobile}
-                  className="p-1 rounded-lg text-slate-400 hover:text-slate-600 cursor-pointer"
+                  className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer"
+                  aria-label="Close filters"
                 >
                   <X className="size-5" />
                 </button>
@@ -261,7 +270,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
             </div>
             <button
               onClick={onCloseMobile}
-              className="mt-6 w-full py-3 bg-[#E84A27] text-white rounded-xl font-bold text-sm shadow-md cursor-pointer"
+              className="mt-6 w-full py-3 bg-[#E84A27] hover:bg-[#d63f1f] text-white rounded-xl font-bold text-xs shadow-md transition-colors cursor-pointer"
             >
               {t('filters.showResults', { count: totalProductsCount })}
             </button>
