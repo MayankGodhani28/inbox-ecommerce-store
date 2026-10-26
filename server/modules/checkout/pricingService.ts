@@ -83,7 +83,11 @@ export async function calculateAuthoritativeQuote(request: QuoteRequest): Promis
   let totalItemsCount = 0;
 
   for (const it of inputItems) {
-    if (!it.productId) continue;
+    if (!it || typeof it.productId !== 'string' || !Number.isSafeInteger(it.quantity) || it.quantity <= 0) {
+      const error = new Error('Each item must have a productId and a positive integer quantity');
+      Object.assign(error, { status: 400 });
+      throw error;
+    }
 
     const product = await prisma.product.findUnique({
       where: { id: it.productId },
@@ -99,7 +103,7 @@ export async function calculateAuthoritativeQuote(request: QuoteRequest): Promis
       continue;
     }
 
-    let qty = Math.max(1, parseInt(String(it.quantity), 10) || 1);
+    let qty = it.quantity;
     if (qty > product.stock) {
       warnings.push(`Quantity for "${product.name}" was adjusted to available stock (${product.stock}).`);
       qty = product.stock;

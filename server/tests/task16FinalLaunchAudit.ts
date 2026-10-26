@@ -1,3 +1,4 @@
+import { csrfFetch } from './httpClient.js';
 import { prisma } from '../db/prisma.js';
 import bcrypt from 'bcryptjs';
 
@@ -15,7 +16,7 @@ async function request(
   path: string,
   options: RequestInit = {}
 ): Promise<{ status: number; body: ApiResponse; headers: Headers }> {
-  const res = await fetch(`${API_BASE}${path}`, {
+  const res = await csrfFetch(`${API_BASE}${path}`, {
     ...options,
     headers: {
       'Content-Type': 'application/json',

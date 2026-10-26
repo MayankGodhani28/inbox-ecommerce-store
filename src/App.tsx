@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { LanguageProvider } from './context/LanguageContext';
 import { ToastProvider } from './context/ToastContext';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
 import { Product, Order } from './types';
@@ -26,12 +26,11 @@ import { AdminDashboard } from './pages/AdminDashboard';
 import { SuperAdminDashboard } from './pages/SuperAdminDashboard';
 import { SellerOnboard } from './pages/SellerOnboard';
 import { Login } from './pages/Login';
-import { useAuth } from './context/AuthContext';
 import { SlidersHorizontal, Eye, ShieldCheck, Plus, Sparkles } from 'lucide-react';
 
 function parseRouteFromUrl(): { tab: string; param?: string } {
   if (typeof window === 'undefined') return { tab: 'home' };
-  const pathname = window.location.pathname;
+  const { pathname } = window.location;
   if (pathname === '/super-admin' || pathname.startsWith('/super-admin/')) {
     return { tab: 'super-admin' };
   }
@@ -91,7 +90,9 @@ function MainApp() {
 
   // Load products from PostgreSQL catalog
   const refreshProducts = () => {
-    productService.getProducts().then((data) => setProducts(data));
+    productService.getProducts().then((data) => setProducts(data)).catch((error) => {
+      console.error('Could not refresh catalog:', error);
+    });
   };
 
   useEffect(() => {

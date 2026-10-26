@@ -1,3 +1,4 @@
+import { csrfFetch } from './httpClient.js';
 import { prisma } from '../db/prisma';
 
 const API_BASE = 'http://localhost:4000/api';
@@ -11,7 +12,7 @@ interface ApiResponse<T = any> {
 }
 
 async function request(path: string, options: RequestInit = {}): Promise<{ status: number; body: ApiResponse; headers: Headers }> {
-  const res = await fetch(`${API_BASE}${path}`, {
+  const res = await csrfFetch(`${API_BASE}${path}`, {
     ...options,
     headers: {
       'Content-Type': 'application/json',
@@ -47,7 +48,7 @@ async function runTask14CriticalSecuritySuite() {
 
   // 2. Body Size Limit (> 1MB) Rejection
   const giantPayload = { data: 'A'.repeat(1024 * 1024 + 50) };
-  const giantRes = await fetch(`${API_BASE}/checkout/quote`, {
+  const giantRes = await csrfFetch(`${API_BASE}/checkout/quote`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(giantPayload),

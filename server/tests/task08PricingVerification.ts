@@ -1,3 +1,4 @@
+import { csrfFetch } from './httpClient.js';
 import { createApp } from '../app.js';
 import { prisma } from '../db/prisma.js';
 import type { Server } from 'http';
@@ -17,7 +18,7 @@ async function runPricingTests() {
 
   try {
     // 1. Empty cart quotation
-    const emptyQuoteRes = await fetch(`${baseUrl}/api/checkout/quote`, {
+    const emptyQuoteRes = await csrfFetch(`${baseUrl}/api/checkout/quote`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ items: [] }),
@@ -52,7 +53,7 @@ async function runPricingTests() {
     // Low total quote (< $75)
     // Create a temporary mock product or use quantity to control subtotal
     const lowQty = 1;
-    const lowQuoteRes = await fetch(`${baseUrl}/api/checkout/quote`, {
+    const lowQuoteRes = await csrfFetch(`${baseUrl}/api/checkout/quote`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -68,7 +69,7 @@ async function runPricingTests() {
     console.log(`✓ Product quote: subtotal $${lowQuote.subtotal.toFixed(2)}, standard delivery $${lowQuote.deliveryFee.toFixed(2)}.`);
 
     // 3. Invalid & Inactive coupon tests
-    const invalidCouponRes = await fetch(`${baseUrl}/api/coupons/validate`, {
+    const invalidCouponRes = await csrfFetch(`${baseUrl}/api/coupons/validate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -99,7 +100,7 @@ async function runPricingTests() {
       },
     });
 
-    const minSpendFailRes = await fetch(`${baseUrl}/api/coupons/validate`, {
+    const minSpendFailRes = await csrfFetch(`${baseUrl}/api/coupons/validate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -117,7 +118,7 @@ async function runPricingTests() {
     console.log(`✓ Coupon minimum spend requirement strictly enforced: "${minSpendError.message}".`);
 
     // 5. Valid coupon percentage & discount calculation
-    const validCouponRes = await fetch(`${baseUrl}/api/coupons/validate`, {
+    const validCouponRes = await csrfFetch(`${baseUrl}/api/coupons/validate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -153,7 +154,7 @@ async function runPricingTests() {
       },
     });
 
-    const maxDiscountRes = await fetch(`${baseUrl}/api/checkout/quote`, {
+    const maxDiscountRes = await csrfFetch(`${baseUrl}/api/checkout/quote`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -168,7 +169,7 @@ async function runPricingTests() {
     console.log('✓ Maximum discount cap strictly enforced ($75.00 cap applied on $100 raw discount).');
 
     // 7. Free shipping coupon test
-    const freeShipQuoteRes = await fetch(`${baseUrl}/api/checkout/quote`, {
+    const freeShipQuoteRes = await csrfFetch(`${baseUrl}/api/checkout/quote`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -185,7 +186,7 @@ async function runPricingTests() {
 
     // 8. Tax and total rounding verification
     // On $40 subtotal with $4 discount: taxable = $36.00. Tax at 8% = $2.88. Delivery ($4.99) => Total = $43.87
-    const taxCheckQuoteRes = await fetch(`${baseUrl}/api/checkout/quote`, {
+    const taxCheckQuoteRes = await csrfFetch(`${baseUrl}/api/checkout/quote`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -204,7 +205,7 @@ async function runPricingTests() {
     console.log(`✓ Tax (8%) and final total verified with exact rounding: Tax $${taxQuote.tax}, Total $${taxQuote.total}.`);
 
     // 9. Tampered client request ignored
-    const tamperedRes = await fetch(`${baseUrl}/api/checkout/quote`, {
+    const tamperedRes = await csrfFetch(`${baseUrl}/api/checkout/quote`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

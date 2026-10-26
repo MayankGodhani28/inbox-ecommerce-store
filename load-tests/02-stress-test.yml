@@ -42,6 +42,7 @@ config:
     timeout: 15
     defaults:
       headers:
+        X-Requested-With: XMLHttpRequest
         Content-Type: "application/json"
 
 scenarios:

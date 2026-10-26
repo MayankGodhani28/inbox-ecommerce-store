@@ -550,7 +550,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         {/* ======================================================== */}
         <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 sm:px-8 py-3.5 flex items-center justify-between shadow-xs">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-[#008060] flex items-center justify-center text-white font-black text-sm shadow-xs">
+            <div className="size-9 rounded-xl bg-[#008060] flex items-center justify-center text-white font-black text-sm shadow-xs">
               🏬
             </div>
             <div>
@@ -592,7 +592,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 onClick={() => setIsAdminLoginModalOpen(true)}
                 className="px-4 py-2 bg-[#008060] hover:bg-[#006e52] text-white rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer flex items-center gap-2"
               >
-                <KeyRound className="w-3.5 h-3.5" />
+                <KeyRound className="size-3.5" />
                 <span>Admin Log In</span>
               </button>
             )}
@@ -606,7 +606,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           {/* Hero Section */}
           <div className="text-center max-w-3xl mx-auto mb-10">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-800 text-[11px] font-bold uppercase tracking-wider mb-4 shadow-2xs">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+              <Sparkles className="size-3.5 text-emerald-600" />
               <span>Verified Merchant Ecosystem</span>
             </div>
             <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight leading-tight">
@@ -635,7 +635,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 existingApp ? 'bg-emerald-50/50 border-emerald-200' : 'bg-slate-50 border-slate-200'
               }`}>
                 <div className="flex items-center justify-between mb-3">
-                  <span className={`w-7 h-7 rounded-full text-white flex items-center justify-center text-xs font-black ${
+                  <span className={`size-7 rounded-full text-white flex items-center justify-center text-xs font-black ${
                     existingApp ? 'bg-emerald-600' : 'bg-indigo-600'
                   }`}>
                     {existingApp ? '✓' : '1'}
@@ -660,7 +660,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   : 'bg-slate-50 border-slate-200'
               }`}>
                 <div className="flex items-center justify-between mb-3">
-                  <span className={`w-7 h-7 rounded-full text-white flex items-center justify-center text-xs font-black ${
+                  <span className={`size-7 rounded-full text-white flex items-center justify-center text-xs font-black ${
                     existingApp?.status === 'APPROVED' ? 'bg-emerald-600' : 'bg-purple-600'
                   }`}>
                     {existingApp?.status === 'APPROVED' ? '✓' : '2'}
@@ -683,7 +683,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   : 'bg-slate-50 border-slate-200'
               }`}>
                 <div className="flex items-center justify-between mb-3">
-                  <span className={`w-7 h-7 rounded-full text-white flex items-center justify-center text-xs font-black ${
+                  <span className={`size-7 rounded-full text-white flex items-center justify-center text-xs font-black ${
                     existingApp?.status === 'APPROVED' ? 'bg-emerald-600' : 'bg-amber-600'
                   }`}>
                     {existingApp?.status === 'APPROVED' ? '✓' : '3'}
@@ -706,7 +706,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   : 'bg-slate-50 border-slate-200 opacity-75'
               }`}>
                 <div className="flex items-center justify-between mb-3">
-                  <span className="w-7 h-7 rounded-full bg-[#008060] text-white flex items-center justify-center text-xs font-black">
+                  <span className="size-7 rounded-full bg-[#008060] text-white flex items-center justify-center text-xs font-black">
                     4
                   </span>
                   {(existingApp?.status === 'APPROVED' || isAdmin) && (
@@ -725,7 +725,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             {/* Prominent Action Bar Near The Process */}
             <div className="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="flex items-center gap-2 text-xs text-slate-600">
-                <ShieldCheck className="w-4 h-4 text-[#008060]" />
+                <ShieldCheck className="size-4 text-[#008060]" />
                 <span>Zero upfront fees • Verified multi-vendor marketplace</span>
               </div>
 
@@ -735,9 +735,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   onClick={handleOpenSellerForm}
                   className="flex-1 sm:flex-none px-6 py-3 bg-[#008060] hover:bg-[#006e52] text-white rounded-xl text-xs font-bold transition-all shadow-md cursor-pointer flex items-center justify-center gap-2"
                 >
-                  <Store className="w-4 h-4" />
+                  <Store className="size-4" />
                   <span>{existingApp ? 'View Application Status' : 'Become a Seller — Apply Now'}</span>
-                  <ChevronDown className="w-4 h-4" />
+                  <ChevronDown className="size-4" />
                 </button>
 
                 <button
@@ -759,11 +759,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               {/* If existing application is PENDING */}
               {existingApp && existingApp.status === 'PENDING' ? (
                 <div className="text-center py-6">
-                  <div className="w-16 h-16 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-amber-200 animate-pulse">
-                    <Clock className="w-8 h-8" />
+                  <div className="size-16 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-amber-200 animate-pulse">
+                    <Clock className="size-8" />
                   </div>
                   <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold uppercase tracking-wider border border-amber-300 mb-2">
-                    <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping" />
+                    <span className="size-2 rounded-full bg-amber-500 animate-ping" />
                     <span>Form Status: Pending Super Admin Review</span>
                   </div>
                   <h3 className="text-2xl font-black text-slate-900 mt-2">
@@ -805,7 +805,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       disabled={isLoadingApp}
                       className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer flex items-center gap-2"
                     >
-                      <RefreshCw className={`w-3.5 h-3.5 ${isLoadingApp ? 'animate-spin' : ''}`} />
+                      <RefreshCw className={`size-3.5 ${isLoadingApp ? 'animate-spin' : ''}`} />
                       <span>{isLoadingApp ? 'Checking Status...' : 'Check For Approval'}</span>
                     </button>
                   </div>
@@ -816,11 +816,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 </div>
               ) : existingApp && existingApp.status === 'APPROVED' ? (
                 <div className="text-center py-6">
-                  <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-emerald-200">
-                    <CheckCircle2 className="w-8 h-8" />
+                  <div className="size-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-emerald-200">
+                    <CheckCircle2 className="size-8" />
                   </div>
                   <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-100 text-emerald-900 text-xs font-bold uppercase tracking-wider border border-emerald-300 mb-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-600" />
+                    <span className="size-2 rounded-full bg-emerald-600" />
                     <span>Form Status: Approved by Super Admin</span>
                   </div>
                   <h3 className="text-2xl font-black text-slate-900 mt-2">
@@ -835,17 +835,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     }}
                     className="px-6 py-3 bg-[#008060] hover:bg-[#006e52] text-white rounded-xl text-xs font-bold shadow-md cursor-pointer inline-flex items-center gap-2"
                   >
-                    <Plus className="w-4 h-4" />
+                    <Plus className="size-4" />
                     <span>Enter Admin Dashboard & Add Products</span>
                   </button>
                 </div>
               ) : existingApp && existingApp.status === 'SUSPENDED' ? (
                 <div className="text-center py-6">
-                  <div className="w-16 h-16 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-rose-200">
-                    <AlertTriangle className="w-8 h-8" />
+                  <div className="size-16 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-rose-200">
+                    <AlertTriangle className="size-8" />
                   </div>
                   <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-rose-100 text-rose-900 text-xs font-bold uppercase tracking-wider border border-rose-300 mb-2">
-                    <span className="w-2 h-2 rounded-full bg-rose-600 animate-ping" />
+                    <span className="size-2 rounded-full bg-rose-600 animate-ping" />
                     <span>Form Status: Store Suspended by Super Admin</span>
                   </div>
                   <h3 className="text-2xl font-black text-slate-900 mt-2">
@@ -861,15 +861,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       disabled={isLoadingApp}
                       className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer flex items-center gap-2"
                     >
-                      <RefreshCw className={`w-3.5 h-3.5 ${isLoadingApp ? 'animate-spin' : ''}`} />
+                      <RefreshCw className={`size-3.5 ${isLoadingApp ? 'animate-spin' : ''}`} />
                       <span>{isLoadingApp ? 'Checking Status...' : 'Check For Reinstatement'}</span>
                     </button>
                   </div>
                 </div>
               ) : existingApp && existingApp.status === 'REJECTED' ? (
                 <div className="text-center py-6">
-                  <div className="w-16 h-16 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-rose-200">
-                    <XCircle className="w-8 h-8" />
+                  <div className="size-16 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-rose-200">
+                    <XCircle className="size-8" />
                   </div>
                   <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-rose-100 text-rose-900 text-xs font-bold uppercase tracking-wider border border-rose-300 mb-2">
                     <span>Form Status: Needs Revision / Rejected</span>
@@ -900,7 +900,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 <div>
                   <div className="border-b border-slate-100 pb-5 mb-6">
                     <div className="flex items-center gap-2 text-[#008060] font-bold text-xs uppercase tracking-wider mb-1">
-                      <Building2 className="w-4 h-4" />
+                      <Building2 className="size-4" />
                       <span>Step 1 • Merchant KYC Application</span>
                     </div>
                     <h3 className="text-xl font-black text-slate-900">
@@ -916,7 +916,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     {!user && (
                       <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
                         <div className="flex items-center gap-2 text-slate-900 text-xs font-bold">
-                          <UserIcon className="w-4 h-4 text-[#008060]" />
+                          <UserIcon className="size-4 text-[#008060]" />
                           <span>Account Owner Credentials</span>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -928,7 +928,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                               value={applicantName}
                               onChange={(e) => setApplicantName(e.target.value)}
                               placeholder="Alex Morgan"
-                              className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#008060]"
+                              className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#008060]"
                             />
                           </div>
                           <div>
@@ -939,7 +939,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                               value={applicantEmail}
                               onChange={(e) => setApplicantEmail(e.target.value)}
                               placeholder="seller@brand.com"
-                              className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#008060]"
+                              className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#008060]"
                             />
                           </div>
                           <div>
@@ -950,7 +950,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                               value={applicantPassword}
                               onChange={(e) => setApplicantPassword(e.target.value)}
                               placeholder="••••••••"
-                              className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#008060]"
+                              className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#008060]"
                             />
                           </div>
                         </div>
@@ -960,8 +960,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     {/* Store & Legal Details */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div>
-                        <label className="block text-xs font-bold text-slate-700 mb-1 flex items-center gap-1.5">
-                          <Store className="w-3.5 h-3.5 text-[#008060]" />
+                        <label className="text-xs font-bold text-slate-700 mb-1 flex items-center gap-1.5">
+                          <Store className="size-3.5 text-[#008060]" />
                           Public Store Name *
                         </label>
                         <input
@@ -970,13 +970,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                           value={storeName}
                           onChange={(e) => setStoreName(e.target.value)}
                           placeholder="e.g. Apex Tech Essentials"
-                          className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#008060]"
+                          className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#008060]"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-xs font-bold text-slate-700 mb-1 flex items-center gap-1.5">
-                          <Building2 className="w-3.5 h-3.5 text-[#008060]" />
+                        <label className="text-xs font-bold text-slate-700 mb-1 flex items-center gap-1.5">
+                          <Building2 className="size-3.5 text-[#008060]" />
                           Registered Legal Entity Name *
                         </label>
                         <input
@@ -985,15 +985,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                           value={legalName}
                           onChange={(e) => setLegalName(e.target.value)}
                           placeholder="e.g. Apex Logistics Technologies LLC"
-                          className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#008060]"
+                          className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#008060]"
                         />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                       <div>
-                        <label className="block text-xs font-bold text-slate-700 mb-1 flex items-center gap-1.5">
-                          <FileText className="w-3.5 h-3.5 text-[#008060]" />
+                        <label className="text-xs font-bold text-slate-700 mb-1 flex items-center gap-1.5">
+                          <FileText className="size-3.5 text-[#008060]" />
                           Tax ID / GSTIN / EIN *
                         </label>
                         <input
@@ -1002,13 +1002,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                           value={taxId}
                           onChange={(e) => setTaxId(e.target.value)}
                           placeholder="27AABCA1234F1Z5"
-                          className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#008060] uppercase font-mono"
+                          className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#008060] uppercase font-mono"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-xs font-bold text-slate-700 mb-1 flex items-center gap-1.5">
-                          <Phone className="w-3.5 h-3.5 text-[#008060]" />
+                        <label className="text-xs font-bold text-slate-700 mb-1 flex items-center gap-1.5">
+                          <Phone className="size-3.5 text-[#008060]" />
                           Business Contact Phone *
                         </label>
                         <input
@@ -1017,7 +1017,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
                           placeholder="+1 (555) 234-5678"
-                          className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#008060]"
+                          className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#008060]"
                         />
                       </div>
 
@@ -1041,8 +1041,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1 flex items-center gap-1.5">
-                        <MapPin className="w-3.5 h-3.5 text-[#008060]" />
+                      <label className="text-xs font-bold text-slate-700 mb-1 flex items-center gap-1.5">
+                        <MapPin className="size-3.5 text-[#008060]" />
                         Registered Business Address *
                       </label>
                       <input
@@ -1051,7 +1051,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         value={businessAddress}
                         onChange={(e) => setBusinessAddress(e.target.value)}
                         placeholder="Street Address, City, State/Province, Country"
-                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#008060]"
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#008060]"
                       />
                     </div>
 
@@ -1064,13 +1064,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         placeholder="Describe the items you intend to list, manufacturing details, or existing store volume..."
-                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#008060]"
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#008060]"
                       />
                     </div>
 
                     <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
                       <div className="flex items-center gap-2 text-slate-500 text-xs">
-                        <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                        <ShieldCheck className="size-4 text-emerald-600" />
                         <span>Form goes directly to Super Admin verification queue.</span>
                       </div>
 
@@ -1084,7 +1084,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         ) : (
                           <>
                             <span>Submit Application to Super Admin</span>
-                            <ArrowRight className="w-4 h-4" />
+                            <ArrowRight className="size-4" />
                           </>
                         )}
                       </button>
@@ -1108,11 +1108,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 onClick={() => setIsAdminLoginModalOpen(false)}
                 className="absolute top-5 right-5 text-slate-400 hover:text-slate-600 p-1.5 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer"
               >
-                <X className="w-4 h-4" />
+                <X className="size-4" />
               </button>
 
-              <div className="w-12 h-12 bg-emerald-50 text-[#008060] rounded-2xl flex items-center justify-center mb-4 border border-emerald-200 shadow-inner">
-                <Store className="w-6 h-6" />
+              <div className="size-12 bg-emerald-50 text-[#008060] rounded-2xl flex items-center justify-center mb-4 border border-emerald-200 shadow-inner">
+                <Store className="size-6" />
               </div>
 
               <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider border border-emerald-200">
@@ -1140,7 +1140,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
               {adminLoginError && (
                 <div className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium text-left flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4 shrink-0 text-rose-600" />
+                  <AlertTriangle className="size-4 shrink-0 text-rose-600" />
                   <span>{adminLoginError}</span>
                 </div>
               )}
@@ -1149,14 +1149,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">Admin Email</label>
                   <div className="relative">
-                    <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                    <Mail className="size-4 text-slate-400 absolute left-3 top-3" />
                     <input
                       type="email"
                       required
                       value={adminAuthEmail}
                       onChange={(e) => setAdminAuthEmail(e.target.value)}
                       placeholder="admin@inbox.com"
-                      className="w-full pl-9 pr-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#008060] focus:ring-1 focus:ring-[#008060]"
+                      className="w-full pl-9 pr-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#008060] focus:ring-1 focus:ring-[#008060]"
                     />
                   </div>
                 </div>
@@ -1164,21 +1164,21 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">Password</label>
                   <div className="relative">
-                    <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                    <Lock className="size-4 text-slate-400 absolute left-3 top-3" />
                     <input
                       type={showAdminPassword ? 'text' : 'password'}
                       required
                       value={adminAuthPassword}
                       onChange={(e) => setAdminAuthPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full pl-9 pr-10 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#008060] focus:ring-1 focus:ring-[#008060]"
+                      className="w-full pl-9 pr-10 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#008060] focus:ring-1 focus:ring-[#008060]"
                     />
                     <button
                       type="button"
                       onClick={() => setShowAdminPassword(!showAdminPassword)}
                       className="absolute right-3 top-3 text-slate-400 hover:text-slate-600 cursor-pointer"
                     >
-                      {showAdminPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      {showAdminPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                     </button>
                   </div>
                 </div>
@@ -1188,7 +1188,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   disabled={isAdminLoggingIn}
                   className="w-full py-3 bg-[#008060] hover:bg-[#006e52] disabled:opacity-60 text-white rounded-xl text-xs font-bold transition-all shadow-md cursor-pointer flex items-center justify-center gap-2"
                 >
-                  <ShieldCheck className="w-4 h-4" />
+                  <ShieldCheck className="size-4" />
                   <span>{isAdminLoggingIn ? 'Verifying Admin Access...' : 'Sign In to Admin Panel'}</span>
                 </button>
 
@@ -1225,7 +1225,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         <div className="p-4 border-b border-slate-100">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-[#008060] flex items-center justify-center text-white font-black text-xs shadow-inner">
+              <div className="size-8 rounded-lg bg-[#008060] flex items-center justify-center text-white font-black text-xs shadow-inner">
                 🏬
               </div>
               <div>
@@ -1233,7 +1233,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   {user?.storeName || existingApp?.storeName || 'inBox Emporium'}
                 </p>
                 <div className="flex items-center gap-1.5 mt-0.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
                   <span className="text-[10px] text-emerald-600 font-medium">Verified by S.Admin</span>
                 </div>
               </div>
@@ -1247,13 +1247,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         {/* Polaris Search Input inside Sidebar */}
         <div className="p-3 border-b border-slate-100">
           <div className="relative">
-            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="size-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search or jump to..."
               value={globalAdminSearch}
               onChange={(e) => setGlobalAdminSearch(e.target.value)}
-              className="w-full pl-8 pr-3 py-1.5 bg-slate-50 text-xs text-slate-900 placeholder-slate-400 rounded-lg border border-slate-200 focus:outline-none focus:border-[#008060]"
+              className="w-full pl-8 pr-3 py-1.5 bg-slate-50 text-xs text-slate-900 placeholder:text-slate-400 rounded-lg border border-slate-200 focus:outline-none focus:border-[#008060]"
             />
           </div>
         </div>
@@ -1280,7 +1280,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 }`}
               >
                 <div className="flex items-center gap-2.5">
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#008060]' : 'text-slate-400'}`} />
+                  <Icon className={`size-4 ${isActive ? 'text-[#008060]' : 'text-slate-400'}`} />
                   <span>{tab.label}</span>
                 </div>
                 {tab.count !== null && (
@@ -1310,10 +1310,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             title="Preview your live storefront as a customer"
           >
             <div className="flex items-center gap-2.5">
-              <Globe className="w-4 h-4 text-slate-400 group-hover:text-emerald-600" />
+              <Globe className="size-4 text-slate-400 group-hover:text-emerald-600" />
               <span>Online Store</span>
             </div>
-            <Eye className="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-600" />
+            <Eye className="size-3.5 text-slate-400 group-hover:text-emerald-600" />
           </button>
         </nav>
 
@@ -1321,7 +1321,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         <div className="p-3 border-t border-slate-200 space-y-2.5 bg-slate-50/70">
           <div className="flex items-center justify-between px-2 text-[11px] text-slate-500">
             <span className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
               <span className="font-mono text-[10px]">PostgreSQL :5432</span>
             </span>
             <span className="text-[10px] text-emerald-700 font-bold">Connected</span>
@@ -1329,7 +1329,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
           <div className="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200 shadow-xs">
             <div className="flex items-center gap-2 min-w-0">
-              <div className="w-7 h-7 rounded-full bg-[#008060] flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-xs">
+              <div className="size-7 rounded-full bg-[#008060] flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-xs">
                 {user?.name?.[0]?.toUpperCase() || 'A'}
               </div>
               <div className="min-w-0">
@@ -1347,7 +1347,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
               title="Sign out of Merchant Admin"
             >
-              <LogOut className="w-4 h-4" />
+              <LogOut className="size-4" />
             </button>
           </div>
         </div>
@@ -1372,7 +1372,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
             <div className="hidden sm:flex items-center gap-2 text-xs font-semibold text-neutral-500">
               <span>Merchant Admin</span>
-              <ChevronRight className="w-3.5 h-3.5 text-neutral-400" />
+              <ChevronRight className="size-3.5 text-neutral-400" />
               <span className="text-[#202223] font-bold text-xs capitalize">
                 {activeTab === 'overview' && 'Home Overview'}
                 {activeTab === 'orders' && 'Orders Fulfillment'}
@@ -1396,7 +1396,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               className="p-1.5 text-neutral-500 hover:text-[#202223] hover:bg-neutral-100 rounded-lg transition-colors cursor-pointer"
               title="Refresh database records"
             >
-              <RefreshCw className="w-4 h-4" />
+              <RefreshCw className="size-4" />
             </button>
 
             {/* Primary Action Button */}
@@ -1410,7 +1410,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               }`}
               title={user?.sellerStatus === 'SUSPENDED' ? 'Store is suspended by Super Admin' : 'Add product'}
             >
-              <Plus className="w-3.5 h-3.5" />
+              <Plus className="size-3.5" />
               <span>Add product</span>
             </button>
 
@@ -1420,7 +1420,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               className="lg:hidden p-1.5 text-neutral-600 hover:text-[#008060] hover:bg-neutral-100 rounded-lg cursor-pointer"
               title="View Storefront"
             >
-              <Eye className="w-4 h-4" />
+              <Eye className="size-4" />
             </button>
           </div>
         </header>
@@ -1444,7 +1444,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   isActive ? 'bg-[#008060] text-white' : 'text-neutral-400 hover:text-white'
                 }`}
               >
-                <Icon className="w-3.5 h-3.5" />
+                <Icon className="size-3.5" />
                 <span>{tab.label}</span>
               </button>
             );
@@ -1457,8 +1457,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           {user?.sellerStatus === 'SUSPENDED' && (
             <div className="bg-rose-50 border-2 border-rose-300 rounded-2xl p-5 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs animate-in fade-in duration-200">
               <div className="flex items-start gap-3.5">
-                <div className="w-10 h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center shrink-0 shadow-xs">
-                  <AlertTriangle className="w-5 h-5 text-white" />
+                <div className="size-10 rounded-xl bg-rose-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                  <AlertTriangle className="size-5 text-white" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
@@ -1483,7 +1483,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   }}
                   className="px-3.5 py-2 bg-white hover:bg-rose-100 border border-rose-300 text-rose-900 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-xs"
                 >
-                  <RefreshCw className="w-3.5 h-3.5" />
+                  <RefreshCw className="size-3.5" />
                   <span>Check Reinstatement</span>
                 </button>
               </div>
@@ -1493,8 +1493,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           {!isApprovalBannerDismissed && (
             <div className="bg-gradient-to-r from-emerald-50 via-teal-50/70 to-white border border-emerald-300/80 rounded-2xl p-5 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs">
               <div className="flex items-start gap-3.5">
-                <div className="w-10 h-10 rounded-xl bg-[#008060] text-white flex items-center justify-center shrink-0 shadow-xs">
-                  <CheckCircle2 className="w-5 h-5" />
+                <div className="size-10 rounded-xl bg-[#008060] text-white flex items-center justify-center shrink-0 shadow-xs">
+                  <CheckCircle2 className="size-5" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
@@ -1516,7 +1516,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   onClick={handleOpenAddProduct}
                   className="px-4 py-2.5 bg-[#008060] hover:bg-[#006e52] text-white text-xs font-bold rounded-xl shadow-xs transition-all cursor-pointer flex items-center gap-1.5"
                 >
-                  <Plus className="w-4 h-4" />
+                  <Plus className="size-4" />
                   <span>Add First Product</span>
                 </button>
                 <button
@@ -1524,7 +1524,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   className="p-2 text-slate-400 hover:text-slate-600 rounded-lg cursor-pointer"
                   title="Dismiss banner"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="size-4" />
                 </button>
               </div>
             </div>
@@ -1550,7 +1550,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 onClick={refreshAdminData}
                 className="px-3 py-1.5 bg-white border border-[#D2D5D8] hover:bg-neutral-50 text-[#202223] text-xs font-semibold rounded-lg shadow-xs cursor-pointer flex items-center gap-1.5"
               >
-                <RefreshCw className="w-3.5 h-3.5 text-neutral-500" />
+                <RefreshCw className="size-3.5 text-neutral-500" />
                 <span>Refresh</span>
               </button>
               {activeTab === 'products' && (
@@ -1558,7 +1558,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   onClick={handleOpenAddProduct}
                   className="px-3.5 py-1.5 bg-[#008060] hover:bg-[#006e52] text-white text-xs font-bold rounded-lg shadow-xs transition-colors cursor-pointer flex items-center gap-1.5"
                 >
-                  <Plus className="w-3.5 h-3.5" />
+                  <Plus className="size-3.5" />
                   <span>Add product</span>
                 </button>
               )}
@@ -1575,7 +1575,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 <div className="bg-white p-5 rounded-xl border border-[#E1E3E5] shadow-xs">
                   <div className="flex items-center justify-between text-neutral-500 mb-2">
                     <span className="text-xs font-semibold">Total Sales</span>
-                    <DollarSign className="w-4 h-4 text-[#008060]" />
+                    <DollarSign className="size-4 text-[#008060]" />
                   </div>
                   <div className="text-2xl font-black text-[#202223]">
                     ${totalSales.toFixed(2)}
@@ -1588,7 +1588,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 <div className="bg-white p-5 rounded-xl border border-[#E1E3E5] shadow-xs">
                   <div className="flex items-center justify-between text-neutral-500 mb-2">
                     <span className="text-xs font-semibold">Total Orders</span>
-                    <ShoppingCart className="w-4 h-4 text-blue-600" />
+                    <ShoppingCart className="size-4 text-blue-600" />
                   </div>
                   <div className="text-2xl font-black text-[#202223]">
                     {totalOrdersCount}
@@ -1601,7 +1601,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 <div className="bg-white p-5 rounded-xl border border-[#E1E3E5] shadow-xs">
                   <div className="flex items-center justify-between text-neutral-500 mb-2">
                     <span className="text-xs font-semibold">Active SKUs</span>
-                    <Tag className="w-4 h-4 text-orange-600" />
+                    <Tag className="size-4 text-orange-600" />
                   </div>
                   <div className="text-2xl font-black text-[#202223]">
                     {displayProducts.length}
@@ -1614,7 +1614,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 <div className="bg-white p-5 rounded-xl border border-[#E1E3E5] shadow-xs">
                   <div className="flex items-center justify-between text-neutral-500 mb-2">
                     <span className="text-xs font-semibold">Inventory Alerts</span>
-                    <AlertTriangle className="w-4 h-4 text-amber-600" />
+                    <AlertTriangle className="size-4 text-amber-600" />
                   </div>
                   <div className="text-2xl font-black text-amber-600">
                     {lowStockCount}
@@ -1630,7 +1630,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 <div className="bg-white rounded-xl border border-[#FED8B1] shadow-xs overflow-hidden">
                   <div className="px-5 py-3.5 bg-[#FFF9F2] border-b border-[#FED8B1] flex items-center justify-between">
                     <div className="flex items-center gap-2 text-[#A84A00]">
-                      <AlertTriangle className="w-4 h-4" />
+                      <AlertTriangle className="size-4" />
                       <h3 className="text-xs font-bold">Items Requiring Immediate Inventory Replenishment</h3>
                     </div>
                     <span className="text-xs font-bold text-[#A84A00]">
@@ -1641,7 +1641,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     {lowStockProducts.slice(0, 5).map((p) => (
                       <div key={p.id} className="p-4 flex items-center justify-between gap-4 text-xs hover:bg-[#FAFBFB] transition-colors">
                         <div className="flex items-center gap-3">
-                          <img src={p.images[0]} alt={p.name} className="w-10 h-10 object-cover rounded-lg border border-[#E1E3E5]" />
+                          <img src={p.images[0]} alt={p.name} className="size-10 object-cover rounded-lg border border-[#E1E3E5]" />
                           <div>
                             <p className="font-bold text-[#202223]">{p.name}</p>
                             <p className="text-[11px] text-neutral-500">{p.brand} • {tCategory(p.category)}</p>
@@ -1733,7 +1733,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             <div className="bg-white rounded-xl border border-[#E1E3E5] shadow-xs overflow-hidden">
               <div className="p-4 border-b border-[#E1E3E5] flex flex-col md:flex-row items-center justify-between gap-3 bg-[#FAFBFB]">
                 <div className="relative w-full md:w-96">
-                  <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Search className="size-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
                     placeholder="Filter orders by ID, customer name, email..."
@@ -1776,8 +1776,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       <tr>
                         <td colSpan={6} className="py-12 text-center text-neutral-500">
                           <div className="max-w-sm mx-auto flex flex-col items-center gap-2">
-                            <div className="w-12 h-12 rounded-full bg-neutral-100 text-neutral-400 flex items-center justify-center">
-                              <ShoppingCart className="w-6 h-6" />
+                            <div className="size-12 rounded-full bg-neutral-100 text-neutral-400 flex items-center justify-center">
+                              <ShoppingCart className="size-6" />
                             </div>
                             <h4 className="text-sm font-bold text-neutral-800">No Orders Placed Yet</h4>
                             <p className="text-xs text-neutral-500">
@@ -1861,7 +1861,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             <div className="bg-white rounded-xl border border-[#E1E3E5] shadow-xs overflow-hidden">
               <div className="p-4 border-b border-[#E1E3E5] flex flex-col md:flex-row items-center justify-between gap-3 bg-[#FAFBFB]">
                 <div className="relative w-full md:w-96">
-                  <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Search className="size-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
                     placeholder="Search products by title, brand, or department..."
@@ -1889,7 +1889,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     onClick={handleOpenAddProduct}
                     className="px-3.5 py-2 bg-[#008060] hover:bg-[#006e52] text-white text-xs font-bold rounded-lg shadow-xs flex items-center gap-1.5 transition-colors cursor-pointer shrink-0"
                   >
-                    <Plus className="w-4 h-4" />
+                    <Plus className="size-4" />
                     <span>Add product</span>
                   </button>
                 </div>
@@ -1911,8 +1911,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       <tr>
                         <td colSpan={5} className="py-12 text-center text-neutral-500">
                           <div className="max-w-sm mx-auto flex flex-col items-center gap-3">
-                            <div className="w-12 h-12 rounded-full bg-emerald-50 text-[#008060] flex items-center justify-center">
-                              <Tag className="w-6 h-6" />
+                            <div className="size-12 rounded-full bg-emerald-50 text-[#008060] flex items-center justify-center">
+                              <Tag className="size-6" />
                             </div>
                             <div>
                               <h4 className="text-sm font-bold text-neutral-800">No Products in Your Catalog Yet</h4>
@@ -1924,7 +1924,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                               onClick={handleOpenAddProduct}
                               className="mt-2 px-4 py-2 bg-[#008060] hover:bg-[#006e52] text-white text-xs font-bold rounded-lg shadow-xs flex items-center gap-1.5 transition-colors cursor-pointer"
                             >
-                              <Plus className="w-4 h-4" />
+                              <Plus className="size-4" />
                               <span>Add First Product</span>
                             </button>
                           </div>
@@ -1938,7 +1938,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                             <img
                               src={p.images[0]}
                               alt={p.name}
-                              className="w-10 h-10 object-cover rounded-lg border border-[#E1E3E5] shrink-0"
+                              className="size-10 object-cover rounded-lg border border-[#E1E3E5] shrink-0"
                             />
                             <div>
                               <span className="font-bold text-[#202223] block max-w-xs sm:max-w-md truncate">
@@ -1981,14 +1981,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                               className="p-1.5 text-neutral-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
                               title="Edit SKU"
                             >
-                              <Edit2 className="w-3.5 h-3.5" />
+                              <Edit2 className="size-3.5" />
                             </button>
                             <button
                               onClick={() => handleDeleteProduct(p.id)}
                               className="p-1.5 text-neutral-500 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
                               title="Archive SKU"
                             >
-                              <Trash2 className="w-3.5 h-3.5" />
+                              <Trash2 className="size-3.5" />
                             </button>
                           </div>
                         </td>
@@ -2008,7 +2008,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             <div className="bg-white rounded-xl border border-[#E1E3E5] shadow-xs overflow-hidden">
               <div className="p-4 border-b border-[#E1E3E5] flex flex-col md:flex-row items-center justify-between gap-3 bg-[#FAFBFB]">
                 <div className="relative w-full md:w-96">
-                  <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Search className="size-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
                     placeholder="Search customers by name, email, phone..."
@@ -2039,8 +2039,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       <tr>
                         <td colSpan={6} className="py-12 text-center text-neutral-500">
                           <div className="max-w-sm mx-auto flex flex-col items-center gap-2">
-                            <div className="w-12 h-12 rounded-full bg-neutral-100 text-neutral-400 flex items-center justify-center">
-                              <Users className="w-6 h-6" />
+                            <div className="size-12 rounded-full bg-neutral-100 text-neutral-400 flex items-center justify-center">
+                              <Users className="size-6" />
                             </div>
                             <h4 className="text-sm font-bold text-neutral-800">No Customer Records Yet</h4>
                             <p className="text-xs text-neutral-500">
@@ -2054,9 +2054,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       <tr key={cust.id} className="hover:bg-[#FAFBFB] transition-colors">
                         <td className="py-3 px-4">
                           <div className="flex items-center gap-3">
-                            <div className="w-9 h-9 rounded-full bg-neutral-100 border border-[#E1E3E5] flex items-center justify-center font-bold text-neutral-700">
+                            <div className="size-9 rounded-full bg-neutral-100 border border-[#E1E3E5] flex items-center justify-center font-bold text-neutral-700">
                               {cust.avatarUrl ? (
-                                <img src={cust.avatarUrl} alt={cust.name} className="w-full h-full object-cover rounded-full" />
+                                <img src={cust.avatarUrl} alt={cust.name} className="size-full object-cover rounded-full" />
                               ) : (
                                 cust.name.slice(0, 1).toUpperCase()
                               )}
@@ -2178,7 +2178,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               onClick={() => setIsProductModalOpen(false)}
               className="absolute top-4 right-4 text-neutral-400 hover:text-neutral-600 cursor-pointer"
             >
-              <X className="w-5 h-5" />
+              <X className="size-5" />
             </button>
 
             <h3 className="text-lg font-bold text-[#202223] mb-1">

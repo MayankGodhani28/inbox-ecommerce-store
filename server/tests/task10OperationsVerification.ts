@@ -1,3 +1,4 @@
+import { csrfFetch } from './httpClient.js';
 import { createApp } from '../app.js';
 import { prisma } from '../db/prisma.js';
 import type { Server } from 'http';
@@ -19,25 +20,25 @@ async function runOperationsTests() {
 
   try {
     // 1. Anonymous access denial check
-    const anonOrdersRes = await fetch(`${baseUrl}/api/orders`);
+    const anonOrdersRes = await csrfFetch(`${baseUrl}/api/orders`);
     if (anonOrdersRes.status !== 401) {
       throw new Error(`Expected 401 for anonymous /api/orders, got ${anonOrdersRes.status}`);
     }
-    const anonAdminRes = await fetch(`${baseUrl}/api/admin/orders`);
+    const anonAdminRes = await csrfFetch(`${baseUrl}/api/admin/orders`);
     if (anonAdminRes.status !== 401) {
       throw new Error(`Expected 401 for anonymous /api/admin/orders, got ${anonAdminRes.status}`);
     }
     console.log('✓ Anonymous requests to orders and admin operations strictly denied (401).');
 
     // 2. Register Customer A and Customer B
-    const regARes = await fetch(`${baseUrl}/api/auth/register`, {
+    const regARes = await csrfFetch(`${baseUrl}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: 'Ops Customer A', email: customerAEmail, password }),
     });
     const cookieA = regARes.headers.get('set-cookie')!.split(';')[0];
 
-    const regBRes = await fetch(`${baseUrl}/api/auth/register`, {
+    const regBRes = await csrfFetch(`${baseUrl}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: 'Ops Customer B', email: customerBEmail, password }),
@@ -45,7 +46,7 @@ async function runOperationsTests() {
     const cookieB = regBRes.headers.get('set-cookie')!.split(';')[0];
 
     // Admin login
-    const adminLoginRes = await fetch(`${baseUrl}/api/auth/login`, {
+    const adminLoginRes = await csrfFetch(`${baseUrl}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: 'admin@inbox.com', password: 'AdminSecure2026!' }),
@@ -54,7 +55,7 @@ async function runOperationsTests() {
     console.log('✓ Initialized sessions for Customer A, Customer B, and Admin.');
 
     // 3. Customer calling admin endpoints is denied with 403 Forbidden
-    const custAdminOrdersRes = await fetch(`${baseUrl}/api/admin/orders`, {
+    const custAdminOrdersRes = await csrfFetch(`${baseUrl}/api/admin/orders`, {
       headers: { Cookie: cookieA },
     });
     if (custAdminOrdersRes.status !== 403) {
@@ -79,7 +80,7 @@ async function runOperationsTests() {
       },
     });
 
-    const createOrderRes = await fetch(`${baseUrl}/api/orders`, {
+    const createOrderRes = await csrfFetch(`${baseUrl}/api/orders`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Cookie: cookieA },
       body: JSON.stringify({
@@ -105,21 +106,21 @@ async function runOperationsTests() {
 
     // 5. Owner isolation check
     // Customer A sees 1 order
-    const listARes = await fetch(`${baseUrl}/api/orders`, { headers: { Cookie: cookieA } });
+    const listARes = await csrfFetch(`${baseUrl}/api/orders`, { headers: { Cookie: cookieA } });
     const listA = ((await listARes.json()) as any).data.orders;
     if (listA.length !== 1 || listA[0].orderNumber !== orderA.orderNumber) {
       throw new Error(`Customer A should see exactly 1 order, found ${listA.length}`);
     }
 
     // Customer B sees 0 orders
-    const listBRes = await fetch(`${baseUrl}/api/orders`, { headers: { Cookie: cookieB } });
+    const listBRes = await csrfFetch(`${baseUrl}/api/orders`, { headers: { Cookie: cookieB } });
     const listB = ((await listBRes.json()) as any).data.orders;
     if (listB.length !== 0) {
       throw new Error(`Customer B should see 0 orders, found ${listB.length}`);
     }
 
     // Customer B directly fetching Customer A order is denied
-    const directFetchB = await fetch(`${baseUrl}/api/orders/${orderA.orderNumber}`, {
+    const directFetchB = await csrfFetch(`${baseUrl}/api/orders/${orderA.orderNumber}`, {
       headers: { Cookie: cookieB },
     });
     if (directFetchB.status !== 403) {
@@ -128,7 +129,7 @@ async function runOperationsTests() {
     console.log('✓ Owner isolation verified: Customer B cannot list or query Customer A order.');
 
     // 6. Metrics check before COD collection: unpaid COD is excluded from paid revenue
-    const metricsBeforeRes = await fetch(`${baseUrl}/api/admin/metrics`, {
+    const metricsBeforeRes = await csrfFetch(`${baseUrl}/api/admin/metrics`, {
       headers: { Cookie: adminCookie },
     });
     const metricsBefore = ((await metricsBeforeRes.json()) as any).data.metrics;
@@ -139,7 +140,7 @@ async function runOperationsTests() {
 
     // 7. Status transition checks
     // 7a. Invalid status name
-    const invalidStatusRes = await fetch(`${baseUrl}/api/orders/${orderA.orderNumber}/status`, {
+    const invalidStatusRes = await csrfFetch(`${baseUrl}/api/orders/${orderA.orderNumber}/status`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json', Cookie: adminCookie },
       body: JSON.stringify({ status: 'InvalidNonExistentStatus' }),
@@ -150,7 +151,7 @@ async function runOperationsTests() {
     console.log('✓ Invalid status name correctly rejected with 400.');
 
     // 7b. Valid forward progression: Order Placed -> Confirmed -> Shipped
-    const confirmRes = await fetch(`${baseUrl}/api/orders/${orderA.orderNumber}/status`, {
+    const confirmRes = await csrfFetch(`${baseUrl}/api/orders/${orderA.orderNumber}/status`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json', Cookie: adminCookie },
       body: JSON.stringify({ status: 'Confirmed', note: 'Inventory verified' }),
@@ -159,7 +160,7 @@ async function runOperationsTests() {
       throw new Error(`Failed to confirm order: status ${confirmRes.status}`);
     }
 
-    const shipRes = await fetch(`${baseUrl}/api/orders/${orderA.orderNumber}/status`, {
+    const shipRes = await csrfFetch(`${baseUrl}/api/orders/${orderA.orderNumber}/status`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json', Cookie: adminCookie },
       body: JSON.stringify({
@@ -174,7 +175,7 @@ async function runOperationsTests() {
     console.log('✓ Valid forward progression ("Order Placed" -> "Confirmed" -> "Shipped") verified.');
 
     // 7c. Backward transition attempt: Shipped -> Packed
-    const backwardRes = await fetch(`${baseUrl}/api/orders/${orderA.orderNumber}/status`, {
+    const backwardRes = await csrfFetch(`${baseUrl}/api/orders/${orderA.orderNumber}/status`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json', Cookie: adminCookie },
       body: JSON.stringify({ status: 'Packed' }),
@@ -186,7 +187,7 @@ async function runOperationsTests() {
     console.log(`✓ Backward status transition rejected: "${backwardErr.message}".`);
 
     // 7d. Idempotent repeated status update: Shipped -> Shipped
-    const repeatedRes = await fetch(`${baseUrl}/api/orders/${orderA.orderNumber}/status`, {
+    const repeatedRes = await csrfFetch(`${baseUrl}/api/orders/${orderA.orderNumber}/status`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json', Cookie: adminCookie },
       body: JSON.stringify({ status: 'Shipped', trackingNumber: 'TRK-BD-448822IN' }),
@@ -197,7 +198,7 @@ async function runOperationsTests() {
     console.log('✓ Idempotent repeated status update handled without duplicate entries.');
 
     // 8. Admin COD Payment Collection
-    const collectRes = await fetch(`${baseUrl}/api/orders/${orderA.orderNumber}/collect-payment`, {
+    const collectRes = await csrfFetch(`${baseUrl}/api/orders/${orderA.orderNumber}/collect-payment`, {
       method: 'PATCH',
       headers: { Cookie: adminCookie },
     });
@@ -211,7 +212,7 @@ async function runOperationsTests() {
     console.log(`✓ Audited Cash on Delivery payment collection recorded (Payment: ${collectedOrder.paymentStatus}, transaction: ${collectedOrder.transactionId}).`);
 
     // Metrics after collection: paidRevenue includes collected order, unpaidCodOrders decrements
-    const metricsAfterRes = await fetch(`${baseUrl}/api/admin/metrics`, {
+    const metricsAfterRes = await csrfFetch(`${baseUrl}/api/admin/metrics`, {
       headers: { Cookie: adminCookie },
     });
     const metricsAfter = ((await metricsAfterRes.json()) as any).data.metrics;
@@ -228,7 +229,7 @@ async function runOperationsTests() {
       where: { id: testProduct.id },
       data: { price: 99999 }, // alter catalog price
     });
-    const orderVerify: any = await (await fetch(`${baseUrl}/api/orders/${orderA.orderNumber}`, { headers: { Cookie: cookieA } })).json();
+    const orderVerify: any = await (await csrfFetch(`${baseUrl}/api/orders/${orderA.orderNumber}`, { headers: { Cookie: cookieA } })).json();
     if (orderVerify.data.order.items[0].price !== 35.0) {
       throw new Error(`Order item historical price altered! Expected $35.00, got $${orderVerify.data.order.items[0].price}`);
     }

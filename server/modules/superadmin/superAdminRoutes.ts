@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import { prisma } from '../../db/prisma.js';
 import { Role, SellerStatus } from '@prisma/client';
 import {
+  createSession,
   requireAuth,
   requireSuperAdmin,
   optionalAuth,
@@ -34,7 +35,7 @@ superAdminRouter.post('/seller-apply', optionalAuth, async (req: AuthenticatedRe
     return;
   }
 
-  const cleanEmail = typeof email === 'string' ? email.trim().toLowerCase() : '';
+  const cleanEmail = req.user?.email.toLowerCase() || (typeof email === 'string' ? email.trim().toLowerCase() : '');
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!cleanEmail || !emailRegex.test(cleanEmail)) {
     res.status(400).json({ error: { code: 'INVALID_INPUT', message: 'A valid business email address is required' } });
@@ -66,25 +67,24 @@ superAdminRouter.post('/seller-apply', optionalAuth, async (req: AuthenticatedRe
     return;
   }
 
-  // Link to existing user if logged in AND the email matches, or create/link to account for cleanEmail
-  let linkedUserId = req.user && req.user.email.toLowerCase() === cleanEmail ? req.user.id : undefined;
-
+  let linkedUserId = req.user?.id;
   const existingUser = await prisma.user.findUnique({ where: { email: cleanEmail } });
-  if (existingUser) {
-    linkedUserId = existingUser.id;
-    if (password && password.length >= 6) {
-      const passwordHash = await bcrypt.hash(password, 10);
-      await prisma.user.update({
-        where: { id: existingUser.id },
-        data: { passwordHash },
-      });
+  if (existingUser && existingUser.id !== req.user?.id) {
+    if (typeof password !== 'string' || !(await bcrypt.compare(password, existingUser.passwordHash))) {
+      res.status(403).json({ error: { code: 'AUTH_REQUIRED', message: 'Sign in to the existing account before applying.' } });
+      return;
     }
-  } else if (password && password.length >= 6) {
-    const passwordHash = await bcrypt.hash(password, 10);
+    linkedUserId = existingUser.id;
+  } else if (!existingUser) {
+    if (typeof password !== 'string' || password.length < 8 || Buffer.byteLength(password, 'utf8') > 72) {
+      res.status(400).json({ error: { code: 'WEAK_PASSWORD', message: 'Password must be at least 8 characters and at most 72 UTF-8 bytes.' } });
+      return;
+    }
+    const passwordHash = await bcrypt.hash(password, 12);
     const newUser = await prisma.user.create({
       data: {
         email: cleanEmail,
-        name: legalName || storeName,
+        name: typeof legalName === 'string' && legalName.trim() ? legalName.trim() : storeName.trim(),
         phone: phone.trim(),
         passwordHash,
         role: Role.CUSTOMER,
@@ -99,11 +99,11 @@ superAdminRouter.post('/seller-apply', optionalAuth, async (req: AuthenticatedRe
     data: {
       userId: linkedUserId || null,
       storeName: storeName.trim(),
-      legalName: (legalName || storeName).trim(),
+      legalName: typeof legalName === 'string' && legalName.trim() ? legalName.trim() : storeName.trim(),
       email: cleanEmail,
       phone: phone.trim(),
       businessAddress: businessAddress.trim(),
-      category: (category || 'Electronics').trim(),
+      category: typeof category === 'string' && category.trim() ? category.trim() : 'Electronics',
       taxId: taxId ? String(taxId).trim() : null,
       description: description ? String(description).trim() : null,
       status: SellerStatus.PENDING,
@@ -120,9 +120,12 @@ superAdminRouter.post('/seller-apply', optionalAuth, async (req: AuthenticatedRe
     });
   }
 
+  if (!req.user && linkedUserId) await createSession(linkedUserId, res);
+
   res.status(201).json({
     data: {
       message: 'Seller application submitted successfully! It is now queued for Super Admin verification.',
+      application,
       applicationId: application.id,
       status: application.status,
     },
@@ -130,20 +133,11 @@ superAdminRouter.post('/seller-apply', optionalAuth, async (req: AuthenticatedRe
 });
 
 // GET /api/super-admin/my-application - Check status of current seller application
-superAdminRouter.get('/my-application', optionalAuth, async (req: AuthenticatedRequest, res: Response): Promise<void> => {
-  const emailQuery = typeof req.query.email === 'string' ? req.query.email.trim().toLowerCase() : undefined;
-  const userEmail = req.user?.email || emailQuery;
-
-  if (!userEmail) {
-    res.status(200).json({ data: { application: null } });
-    return;
-  }
-
+superAdminRouter.get('/my-application', requireAuth, async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   const application = await prisma.sellerApplication.findFirst({
-    where: { email: userEmail },
+    where: { userId: req.user!.id, email: req.user!.email },
     orderBy: { createdAt: 'desc' },
   });
-
   res.status(200).json({ data: { application } });
 });
 
@@ -185,7 +179,12 @@ superAdminRouter.get('/applications', async (req: AuthenticatedRequest, res: Res
   const where: any = {};
 
   if (status && typeof status === 'string' && status !== 'all') {
-    where.status = status.toUpperCase() as SellerStatus;
+    const normalizedStatus = status.toUpperCase();
+    if (!Object.values(SellerStatus).includes(normalizedStatus as SellerStatus)) {
+      res.status(400).json({ error: { code: 'INVALID_INPUT', message: 'Invalid application status' } });
+      return;
+    }
+    where.status = normalizedStatus as SellerStatus;
   }
 
   const applications = await prisma.sellerApplication.findMany({
@@ -206,6 +205,12 @@ superAdminRouter.patch('/applications/:id/approve', async (req: AuthenticatedReq
     return;
   }
 
+  const applicant = await prisma.user.findUnique({ where: { email: application.email } });
+  if (!applicant || applicant.id !== application.userId) {
+    res.status(400).json({ error: { code: 'UNVERIFIED_APPLICANT', message: 'The applicant must sign in and resubmit before approval.' } });
+    return;
+  }
+
   const updatedApp = await prisma.$transaction(async (tx) => {
     // 1. Update application status
     const app = await tx.sellerApplication.update({
@@ -223,31 +228,13 @@ superAdminRouter.patch('/applications/:id/approve', async (req: AuthenticatedReq
       await tx.user.update({
         where: { id: existingUser.id },
         data: {
-          role: Role.ADMIN,
+          role: existingUser.role === Role.SUPER_ADMIN ? Role.SUPER_ADMIN : Role.ADMIN,
           sellerStatus: SellerStatus.APPROVED,
           storeName: application.storeName,
         },
       });
     } else {
-      // Check if application has a linked user to inherit password from
-      let passwordHash = await bcrypt.hash('SellerWelcome2026!', 10);
-      if (application.userId) {
-        const linkedUser = await tx.user.findUnique({ where: { id: application.userId } });
-        if (linkedUser?.passwordHash) {
-          passwordHash = linkedUser.passwordHash;
-        }
-      }
-      await tx.user.create({
-        data: {
-          email: application.email,
-          name: application.legalName || application.storeName,
-          phone: application.phone,
-          passwordHash,
-          role: Role.ADMIN,
-          sellerStatus: SellerStatus.APPROVED,
-          storeName: application.storeName,
-        },
-      });
+      throw new Error('Applicant account no longer exists');
     }
 
     return app;
@@ -416,6 +403,12 @@ superAdminRouter.patch('/admins/:id/status', async (req: AuthenticatedRequest, r
   // Prevent self-demotion
   if (user.id === req.user!.id) {
     res.status(400).json({ error: { code: 'CANNOT_MODIFY_SELF', message: 'You cannot alter your own Super Admin access.' } });
+    return;
+  }
+
+  if ((targetSellerStatus && !Object.values(SellerStatus).includes(targetSellerStatus))
+    || (role && !['superadmin', 'admin', 'customer'].includes(role))) {
+    res.status(400).json({ error: { code: 'INVALID_INPUT', message: 'Invalid role or seller status' } });
     return;
   }
 

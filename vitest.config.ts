@@ -46,6 +46,6 @@ export default defineConfig({
     },
 
     // Friendly reporter so test output is easy to read
-    reporter: 'verbose',
+    reporters: ['verbose'],
   },
 });

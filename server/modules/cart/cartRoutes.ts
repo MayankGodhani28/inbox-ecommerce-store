@@ -67,8 +67,8 @@ cartRouter.post('/items', async (req: AuthenticatedRequest, res: Response): Prom
     return;
   }
 
-  const numQty = parseInt(quantity, 10);
-  if (isNaN(numQty) || numQty <= 0) {
+  const numQty = quantity;
+  if (!Number.isSafeInteger(numQty) || numQty <= 0) {
     res.status(400).json({ error: { code: 'INVALID_INPUT', message: 'Quantity must be a positive integer' } });
     return;
   }
@@ -141,14 +141,21 @@ cartRouter.patch('/items/:id', async (req: AuthenticatedRequest, res: Response):
     return;
   }
 
-  const numQty = parseInt(quantity, 10);
-  if (isNaN(numQty) || numQty <= 0) {
-    // Zero or negative deletes item
+  const numQty = quantity;
+  if (!Number.isSafeInteger(numQty) || numQty < 0) {
+    res.status(400).json({ error: { code: 'INVALID_INPUT', message: 'Quantity must be a non-negative integer' } });
+    return;
+  }
+  if (numQty === 0) {
     await prisma.cartItem.delete({ where: { id: itemId } });
     res.status(200).json({ data: { message: 'Item removed from cart' } });
     return;
   }
 
+  if (item.product.stock <= 0 || item.product.isArchived) {
+    res.status(400).json({ error: { code: 'OUT_OF_STOCK', message: 'Item is unavailable' } });
+    return;
+  }
   const clampedQty = Math.min(numQty, item.product.stock);
   const updated = await prisma.cartItem.update({
     where: { id: itemId },
@@ -187,14 +194,20 @@ cartRouter.post('/merge', async (req: AuthenticatedRequest, res: Response): Prom
     return;
   }
 
+  if (items.length > 100 || items.some((item) => !item
+    || typeof item.productId !== 'string'
+    || !Number.isSafeInteger(item.quantity) || item.quantity <= 0)) {
+    res.status(400).json({ error: { code: 'INVALID_INPUT', message: 'At most 100 items with positive integer quantities are allowed' } });
+    return;
+  }
+
   for (const item of items) {
-    if (!item.productId) continue;
     const product = await prisma.product.findUnique({ where: { id: item.productId } });
     if (!product || product.isArchived || product.stock <= 0) continue;
 
     const colorKey = typeof item.selectedColor === 'string' ? item.selectedColor.trim() : '';
     const sizeKey = typeof item.selectedSize === 'string' ? item.selectedSize.trim() : '';
-    const numQty = parseInt(item.quantity, 10) || 1;
+    const numQty = item.quantity;
 
     const existing = await prisma.cartItem.findUnique({
       where: {

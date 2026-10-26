@@ -109,7 +109,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="max-w-[1500px] mx-auto flex flex-wrap items-center justify-between gap-2">
           {/* Left: Presentation notice */}
           <div className="flex items-center gap-2">
-            <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="flex size-2 rounded-full bg-emerald-400 animate-pulse" />
             <span className="text-[11px] text-slate-300">
               <strong className="text-white font-semibold">{t('nav.demoTitle')}</strong> — {t('nav.demoSubtitle')}
             </span>
@@ -133,7 +133,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     onClick={() => onNavigate('admin')}
                     className="px-3 py-1 rounded-lg text-[11px] font-extrabold bg-[#009FE3] hover:bg-[#0087c2] text-white transition-all cursor-pointer shadow-sm flex items-center gap-1.5"
                   >
-                    <ShieldCheck className="w-3.5 h-3.5" />
+                    <ShieldCheck className="size-3.5" />
                     <span>Admin Portal</span>
                   </button>
                 )}
@@ -168,7 +168,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 placeholder={t('nav.searchPlaceholder')}
                 className="w-full pl-10 pr-24 py-2.5 bg-slate-100/90 hover:bg-slate-100 focus:bg-white rounded-xl text-sm border border-slate-200 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100 transition-all"
               />
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 pointer-events-none" />
+              <Search className="size-4 text-slate-400 absolute left-3 pointer-events-none" />
               <button
                 type="submit"
                 className="absolute right-1.5 px-3 py-1.5 bg-[#E84A27] hover:bg-[#d43f1f] text-white text-xs font-bold rounded-lg transition-colors shadow-xs cursor-pointer"
@@ -179,7 +179,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {/* Live Autocomplete Dropdown */}
             {showSuggestions && searchQuery.trim() && (
-              <div className="absolute top-full left-0 right-0 mt-1.5 bg-white rounded-xl shadow-xl border border-slate-200 overflow-hidden z-50 animate-fade-in">
+              <div className="absolute top-full inset-x-0 mt-1.5 bg-white rounded-xl shadow-xl border border-slate-200 overflow-hidden z-50 animate-fade-in">
                 {searchSuggestions.length > 0 ? (
                   <div className="py-2">
                     <div className="px-3 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
@@ -194,7 +194,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                         <img
                           src={prod.images[0]}
                           alt={prod.name}
-                          className="w-9 h-9 object-cover rounded-md border border-slate-200 shrink-0"
+                          className="size-9 object-cover rounded-md border border-slate-200 shrink-0"
                         />
                         <div className="flex-1 min-w-0">
                           <p className="text-xs font-bold text-slate-900 truncate">{prod.name}</p>
@@ -229,7 +229,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               aria-label={t('nav.savedWishlist')}
               title={t('nav.savedWishlist')}
             >
-              <Heart className="w-5 h-5" />
+              <Heart className="size-5" />
               {wishlistCount > 0 && (
                 <span className="absolute top-1.5 right-1.5 flex items-center justify-center min-w-4 h-4 px-1 rounded-full bg-rose-500 text-white text-[10px] font-extrabold shadow-xs animate-scale">
                   {wishlistCount}
@@ -244,7 +244,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               aria-label={t('nav.shoppingCart')}
               title={t('nav.shoppingCart')}
             >
-              <ShoppingCart className="w-5 h-5" />
+              <ShoppingCart className="size-5" />
               {totalItemsCount > 0 && (
                 <span className="absolute top-1.5 right-1.5 flex items-center justify-center min-w-4 h-4 px-1 rounded-full bg-[#E84A27] text-white text-[10px] font-extrabold shadow-xs">
                   {totalItemsCount}
@@ -262,19 +262,19 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <img
                     src={user.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80'}
                     alt={user.name}
-                    className="w-7 h-7 rounded-full object-cover border border-slate-300"
+                    className="size-7 rounded-full object-cover border border-slate-300"
                   />
                   <span className="hidden lg:inline text-xs font-bold text-slate-800 max-w-[100px] truncate">
                     {user.name.split(' ')[0]}
                   </span>
-                  <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+                  <ChevronDown className="size-3.5 text-slate-400" />
                 </button>
               ) : (
                 <button
                   onClick={() => onNavigate('login', currentTab !== 'login' ? currentTab : undefined)}
                   className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
                 >
-                  <UserIcon className="w-3.5 h-3.5" />
+                  <UserIcon className="size-3.5" />
                   <span>{t('nav.signIn')}</span>
                 </button>
               )}
@@ -300,7 +300,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       }}
                       className="w-full text-left px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2 cursor-pointer"
                     >
-                      <UserIcon className="w-4 h-4 text-slate-400" />
+                      <UserIcon className="size-4 text-slate-400" />
                       {t('nav.myProfile')}
                     </button>
                     <button
@@ -310,7 +310,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       }}
                       className="w-full text-left px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2 cursor-pointer"
                     >
-                      <Package className="w-4 h-4 text-slate-400" />
+                      <Package className="size-4 text-slate-400" />
                       {t('nav.myOrders')}
                     </button>
                     <button
@@ -320,7 +320,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       }}
                       className="w-full text-left px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2 cursor-pointer"
                     >
-                      <Heart className="w-4 h-4 text-slate-400" />
+                      <Heart className="size-4 text-slate-400" />
                       {t('nav.wishlistWithCount', { count: wishlistCount })}
                     </button>
                   </div>
@@ -333,7 +333,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       }}
                       className="w-full text-left px-4 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 flex items-center gap-2 cursor-pointer"
                     >
-                      <LogOut className="w-4 h-4 text-rose-500" />
+                      <LogOut className="size-4 text-rose-500" />
                       {t('nav.signOut')}
                     </button>
                   </div>
@@ -347,7 +347,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="p-2 rounded-xl text-slate-700 md:hidden hover:bg-slate-100 cursor-pointer"
               aria-label="Toggle navigation menu"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="size-6" /> : <Menu className="size-6" />}
             </button>
           </div>
         </div>
@@ -362,7 +362,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               placeholder={t('nav.searchMobilePlaceholder')}
               className="w-full pl-9 pr-16 py-2 bg-slate-100 rounded-xl text-xs border border-slate-200 focus:outline-none focus:border-orange-500"
             />
-            <Search className="w-4 h-4 text-slate-400 absolute left-2.5" />
+            <Search className="size-4 text-slate-400 absolute left-2.5" />
             <button
               type="submit"
               className="absolute right-1 px-2.5 py-1 bg-[#E84A27] text-white text-[11px] font-bold rounded-lg cursor-pointer"
@@ -413,7 +413,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => onNavigate('products', 'deals')}
               className="flex items-center gap-1 hover:underline cursor-pointer"
             >
-              <Zap className="w-3.5 h-3.5" /> {t('nav.flashDealsPromo')}
+              <Zap className="size-3.5" /> {t('nav.flashDealsPromo')}
             </button>
           </div>
         </div>

@@ -129,10 +129,10 @@ adminRouter.post('/products', async (req: AuthenticatedRequest, res: Response): 
         sellerEmail: user.email,
         storeName: sellerStore,
       },
-      isTrending: !!isTrending,
-      isBestSeller: !!isBestSeller,
-      isNewArrival: !!isNewArrival,
-      isDealOfDay: !!isDealOfDay,
+      isTrending: Boolean(isTrending),
+      isBestSeller: Boolean(isBestSeller),
+      isNewArrival: Boolean(isNewArrival),
+      isDealOfDay: Boolean(isDealOfDay),
       isArchived: false,
     },
   });
@@ -220,11 +220,11 @@ adminRouter.patch('/products/:id', async (req: AuthenticatedRequest, res: Respon
   if (sizes !== undefined) updates.sizes = sizes;
   if (specifications !== undefined) updates.specifications = specifications;
   if (discount !== undefined) updates.discount = parseInt(discount, 10) || 0;
-  if (isTrending !== undefined) updates.isTrending = !!isTrending;
-  if (isBestSeller !== undefined) updates.isBestSeller = !!isBestSeller;
-  if (isNewArrival !== undefined) updates.isNewArrival = !!isNewArrival;
-  if (isDealOfDay !== undefined) updates.isDealOfDay = !!isDealOfDay;
-  if (isArchived !== undefined) updates.isArchived = !!isArchived;
+  if (isTrending !== undefined) updates.isTrending = Boolean(isTrending);
+  if (isBestSeller !== undefined) updates.isBestSeller = Boolean(isBestSeller);
+  if (isNewArrival !== undefined) updates.isNewArrival = Boolean(isNewArrival);
+  if (isDealOfDay !== undefined) updates.isDealOfDay = Boolean(isDealOfDay);
+  if (isArchived !== undefined) updates.isArchived = Boolean(isArchived);
 
   const updated = await prisma.product.update({
     where: { id: req.params.id },

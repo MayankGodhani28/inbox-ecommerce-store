@@ -213,27 +213,27 @@ export const Checkout: React.FC<CheckoutProps> = ({ onNavigate, onOrderPlaced })
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 mb-6">
         <button onClick={() => onNavigate('home')} className="hover:text-slate-700 cursor-pointer">{t('cart.breadcrumbHome')}</button>
-        <ChevronRight className="w-3 h-3" />
+        <ChevronRight className="size-3" />
         <button onClick={() => onNavigate('cart')} className="hover:text-slate-700 cursor-pointer">{t('cart.breadcrumbCart')}</button>
-        <ChevronRight className="w-3 h-3" />
+        <ChevronRight className="size-3" />
         <span className="text-slate-800">{t('checkout.title')}</span>
       </div>
 
       {/* Stepper Progress Header */}
       <div className="max-w-3xl mx-auto mb-10">
         <div className="flex items-center justify-between relative">
-          <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-slate-200 -translate-y-1/2 z-0" />
+          <div className="absolute top-1/2 inset-x-0 h-0.5 bg-slate-200 -translate-y-1/2 z-0" />
 
           {/* Step 1 */}
           <div className="relative z-10 flex flex-col items-center gap-1.5 bg-slate-50 px-2">
             <div
-              className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs transition-colors ${
+              className={`size-9 rounded-full flex items-center justify-center font-bold text-xs transition-colors ${
                 currentStep === 'address'
                   ? 'bg-[#E84A27] text-white ring-4 ring-orange-100'
                   : 'bg-emerald-600 text-white'
               }`}
             >
-              {currentStep !== 'address' ? <CheckCircle className="w-5 h-5" /> : '1'}
+              {currentStep !== 'address' ? <CheckCircle className="size-5" /> : '1'}
             </div>
             <span
               className={`text-xs font-bold ${
@@ -247,7 +247,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ onNavigate, onOrderPlaced })
           {/* Step 2 */}
           <div className="relative z-10 flex flex-col items-center gap-1.5 bg-slate-50 px-2">
             <div
-              className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs transition-colors ${
+              className={`size-9 rounded-full flex items-center justify-center font-bold text-xs transition-colors ${
                 currentStep === 'shipping'
                   ? 'bg-[#E84A27] text-white ring-4 ring-orange-100'
                   : currentStep === 'payment'
@@ -255,7 +255,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ onNavigate, onOrderPlaced })
                   : 'bg-slate-200 text-slate-500'
               }`}
             >
-              {currentStep === 'payment' ? <CheckCircle className="w-5 h-5" /> : '2'}
+              {currentStep === 'payment' ? <CheckCircle className="size-5" /> : '2'}
             </div>
             <span
               className={`text-xs font-bold ${
@@ -269,7 +269,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ onNavigate, onOrderPlaced })
           {/* Step 3 */}
           <div className="relative z-10 flex flex-col items-center gap-1.5 bg-slate-50 px-2">
             <div
-              className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs transition-colors ${
+              className={`size-9 rounded-full flex items-center justify-center font-bold text-xs transition-colors ${
                 currentStep === 'payment'
                   ? 'bg-[#E84A27] text-white ring-4 ring-orange-100'
                   : 'bg-slate-200 text-slate-500'
@@ -295,7 +295,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ onNavigate, onOrderPlaced })
           {!user && (
             <div className="bg-amber-50 border border-amber-200/80 rounded-2xl p-4 flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 font-bold text-xs">
+                <div className="size-8 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 font-bold text-xs">
                   i
                 </div>
                 <div>
@@ -317,7 +317,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ onNavigate, onOrderPlaced })
           {currentStep === 'address' && (
             <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-xs">
               <div className="flex items-center gap-2 mb-6">
-                <MapPin className="w-5 h-5 text-orange-600" />
+                <MapPin className="size-5 text-orange-600" />
                 <h2 className="text-lg font-bold text-slate-900">{t('checkout.shippingHeading')}</h2>
               </div>
 
@@ -420,7 +420,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ onNavigate, onOrderPlaced })
                   className="mt-4 py-3 px-6 bg-[#E84A27] hover:bg-[#d63f1f] text-white font-extrabold rounded-xl shadow-md flex items-center justify-center gap-2 self-end cursor-pointer"
                 >
                   <span>{t('checkout.continueShipping')}</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="size-4" />
                 </button>
               </form>
             </div>
@@ -430,7 +430,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ onNavigate, onOrderPlaced })
           {currentStep === 'shipping' && (
             <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-xs">
               <div className="flex items-center gap-2 mb-6">
-                <Truck className="w-5 h-5 text-orange-600" />
+                <Truck className="size-5 text-orange-600" />
                 <h2 className="text-lg font-bold text-slate-900">{t('checkout.deliveryHeading')}</h2>
               </div>
 
@@ -503,7 +503,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ onNavigate, onOrderPlaced })
                     className="py-3 px-6 bg-[#E84A27] hover:bg-[#d63f1f] text-white font-extrabold rounded-xl shadow-md flex items-center gap-2 cursor-pointer"
                   >
                     <span>{t('checkout.continuePayment')}</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="size-4" />
                   </button>
                 </div>
               </form>
@@ -515,7 +515,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ onNavigate, onOrderPlaced })
             <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-xs">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-2">
-                  <Lock className="w-5 h-5 text-emerald-600" />
+                  <Lock className="size-5 text-emerald-600" />
                   <h2 className="text-lg font-bold text-slate-900">{t('checkout.paymentHeading')}</h2>
                 </div>
                 <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
@@ -534,7 +534,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ onNavigate, onOrderPlaced })
                       : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
                   }`}
                 >
-                  <CreditCard className="w-5 h-5 text-orange-600" />
+                  <CreditCard className="size-5 text-orange-600" />
                   <span>{t('checkout.cardTitle')}</span>
                   <span className="text-[10px] text-slate-400 font-normal">Stripe 3D Secure</span>
                 </button>
@@ -548,7 +548,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ onNavigate, onOrderPlaced })
                       : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
                   }`}
                 >
-                  <Banknote className="w-5 h-5 text-emerald-600" />
+                  <Banknote className="size-5 text-emerald-600" />
                   <span>{t('checkout.codTitle')}</span>
                   <span className="text-[10px] text-slate-400 font-normal">Pay on Doorstep</span>
                 </button>
@@ -559,8 +559,8 @@ export const Checkout: React.FC<CheckoutProps> = ({ onNavigate, onOrderPlaced })
                 {paymentMethod === 'card' && (
                   <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col gap-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center font-bold shrink-0">
-                        <CreditCard className="w-5 h-5" />
+                      <div className="size-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center font-bold shrink-0">
+                        <CreditCard className="size-5" />
                       </div>
                       <div>
                         <p className="font-bold text-slate-900 text-xs">Stripe Hosted Checkout</p>
@@ -599,12 +599,12 @@ export const Checkout: React.FC<CheckoutProps> = ({ onNavigate, onOrderPlaced })
                   >
                     {isProcessing ? (
                       <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        <div className="size-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                         <span>{t('checkout.processing')}</span>
                       </div>
                     ) : (
                       <>
-                        <ShieldCheck className="w-4 h-4" />
+                        <ShieldCheck className="size-4" />
                         <span>{t('checkout.completePayment', { amount: total.toFixed(2) })}</span>
                       </>
                     )}
@@ -630,7 +630,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ onNavigate, onOrderPlaced })
                     <img
                       src={it.product.images[0]}
                       alt={it.product.name}
-                      className="w-10 h-10 object-cover rounded-lg border border-slate-200 shrink-0"
+                      className="size-10 object-cover rounded-lg border border-slate-200 shrink-0"
                     />
                     <div className="max-w-[130px]">
                       <p className="font-bold text-slate-800 truncate">{it.product.name}</p>

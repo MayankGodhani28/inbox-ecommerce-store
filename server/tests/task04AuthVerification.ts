@@ -1,3 +1,4 @@
+import { csrfFetch } from './httpClient.js';
 import { createApp } from '../app.js';
 import { prisma } from '../db/prisma.js';
 import type { Server } from 'http';
@@ -17,7 +18,7 @@ async function runAuthTests() {
     const testPassword = 'SecurePassword123!';
 
     // 1. Invalid input registration (missing password, weak password, invalid email)
-    const weakPassRes = await fetch(`${baseUrl}/api/auth/register`, {
+    const weakPassRes = await csrfFetch(`${baseUrl}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: 'User', email: testEmail, password: '123' }),
@@ -28,7 +29,7 @@ async function runAuthTests() {
     console.log('✓ Rejected weak password with HTTP 400.');
 
     // 2. Successful Registration
-    const regRes = await fetch(`${baseUrl}/api/auth/register`, {
+    const regRes = await csrfFetch(`${baseUrl}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -60,7 +61,7 @@ async function runAuthTests() {
     console.log('✓ HttpOnly session cookie received.');
 
     // 3. Duplicate email registration rejected
-    const dupRes = await fetch(`${baseUrl}/api/auth/register`, {
+    const dupRes = await csrfFetch(`${baseUrl}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: 'Dupe', email: testEmail, password: testPassword }),
@@ -71,7 +72,7 @@ async function runAuthTests() {
     console.log('✓ Duplicate email registration rejected with HTTP 409.');
 
     // 4. Authenticated /api/auth/me request using session cookie
-    const meRes = await fetch(`${baseUrl}/api/auth/me`, {
+    const meRes = await csrfFetch(`${baseUrl}/api/auth/me`, {
       headers: { Cookie: sessionCookie },
     });
     if (meRes.status !== 200) {
@@ -84,14 +85,14 @@ async function runAuthTests() {
     console.log('✓ GET /api/auth/me returned authenticated customer profile.');
 
     // 5. Unauthenticated request to /api/auth/me
-    const unauthRes = await fetch(`${baseUrl}/api/auth/me`);
+    const unauthRes = await csrfFetch(`${baseUrl}/api/auth/me`);
     if (unauthRes.status !== 401) {
       throw new Error(`Expected 401 for unauthenticated /me, got ${unauthRes.status}`);
     }
     console.log('✓ Unauthenticated request to /api/auth/me rejected with HTTP 401.');
 
     // 6. Invalid credentials login
-    const badLoginRes = await fetch(`${baseUrl}/api/auth/login`, {
+    const badLoginRes = await csrfFetch(`${baseUrl}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: testEmail, password: 'WrongPassword!' }),
@@ -102,7 +103,7 @@ async function runAuthTests() {
     console.log('✓ Invalid password login rejected with HTTP 401.');
 
     // 7. Successful login
-    const loginRes = await fetch(`${baseUrl}/api/auth/login`, {
+    const loginRes = await csrfFetch(`${baseUrl}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: testEmail, password: testPassword }),
@@ -115,7 +116,7 @@ async function runAuthTests() {
     console.log('✓ Valid login succeeded with new session cookie.');
 
     // 8. Logout revokes session
-    const logoutRes = await fetch(`${baseUrl}/api/auth/logout`, {
+    const logoutRes = await csrfFetch(`${baseUrl}/api/auth/logout`, {
       method: 'POST',
       headers: { Cookie: loginCookie },
     });
@@ -124,7 +125,7 @@ async function runAuthTests() {
     }
 
     // After logout, previous session must be revoked
-    const afterLogoutRes = await fetch(`${baseUrl}/api/auth/me`, {
+    const afterLogoutRes = await csrfFetch(`${baseUrl}/api/auth/me`, {
       headers: { Cookie: loginCookie },
     });
     if (afterLogoutRes.status !== 401) {
@@ -133,7 +134,7 @@ async function runAuthTests() {
     console.log('✓ Logout successfully revoked session in database and rejected subsequent requests.');
 
     // 9. Admin login check
-    const adminLoginRes = await fetch(`${baseUrl}/api/auth/login`, {
+    const adminLoginRes = await csrfFetch(`${baseUrl}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: 'admin@inbox.com', password: 'AdminSecure2026!' }),

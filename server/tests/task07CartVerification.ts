@@ -1,3 +1,4 @@
+import { csrfFetch } from './httpClient.js';
 import { createApp } from '../app.js';
 import { prisma } from '../db/prisma.js';
 import type { Server } from 'http';
@@ -18,7 +19,7 @@ async function runCartTests() {
 
   try {
     // 1. Register Customer A
-    const regARes = await fetch(`${baseUrl}/api/auth/register`, {
+    const regARes = await csrfFetch(`${baseUrl}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: 'Customer A', email: customerAEmail, password }),
@@ -29,7 +30,7 @@ async function runCartTests() {
     const cookieA = regARes.headers.get('set-cookie')!.split(';')[0];
 
     // Register Customer B
-    const regBRes = await fetch(`${baseUrl}/api/auth/register`, {
+    const regBRes = await csrfFetch(`${baseUrl}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: 'Customer B', email: customerBEmail, password }),
@@ -49,7 +50,7 @@ async function runCartTests() {
     }
 
     // 3. Customer A adds product (size M, color Blue, qty 2)
-    const addRes = await fetch(`${baseUrl}/api/cart/items`, {
+    const addRes = await csrfFetch(`${baseUrl}/api/cart/items`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Cookie: cookieA },
       body: JSON.stringify({
@@ -63,7 +64,7 @@ async function runCartTests() {
       throw new Error(`Failed to add item to cart: status ${addRes.status}`);
     }
 
-    const cartListA = await fetch(`${baseUrl}/api/cart`, { headers: { Cookie: cookieA } });
+    const cartListA = await csrfFetch(`${baseUrl}/api/cart`, { headers: { Cookie: cookieA } });
     const cartAData = ((await cartListA.json()) as any).data;
     if (cartAData.items.length !== 1 || cartAData.items[0].quantity !== 2) {
       throw new Error(`Expected cart with 1 item of qty 2, got: ${JSON.stringify(cartAData)}`);
@@ -71,7 +72,7 @@ async function runCartTests() {
     console.log('✓ Customer A added item to cart (qty 2, Blue, M).');
 
     // 4. Move to saved-for-later: cart becomes empty, saved items has 1 entry
-    const saveRes = await fetch(`${baseUrl}/api/saved-items`, {
+    const saveRes = await csrfFetch(`${baseUrl}/api/saved-items`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Cookie: cookieA },
       body: JSON.stringify({
@@ -85,8 +86,8 @@ async function runCartTests() {
       throw new Error(`Failed to save item for later: status ${saveRes.status}`);
     }
 
-    const cartAfterSave = ((await (await fetch(`${baseUrl}/api/cart`, { headers: { Cookie: cookieA } })).json()) as any);
-    const savedAfterSave = ((await (await fetch(`${baseUrl}/api/saved-items`, { headers: { Cookie: cookieA } })).json()) as any);
+    const cartAfterSave = ((await (await csrfFetch(`${baseUrl}/api/cart`, { headers: { Cookie: cookieA } })).json()) as any);
+    const savedAfterSave = ((await (await csrfFetch(`${baseUrl}/api/saved-items`, { headers: { Cookie: cookieA } })).json()) as any);
 
     if (cartAfterSave.data.items.length !== 0) {
       throw new Error(`Expected cart to be empty after saveForLater, found ${cartAfterSave.data.items.length} items`);
@@ -98,7 +99,7 @@ async function runCartTests() {
     console.log('✓ Item moved to saved-for-later: cart is empty and saved items has 1 entry.');
 
     // 5. Move item back to cart: saved items becomes empty, cart has 1 entry
-    const moveBackRes = await fetch(`${baseUrl}/api/saved-items/${savedItemId}/move-to-cart`, {
+    const moveBackRes = await csrfFetch(`${baseUrl}/api/saved-items/${savedItemId}/move-to-cart`, {
       method: 'POST',
       headers: { Cookie: cookieA },
     });
@@ -106,8 +107,8 @@ async function runCartTests() {
       throw new Error(`Failed to move back to cart: status ${moveBackRes.status}`);
     }
 
-    const cartAfterMoveBack = ((await (await fetch(`${baseUrl}/api/cart`, { headers: { Cookie: cookieA } })).json()) as any);
-    const savedAfterMoveBack = ((await (await fetch(`${baseUrl}/api/saved-items`, { headers: { Cookie: cookieA } })).json()) as any);
+    const cartAfterMoveBack = ((await (await csrfFetch(`${baseUrl}/api/cart`, { headers: { Cookie: cookieA } })).json()) as any);
+    const savedAfterMoveBack = ((await (await csrfFetch(`${baseUrl}/api/saved-items`, { headers: { Cookie: cookieA } })).json()) as any);
 
     if (savedAfterMoveBack.data.items.length !== 0) {
       throw new Error(`Expected saved items to be empty, found ${savedAfterMoveBack.data.items.length}`);
@@ -119,7 +120,7 @@ async function runCartTests() {
     console.log('✓ Item moved back to cart: saved items empty, cart has 1 entry.');
 
     // 6. Quantity clamping: update quantity to product.stock + 100
-    const clampQtyRes = await fetch(`${baseUrl}/api/cart/items/${cartItemId}`, {
+    const clampQtyRes = await csrfFetch(`${baseUrl}/api/cart/items/${cartItemId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json', Cookie: cookieA },
       body: JSON.stringify({ quantity: testProduct.stock + 100 }),
@@ -134,7 +135,7 @@ async function runCartTests() {
     console.log(`✓ Quantity clamped strictly to stock level (${testProduct.stock}).`);
 
     // 7. Isolation check: Customer B verifies cart is completely empty
-    const cartBRes = ((await (await fetch(`${baseUrl}/api/cart`, { headers: { Cookie: cookieB } })).json()) as any);
+    const cartBRes = ((await (await csrfFetch(`${baseUrl}/api/cart`, { headers: { Cookie: cookieB } })).json()) as any);
     if (cartBRes.data.items.length !== 0) {
       throw new Error(`Isolation failed: Customer B has ${cartBRes.data.items.length} items in cart!`);
     }
@@ -145,7 +146,7 @@ async function runCartTests() {
       { productId: testProduct.id, quantity: 2, selectedColor: 'Blue', selectedSize: 'M' },
       { productId: testProduct.id, quantity: 1, selectedColor: 'Blue', selectedSize: 'M' }, // duplicate variant
     ];
-    const mergeRes = await fetch(`${baseUrl}/api/cart/merge`, {
+    const mergeRes = await csrfFetch(`${baseUrl}/api/cart/merge`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Cookie: cookieB },
       body: JSON.stringify({ items: guestItems }),
@@ -163,7 +164,7 @@ async function runCartTests() {
     console.log('✓ Guest cart merged cleanly into Customer B account with deduplication.');
 
     // 9. Wishlist toggle & isolation check
-    const toggleWishlistRes = await fetch(`${baseUrl}/api/wishlist/toggle`, {
+    const toggleWishlistRes = await csrfFetch(`${baseUrl}/api/wishlist/toggle`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Cookie: cookieA },
       body: JSON.stringify({ productId: testProduct.id }),
@@ -171,11 +172,11 @@ async function runCartTests() {
     if (toggleWishlistRes.status !== 201) {
       throw new Error(`Failed to add to wishlist: status ${toggleWishlistRes.status}`);
     }
-    const wishlistA = ((await (await fetch(`${baseUrl}/api/wishlist`, { headers: { Cookie: cookieA } })).json()) as any);
+    const wishlistA = ((await (await csrfFetch(`${baseUrl}/api/wishlist`, { headers: { Cookie: cookieA } })).json()) as any);
     if (wishlistA.data.count !== 1) {
       throw new Error(`Expected Customer A wishlist count 1, got ${wishlistA.data.count}`);
     }
-    const wishlistB = ((await (await fetch(`${baseUrl}/api/wishlist`, { headers: { Cookie: cookieB } })).json()) as any);
+    const wishlistB = ((await (await csrfFetch(`${baseUrl}/api/wishlist`, { headers: { Cookie: cookieB } })).json()) as any);
     if (wishlistB.data.count !== 0) {
       throw new Error(`Expected Customer B wishlist count 0, got ${wishlistB.data.count}`);
     }

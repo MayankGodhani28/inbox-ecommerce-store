@@ -1,0 +1,42 @@
+name: CodeAnt fixes verification
+on:
+  push:
+    branches: [Mayank]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: codeant-Mayank
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      DATABASE_URL: postgresql://postgres:test@localhost:5432/inbox_store
+      NODE_ENV: test
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Resolve patched dependency graph
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+      - name: Save generated lockfile on Mayank
+        run: |
+          if ! git diff --quiet -- package-lock.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add package-lock.json
+            git commit -m "chore: lock patched CodeAnt dependencies"
+            git push origin HEAD:Mayank
+          fi
+      - run: npm ci --no-audit --no-fund
+      - run: npm run prisma:generate
+      - run: npm run test:codeant
+      - run: npm run lint
+      - run: npm run server:typecheck
+      - run: npm test
+      - run: npm run build
+      - run: npm run server:build

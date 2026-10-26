@@ -1,3 +1,4 @@
+import { csrfFetch } from './httpClient.js';
 import { createApp } from '../app.js';
 import { prisma } from '../db/prisma.js';
 import type { Server } from 'http';
@@ -18,14 +19,14 @@ async function runProfileTests() {
 
   try {
     // 1. Register User A and User B
-    const regARes = await fetch(`${baseUrl}/api/auth/register`, {
+    const regARes = await csrfFetch(`${baseUrl}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: 'User A', email: userAEmail, password }),
     });
     const cookieA = regARes.headers.get('set-cookie')!.split(';')[0];
 
-    const regBRes = await fetch(`${baseUrl}/api/auth/register`, {
+    const regBRes = await csrfFetch(`${baseUrl}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: 'User B', email: userBEmail, password }),
@@ -34,7 +35,7 @@ async function runProfileTests() {
     console.log('✓ Created User A and User B with active sessions.');
 
     // 2. Profile allowlisted updates and role/ID tampering rejection
-    const updateRes = await fetch(`${baseUrl}/api/me`, {
+    const updateRes = await csrfFetch(`${baseUrl}/api/me`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json', Cookie: cookieA },
       body: JSON.stringify({
@@ -61,7 +62,7 @@ async function runProfileTests() {
     console.log('✓ Profile allowlisted fields updated while role/id/email tampering was strictly ignored.');
 
     // 3. User A adds Address 1 (becomes default automatically)
-    const add1Res = await fetch(`${baseUrl}/api/me/addresses`, {
+    const add1Res = await csrfFetch(`${baseUrl}/api/me/addresses`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Cookie: cookieA },
       body: JSON.stringify({
@@ -83,7 +84,7 @@ async function runProfileTests() {
     console.log('✓ First address created and marked as default.');
 
     // 4. User A adds Address 2 as default (transactionally demotes Address 1)
-    const add2Res = await fetch(`${baseUrl}/api/me/addresses`, {
+    const add2Res = await csrfFetch(`${baseUrl}/api/me/addresses`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Cookie: cookieA },
       body: JSON.stringify({
@@ -102,7 +103,7 @@ async function runProfileTests() {
     }
 
     // Verify Address 1 was demoted: only 1 default address exists
-    const listRes = await fetch(`${baseUrl}/api/me/addresses`, {
+    const listRes = await csrfFetch(`${baseUrl}/api/me/addresses`, {
       headers: { Cookie: cookieA },
     });
     const listData = ((await listRes.json()) as any).data.addresses;
@@ -113,7 +114,7 @@ async function runProfileTests() {
     console.log('✓ Second default address transactionally demoted previous default. Exactly one default exists.');
 
     // 5. Cross-user isolation: User B CANNOT read, update, or delete User A's address
-    const bUpdateRes = await fetch(`${baseUrl}/api/me/addresses/${addr1.id}`, {
+    const bUpdateRes = await csrfFetch(`${baseUrl}/api/me/addresses/${addr1.id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json', Cookie: cookieB },
       body: JSON.stringify({ street: 'Malicious Overwrite' }),
@@ -122,7 +123,7 @@ async function runProfileTests() {
       throw new Error(`Expected 404 for User B modifying User A address, got ${bUpdateRes.status}`);
     }
 
-    const bDeleteRes = await fetch(`${baseUrl}/api/me/addresses/${addr1.id}`, {
+    const bDeleteRes = await csrfFetch(`${baseUrl}/api/me/addresses/${addr1.id}`, {
       method: 'DELETE',
       headers: { Cookie: cookieB },
     });
@@ -132,7 +133,7 @@ async function runProfileTests() {
     console.log('✓ Cross-user address access denied: User B cannot modify or delete User A address.');
 
     // 6. Delete default address: remaining address promoted to default
-    const delRes = await fetch(`${baseUrl}/api/me/addresses/${addr2.id}`, {
+    const delRes = await csrfFetch(`${baseUrl}/api/me/addresses/${addr2.id}`, {
       method: 'DELETE',
       headers: { Cookie: cookieA },
     });
@@ -140,7 +141,7 @@ async function runProfileTests() {
       throw new Error(`Failed to delete Address 2, status ${delRes.status}`);
     }
 
-    const afterDelList = await fetch(`${baseUrl}/api/me/addresses`, {
+    const afterDelList = await csrfFetch(`${baseUrl}/api/me/addresses`, {
       headers: { Cookie: cookieA },
     });
     const remaining = ((await afterDelList.json()) as any).data.addresses;

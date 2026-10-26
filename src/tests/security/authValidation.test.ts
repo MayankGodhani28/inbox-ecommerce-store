@@ -68,7 +68,7 @@ class RateLimiter {
     if (record.count >= this.maxAttempts) {
       return { allowed: false, remainingSec: Math.ceil((record.resetAt - now) / 1000) };
     }
-    record.count++;
+    record.count += 1;
     return { allowed: true, remainingSec: 0 };
   }
 
@@ -189,20 +189,20 @@ describe('RateLimiter — Security Tests (Brute Force Prevention)', () => {
   });
 
   it('should allow attempts 1 through 5', () => {
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 5; i += 1) {
       expect(limiter.check(testKey).allowed).toBe(true);
     }
   });
 
   it('should BLOCK the 6th attempt (over limit)', () => {
-    for (let i = 0; i < 5; i++) limiter.check(testKey);
+    for (let i = 0; i < 5; i += 1) limiter.check(testKey);
     const result = limiter.check(testKey);
     expect(result.allowed).toBe(false);
     expect(result.remainingSec).toBeGreaterThan(0);
   });
 
   it('should provide remaining seconds before unlock', () => {
-    for (let i = 0; i < 5; i++) limiter.check(testKey);
+    for (let i = 0; i < 5; i += 1) limiter.check(testKey);
     const result = limiter.check(testKey);
     // Should be close to 15 minutes (900 seconds)
     expect(result.remainingSec).toBeGreaterThan(800);
@@ -212,7 +212,7 @@ describe('RateLimiter — Security Tests (Brute Force Prevention)', () => {
   it('should reset the limit for a different key (different user/IP)', () => {
     const differentUser = '192.168.1.1:legit@inbox.com';
     // Exhaust the attacker key
-    for (let i = 0; i < 5; i++) limiter.check(testKey);
+    for (let i = 0; i < 5; i += 1) limiter.check(testKey);
     limiter.check(testKey); // blocked
 
     // Different user must NOT be affected
@@ -220,7 +220,7 @@ describe('RateLimiter — Security Tests (Brute Force Prevention)', () => {
   });
 
   it('should clear the rate limit after a successful login', () => {
-    for (let i = 0; i < 4; i++) limiter.check(testKey); // 4 failed attempts
+    for (let i = 0; i < 4; i += 1) limiter.check(testKey); // 4 failed attempts
     limiter.clear(testKey); // successful login clears record
 
     // First attempt after clearing should be allowed

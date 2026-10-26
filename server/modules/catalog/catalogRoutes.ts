@@ -195,7 +195,7 @@ catalogRouter.post('/:id/reviews', requireAuth, async (req: AuthenticatedRequest
       OR: [{ paymentStatus: 'Paid' }, { status: 'Delivered' }],
     },
   });
-  const verifiedPurchase = !!orderWithItem;
+  const verifiedPurchase = Boolean(orderWithItem);
 
   const sanitizedTitle = typeof title === 'string' ? title.trim().slice(0, 120) : '';
   const sanitizedComment = comment.trim().slice(0, 2000);
