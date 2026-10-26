@@ -37,8 +37,13 @@ export const orderService = {
     customerPhone?: string;
     idempotencyKey?: string;
   }): Promise<Order> {
-    const idempotencyKey =
-      orderData.idempotencyKey || `ord_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+    const randomSuffix =
+      typeof crypto !== 'undefined' && typeof crypto.getRandomValues === 'function'
+        ? Array.from(crypto.getRandomValues(new Uint8Array(6)))
+            .map((b) => b.toString(16).padStart(2, '0'))
+            .join('')
+        : `${Date.now()}`;
+    const idempotencyKey = orderData.idempotencyKey || `ord_${Date.now()}_${randomSuffix}`;
 
     const res = await apiClient.post(
       '/api/orders',

@@ -18,6 +18,7 @@ import { orderRouter } from './modules/orders/orderRoutes.js';
 import { newsletterRouter } from './modules/newsletter/newsletterRoutes.js';
 import { paymentRouter } from './modules/payments/paymentRoutes.js';
 import { superAdminRouter } from './modules/superadmin/superAdminRoutes.js';
+import { csrfProtection } from './middleware/csrf.js';
 
 export function createApp() {
   const env = getEnv();
@@ -64,7 +65,7 @@ export function createApp() {
       origin: [env.CLIENT_ORIGIN, 'http://localhost:3000', 'http://127.0.0.1:3000'],
       credentials: true,
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'x-request-id', 'idempotency-key'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'x-request-id', 'idempotency-key', 'x-csrf-token', 'x-xsrf-token'],
     })
   );
 
@@ -81,6 +82,9 @@ export function createApp() {
     })
   );
   app.use(express.urlencoded({ extended: true, limit: '1mb' }));
+
+  // CSRF protection middleware on state-changing requests
+  app.use(csrfProtection);
 
   // Routes
   app.use('/api', healthRouter);

@@ -131,8 +131,11 @@ superAdminRouter.post('/seller-apply', optionalAuth, async (req: AuthenticatedRe
 
 // GET /api/super-admin/my-application - Check status of current seller application
 superAdminRouter.get('/my-application', optionalAuth, async (req: AuthenticatedRequest, res: Response): Promise<void> => {
-  const emailQuery = typeof req.query.email === 'string' ? req.query.email.trim().toLowerCase() : undefined;
-  const userEmail = req.user?.email || emailQuery;
+  const rawEmail = typeof req.query.email === 'string' ? req.query.email.trim().toLowerCase() : undefined;
+  // Strict validation against allowlisted email pattern to guard against SSRF / URL injection
+  const EMAIL_ALLOWLIST_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+  const validatedEmail = rawEmail && EMAIL_ALLOWLIST_REGEX.test(rawEmail) && !rawEmail.includes('://') ? rawEmail : undefined;
+  const userEmail = req.user?.email || validatedEmail;
 
   if (!userEmail) {
     res.status(200).json({ data: { application: null } });

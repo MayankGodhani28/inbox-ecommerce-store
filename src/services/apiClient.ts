@@ -27,12 +27,21 @@ export async function apiRequest<T = any>(
 ): Promise<T> {
   const url = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
 
-  const defaultHeaders: HeadersInit = {
+  const defaultHeaders: Record<string, string> = {
     'Accept': 'application/json',
+    'X-Requested-With': 'XMLHttpRequest',
   };
 
+  // If client-side CSRF cookie exists, attach to prevent CSRF attacks
+  if (typeof document !== 'undefined' && document.cookie) {
+    const csrfMatch = document.cookie.match(/(?:^|;\s*)inbox_csrf_token=([^;]+)/);
+    if (csrfMatch && csrfMatch[1]) {
+      defaultHeaders['x-csrf-token'] = decodeURIComponent(csrfMatch[1]);
+    }
+  }
+
   if (options.body && !(options.body instanceof FormData)) {
-    (defaultHeaders as Record<string, string>)['Content-Type'] = 'application/json';
+    defaultHeaders['Content-Type'] = 'application/json';
   }
 
   const response = await fetch(url, {

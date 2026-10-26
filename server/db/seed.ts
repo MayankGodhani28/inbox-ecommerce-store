@@ -97,12 +97,14 @@ export async function seed() {
 }
 
 if (process.argv[1] && process.argv[1].endsWith('seed.ts')) {
-  seed()
-    .catch((err) => {
+  (async () => {
+    try {
+      await seed();
+    } catch (err) {
       console.error('[Seed] Error during seeding:', err);
       process.exit(1);
-    })
-    .finally(async () => {
+    } finally {
       await prisma.$disconnect();
-    });
+    }
+  })();
 }

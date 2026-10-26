@@ -193,10 +193,11 @@ async function runOrderTests() {
     console.log('✓ Pricing conflict detected and guarded (price tampering prevented).');
 
     // 8. Admin status update and tracking number addition
+    const testAdminPassword = process.env.ADMIN_DEFAULT_PASSWORD || 'AdminSecure2026!';
     const adminLoginRes = await fetch(`${baseUrl}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: 'admin@inbox.com', password: 'AdminSecure2026!' }),
+      body: JSON.stringify({ email: 'admin@inbox.com', password: testAdminPassword }),
     });
     const adminCookie = adminLoginRes.headers.get('set-cookie')!.split(';')[0];
 

@@ -204,11 +204,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     selectedColor?: string,
     selectedSize?: string
   ): Promise<void> => {
+    const validQty = Math.max(1, Math.floor(Number(quantity) || 1));
     if (isAuthenticated) {
       try {
         const color = selectedColor || (product.colors ? product.colors[0] : '');
         const size = selectedSize || (product.sizes ? product.sizes[0] : '');
-        await cartService.addItem(product.id, quantity, color, size);
+        await cartService.addItem(product.id, validQty, color, size);
         const refreshed = await cartService.getCart();
         setCart(refreshed.items);
 
@@ -234,7 +235,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (existingIndex > -1) {
         const updated = [...prevCart];
-        const newQty = Math.min(updated[existingIndex].quantity + quantity, product.stock);
+        const newQty = Math.min(updated[existingIndex].quantity + validQty, product.stock);
         updated[existingIndex] = { ...updated[existingIndex], quantity: newQty };
         return updated;
       } else {
@@ -243,7 +244,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           {
             id: `${product.id}-${selectedColor || 'default'}-${selectedSize || 'default'}`,
             product,
-            quantity: Math.min(quantity, product.stock),
+            quantity: Math.min(validQty, product.stock),
             selectedColor: selectedColor || (product.colors ? product.colors[0] : undefined),
             selectedSize: selectedSize || (product.sizes ? product.sizes[0] : undefined),
           },
@@ -263,7 +264,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     color?: string,
     size?: string
   ): Promise<void> => {
-    if (quantity <= 0) {
+    const validQty = Math.floor(Number(quantity) || 0);
+    if (validQty <= 0) {
       await removeFromCart(productId, color, size);
       return;
     }
@@ -278,7 +280,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (itemToUpdate && itemToUpdate.id) {
         try {
-          await cartService.updateItemQuantity(itemToUpdate.id, quantity);
+          await cartService.updateItemQuantity(itemToUpdate.id, validQty);
           const refreshed = await cartService.getCart();
           setCart(refreshed.items);
           return;
@@ -297,7 +299,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           (color ? item.selectedColor === color : true) &&
           (size ? item.selectedSize === size : true)
         ) {
-          const clampedQty = Math.min(quantity, item.product.stock);
+          const clampedQty = Math.min(validQty, item.product.stock);
           return { ...item, quantity: clampedQty };
         }
         return item;
@@ -495,11 +497,27 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   // Authoritative calculations (server quote prioritised, exact fallback)
-  const totalItemsCount = serverQuote ? serverQuote.totalItemsCount : cart.reduce((sum, item) => sum + item.quantity, 0);
+  // Ensure item quantity is always validated as a positive integer before financial calculations
+  const sanitizeQuantity = (qty: any): number => {
+    const val = Math.floor(Number(qty) || 0);
+    return val > 0 ? val : 0;
+  };
+
+  const totalItemsCount = serverQuote
+    ? serverQuote.totalItemsCount
+    : cart.reduce((sum, item) => sum + sanitizeQuantity(item.quantity), 0);
 
   const subtotal = serverQuote
     ? serverQuote.subtotal
-    : Number(cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0).toFixed(2));
+    : Number(
+        cart
+          .reduce((sum, item) => {
+            const validQty = sanitizeQuantity(item.quantity);
+            const validPrice = Math.max(0, Number(item.product?.price) || 0);
+            return sum + validPrice * validQty;
+          }, 0)
+          .toFixed(2)
+      );
 
   let fallbackDiscount = 0;
   if (appliedCoupon && !serverQuote) {

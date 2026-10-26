@@ -4,9 +4,9 @@ services:
     container_name: inbox_postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgrespassword
-      POSTGRES_DB: inbox_store
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgrespassword}
+      POSTGRES_DB: ${POSTGRES_DB:-inbox_store}
     ports:
       - "5432:5432"
     volumes:
@@ -29,9 +29,9 @@ services:
     environment:
       NODE_ENV: production
       PORT: 4000
-      DATABASE_URL: postgresql://postgres:postgrespassword@postgres:5432/inbox_store?schema=public
-      CLIENT_ORIGIN: http://localhost:4000
-      SESSION_SECRET: production-secure-random-session-secret-at-least-32-chars
+      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:${POSTGRES_PASSWORD:-postgrespassword}@postgres:5432/inbox_store?schema=public}
+      CLIENT_ORIGIN: ${CLIENT_ORIGIN:-http://localhost:4000}
+      SESSION_SECRET: ${SESSION_SECRET:-production-secure-random-session-secret-at-least-32-chars}
     ports:
       - "4000:4000"
     healthcheck:

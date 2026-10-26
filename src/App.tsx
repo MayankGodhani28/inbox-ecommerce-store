@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { LanguageProvider } from './context/LanguageContext';
 import { ToastProvider } from './context/ToastContext';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
 import { Product, Order } from './types';
@@ -26,7 +26,6 @@ import { AdminDashboard } from './pages/AdminDashboard';
 import { SuperAdminDashboard } from './pages/SuperAdminDashboard';
 import { SellerOnboard } from './pages/SellerOnboard';
 import { Login } from './pages/Login';
-import { useAuth } from './context/AuthContext';
 import { SlidersHorizontal, Eye, ShieldCheck, Plus, Sparkles } from 'lucide-react';
 
 function parseRouteFromUrl(): { tab: string; param?: string } {

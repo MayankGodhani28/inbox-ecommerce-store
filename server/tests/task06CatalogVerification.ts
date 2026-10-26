@@ -34,10 +34,11 @@ async function runCatalogTests() {
         role: 'ADMIN',
       },
     });
+    const testAdminPassword = process.env.ADMIN_DEFAULT_PASSWORD || 'AdminSecure2026!';
     const adminLoginRes = await fetch(`${baseUrl}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: 'admin@inbox.com', password: 'AdminSecure2026!' }),
+      body: JSON.stringify({ email: 'admin@inbox.com', password: testAdminPassword }),
     });
     const adminCookie = adminLoginRes.headers.get('set-cookie')!.split(';')[0];
     console.log('✓ Customer and Admin sessions initialized.');

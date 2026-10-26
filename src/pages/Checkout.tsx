@@ -146,8 +146,18 @@ export const Checkout: React.FC<CheckoutProps> = ({ onNavigate, onOrderPlaced })
           );
 
           if (sessionRes?.url) {
-            window.location.href = sessionRes.url;
-            return;
+            try {
+              const parsedUrl = new URL(sessionRes.url, window.location.origin);
+              if (
+                parsedUrl.protocol === 'https:' ||
+                (parsedUrl.protocol === 'http:' && parsedUrl.hostname === 'localhost')
+              ) {
+                window.location.href = parsedUrl.href;
+                return;
+              }
+            } catch {
+              // Ignore malformed URL
+            }
           }
         } catch (paymentErr: any) {
           if (paymentErr?.code === 'PAYMENT_UNAVAILABLE' || paymentErr?.message?.includes('not currently configured')) {
@@ -638,7 +648,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ onNavigate, onOrderPlaced })
                     </div>
                   </div>
                   <span className="font-bold text-slate-900">
-                    ${(it.product.price * it.quantity).toFixed(2)}
+                    ${((it.product.price || 0) * Math.max(0, Math.floor(Number(it.quantity) || 0))).toFixed(2)}
                   </span>
                 </div>
               ))}

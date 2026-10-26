@@ -60,8 +60,12 @@ async function setup() {
   console.log('✓ Demo seller applications created in PENDING queue.');
 }
 
-setup()
-  .catch((err) => {
+(async () => {
+  try {
+    await setup();
+  } catch (err) {
     console.error('Setup error:', err);
-  })
-  .finally(() => prisma.$disconnect());
+  } finally {
+    await prisma.$disconnect();
+  }
+})();

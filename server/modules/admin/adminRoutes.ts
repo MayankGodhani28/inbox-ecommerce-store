@@ -334,7 +334,7 @@ adminRouter.get('/metrics', async (req: AuthenticatedRequest, res: Response): Pr
     .filter((o) => o.paymentStatus === 'Paid')
     .reduce((sum, o) => {
       const sellerItemsTotal = o.items
-        .filter((it) => sellerProductIds.includes(it.productId))
+        .filter((it): it is typeof it & { productId: string } => Boolean(it.productId && sellerProductIds.includes(it.productId)))
         .reduce((s, it) => s + it.totalPrice, 0);
       return sum + sellerItemsTotal;
     }, 0);
@@ -391,7 +391,7 @@ adminRouter.get('/customers', async (req: AuthenticatedRequest, res: Response): 
     const u = o.user;
     if (!u) continue;
     const sellerItemsTotal = o.items
-      .filter((it) => sellerProductIds.includes(it.productId))
+      .filter((it): it is typeof it & { productId: string } => Boolean(it.productId && sellerProductIds.includes(it.productId)))
       .reduce((s, it) => s + it.totalPrice, 0);
 
     const existing = customerMap.get(u.id) || {

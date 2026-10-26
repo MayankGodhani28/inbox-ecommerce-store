@@ -10,6 +10,7 @@ import {
   AuthenticatedRequest,
   SESSION_COOKIE_NAME,
 } from '../../middleware/auth.js';
+import { csrfProtection, CSRF_COOKIE_NAME } from '../../middleware/csrf.js';
 
 export const authRouter = Router();
 
@@ -68,7 +69,7 @@ function sanitizeUser(user: {
 }
 
 // POST /api/auth/register
-authRouter.post('/register', async (req: Request, res: Response): Promise<void> => {
+authRouter.post('/register', csrfProtection, async (req: Request, res: Response): Promise<void> => {
   const requestId = res.getHeader('x-request-id') as string;
   const { name, email, password, phone } = req.body;
 
@@ -127,8 +128,17 @@ authRouter.post('/register', async (req: Request, res: Response): Promise<void> 
   });
 });
 
+// GET /api/auth/csrf-token - Read or refresh CSRF token
+authRouter.get('/csrf-token', csrfProtection, (req: Request, res: Response): void => {
+  res.status(200).json({
+    data: {
+      csrfToken: req.cookies?.[CSRF_COOKIE_NAME] || null,
+    },
+  });
+});
+
 // POST /api/auth/login
-authRouter.post('/login', async (req: Request, res: Response): Promise<void> => {
+authRouter.post('/login', csrfProtection, async (req: Request, res: Response): Promise<void> => {
   const requestId = res.getHeader('x-request-id') as string;
   const { email, password } = req.body;
 

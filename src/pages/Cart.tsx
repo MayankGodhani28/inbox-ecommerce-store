@@ -222,7 +222,7 @@ export const Cart: React.FC<CartProps> = ({ onNavigate, onSelectProduct }) => {
                     {/* Total item price */}
                     <div className="text-right min-w-[70px]">
                       <div className="text-sm font-black text-slate-900">
-                        ${(item.product.price * item.quantity).toFixed(2)}
+                        ${((item.product.price || 0) * Math.max(0, Math.floor(Number(item.quantity) || 0))).toFixed(2)}
                       </div>
                       <div className="text-[11px] text-slate-400">
                         ${item.product.price.toFixed(2)} each

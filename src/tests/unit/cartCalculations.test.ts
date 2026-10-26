@@ -36,7 +36,10 @@ function computeCartTotal(
     return { subtotal: 0, discount: 0, tax: 0, delivery: 0, total: 0 };
   }
 
-  const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+  const subtotal = items.reduce(
+    (sum, i) => sum + (Math.max(0, i.price) * Math.max(0, Math.floor(Number(i.quantity) || 0))),
+    0
+  );
   const discount = Math.min(discountAmount, subtotal); // can't discount more than subtotal
   const taxable = subtotal - discount;
   const tax = Math.round(taxable * taxRate * 100) / 100;

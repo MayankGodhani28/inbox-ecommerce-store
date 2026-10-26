@@ -56,12 +56,14 @@ export async function bootstrapAdmin(params?: {
 }
 
 if (process.argv[1] && process.argv[1].endsWith('bootstrapAdmin.ts')) {
-  bootstrapAdmin()
-    .catch((err) => {
+  (async () => {
+    try {
+      await bootstrapAdmin();
+    } catch (err) {
       console.error('[Admin Bootstrap] Failed:', err);
       process.exit(1);
-    })
-    .finally(async () => {
+    } finally {
       await prisma.$disconnect();
-    });
+    }
+  })();
 }

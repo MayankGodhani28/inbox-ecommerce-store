@@ -133,10 +133,11 @@ async function runAuthTests() {
     console.log('✓ Logout successfully revoked session in database and rejected subsequent requests.');
 
     // 9. Admin login check
+    const testAdminPassword = process.env.ADMIN_DEFAULT_PASSWORD || 'AdminSecure2026!';
     const adminLoginRes = await fetch(`${baseUrl}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: 'admin@inbox.com', password: 'AdminSecure2026!' }),
+      body: JSON.stringify({ email: 'admin@inbox.com', password: testAdminPassword }),
     });
     if (adminLoginRes.status !== 200) {
       throw new Error(`Admin login failed with status ${adminLoginRes.status}`);

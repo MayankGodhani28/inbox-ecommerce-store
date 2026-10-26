@@ -73,7 +73,7 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@types/supertest": "^7.2.1",
-    "@vitest/coverage-v8": "^5.0.5",
+    "@vitest/coverage-v8": "^3.2.7",
     "artillery": "^2.0.34",
     "autoprefixer": "^10.4.21",
     "esbuild": "^0.28.0",

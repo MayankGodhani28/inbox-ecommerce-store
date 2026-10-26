@@ -15,11 +15,12 @@ async function run() {
 
   // 1. Authenticate to get session cookie
   let sessionCookie = '';
+  const adminPassword = process.env.ADMIN_DEFAULT_PASSWORD || 'AdminSecure2026!';
   try {
     const authRes = await fetch(`${BASE_URL}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: 'admin@inbox.com', password: 'AdminSecure2026!' }),
+      body: JSON.stringify({ email: 'admin@inbox.com', password: adminPassword }),
     });
     const setCookie = authRes.headers.get('set-cookie');
     if (setCookie) {
@@ -34,8 +35,8 @@ async function run() {
   let sampleProductId = '';
   try {
     const prodRes = await fetch(`${BASE_URL}/api/products?limit=1`);
-    const prodData = await prodRes.json();
-    sampleProductId = prodData.data?.products?.[0]?.id || '';
+    const prodData = (await prodRes.json()) as any;
+    sampleProductId = prodData?.data?.products?.[0]?.id || '';
   } catch {}
 
   const benchmarks: Array<{
@@ -55,7 +56,7 @@ async function run() {
       category: 'Authentication',
       method: 'POST',
       path: '/api/auth/login',
-      body: { email: 'admin@inbox.com', password: 'AdminSecure2026!' },
+      body: { email: 'admin@inbox.com', password: adminPassword },
     },
 
     // User Profile & Addresses
