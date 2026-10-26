@@ -3,11 +3,12 @@
 > **Prepared for:** Executive Leadership & Engineering Management  
 > **Project:** inBox Multi-Role E-Commerce Storefront & Enterprise Backend  
 > **Status:** 🟢 **Production Ready** | All 91/91 Tests Passing | Load Tested  
-> **Date:** October 2026  
+> **Date:** October 2026
 
 ---
 
 ## 📑 Table of Contents
+
 1. [Executive Summary](#1-executive-summary)
 2. [Technology Stack](#2-technology-stack)
 3. [System Architecture](#3-system-architecture)
@@ -27,26 +28,27 @@
 **inBox** is a modern, high-performance, full-stack multi-vendor e-commerce platform built to enterprise standards. It features a complete customer shopping experience, merchant/seller onboarding, administrative operational controls, authoritative server-side pricing, transactional checkout with Stripe and Cash-on-Delivery (COD), and comprehensive security guardrails.
 
 ### 🌟 Key Performance Indicators (KPIs)
-* **Test Suite:** **91 / 91 Automated Tests Passing** (100% pass rate across 6 distinct testing layers).
-* **Average Normal Latency:** **8.4 milliseconds** under standard production load.
-* **Peak Traffic Throughput:** Handled **13,093 successful transactions** in an intense 80-second flash sale spike test (up to 500 requests/sec).
-* **Zero Data Inconsistency:** 100% server-authoritative calculations with transactional integrity (ACID) backed by PostgreSQL and Prisma ORM.
+
+- **Test Suite:** **91 / 91 Automated Tests Passing** (100% pass rate across 6 distinct testing layers).
+- **Average Normal Latency:** **8.4 milliseconds** under standard production load.
+- **Peak Traffic Throughput:** Handled **13,093 successful transactions** in an intense 80-second flash sale spike test (up to 500 requests/sec).
+- **Zero Data Inconsistency:** 100% server-authoritative calculations with transactional integrity (ACID) backed by PostgreSQL and Prisma ORM.
 
 ---
 
 ## 2. Technology Stack
 
-| Layer | Technologies Used | Rationale / Benefits |
-|---|---|---|
-| **Frontend Framework** | **React 19, TypeScript, Vite 8** | Modern Component Architecture, Strict Type Safety, Sub-second HMR Builds |
-| **Styling & UI** | **Tailwind CSS v4, Lucide Icons, Motion** | Responsive Design, Rich Animations, Premium Glassmorphic Aesthetics |
-| **Backend API** | **Node.js, Express.js (v4.21), TypeScript** | High concurrency event-driven RESTful architecture, Modular Routing |
-| **ORM & Database** | **PostgreSQL (v16+), Prisma ORM (v6.19)** | ACID Transactions, Strict Foreign Keys, High-performance Connection Pooling |
-| **Authentication** | **Bcrypt.js, HttpOnly Secure Cookies, Opaque Tokens** | Protects against XSS and Token Theft; Secure Cryptographic Session Hashing |
-| **Payments** | **Stripe API (v23) & Webhooks, Cash on Delivery (COD)** | PCI-compliant hosted checkout, Webhook signature verification, Idempotent charge prevention |
-| **Unit / E2E Testing** | **Vitest, @testing-library/react, jsdom, V8** | Lightning-fast ESM test runner with native DOM emulation and 100% code coverage tooling |
-| **Load Testing** | **Artillery (v2)** | Real-world traffic simulation, stress testing, spike testing, soak testing |
-| **Containerization** | **Docker, Docker Compose** | Reproducible multi-stage container deployment for PostgreSQL + API + Client |
+| Layer                  | Technologies Used                                       | Rationale / Benefits                                                                        |
+| ---------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| **Frontend Framework** | **React 19, TypeScript, Vite 8**                        | Modern Component Architecture, Strict Type Safety, Sub-second HMR Builds                    |
+| **Styling & UI**       | **Tailwind CSS v4, Lucide Icons, Motion**               | Responsive Design, Rich Animations, Premium Glassmorphic Aesthetics                         |
+| **Backend API**        | **Node.js, Express.js (v4.21), TypeScript**             | High concurrency event-driven RESTful architecture, Modular Routing                         |
+| **ORM & Database**     | **PostgreSQL (v16+), Prisma ORM (v6.19)**               | ACID Transactions, Strict Foreign Keys, High-performance Connection Pooling                 |
+| **Authentication**     | **Bcrypt.js, HttpOnly Secure Cookies, Opaque Tokens**   | Protects against XSS and Token Theft; Secure Cryptographic Session Hashing                  |
+| **Payments**           | **Stripe API (v23) & Webhooks, Cash on Delivery (COD)** | PCI-compliant hosted checkout, Webhook signature verification, Idempotent charge prevention |
+| **Unit / E2E Testing** | **Vitest, @testing-library/react, jsdom, V8**           | Lightning-fast ESM test runner with native DOM emulation and 100% code coverage tooling     |
+| **Load Testing**       | **Artillery (v2)**                                      | Real-world traffic simulation, stress testing, spike testing, soak testing                  |
+| **Containerization**   | **Docker, Docker Compose**                              | Reproducible multi-stage container deployment for PostgreSQL + API + Client                 |
 
 ---
 
@@ -96,43 +98,48 @@ flowchart TD
 ## 4. Complete Feature Matrix
 
 ### 🛒 Customer Storefront & Catalog
-* **Dynamic Home Page:** Hero promotions, Deal of the Day banners, Trending products, New arrivals, and Best-seller carousels.
-* **Faceted Search & Filtering:** Full-text keyword search with client-side debounce, category filters, price range sliders, minimum rating filters, and in-stock toggles.
-* **Sorting Options:** Sort by Price (Low to High, High to Low), Newest arrivals, and Customer rating.
-* **Interactive Product Details:** Multi-image gallery with thumbnail preview, size and color selectors, dynamic stock indicators, specifications table, and customer review submission.
-* **Multi-Language Support:** Instant switching between **English (EN)**, **German (DE)**, and **Dutch (NL)**.
-* **Multi-Currency Support:** Global currency conversion (**USD, EUR, INR, GBP**).
+
+- **Dynamic Home Page:** Hero promotions, Deal of the Day banners, Trending products, New arrivals, and Best-seller carousels.
+- **Faceted Search & Filtering:** Full-text keyword search with client-side debounce, category filters, price range sliders, minimum rating filters, and in-stock toggles.
+- **Sorting Options:** Sort by Price (Low to High, High to Low), Newest arrivals, and Customer rating.
+- **Interactive Product Details:** Multi-image gallery with thumbnail preview, size and color selectors, dynamic stock indicators, specifications table, and customer review submission.
+- **Multi-Language Support:** Instant switching between **English (EN)**, **German (DE)**, and **Dutch (NL)**.
+- **Multi-Currency Support:** Global currency conversion (**USD, EUR, INR, GBP**).
 
 ### 🛍️ Cart & Saved Items
-* **Server-Authoritative Cart:** Cart quantities and prices are verified against database stock and price values on every single action to prevent client-side price tampering.
-* **Save For Later:** Move items between active cart and "Saved for Later" wishlist.
-* **Guest-to-Authenticated Cart Merging:** Items added by guest visitors automatically merge into their database cart upon login.
+
+- **Server-Authoritative Cart:** Cart quantities and prices are verified against database stock and price values on every single action to prevent client-side price tampering.
+- **Save For Later:** Move items between active cart and "Saved for Later" wishlist.
+- **Guest-to-Authenticated Cart Merging:** Items added by guest visitors automatically merge into their database cart upon login.
 
 ### 💳 Authoritative Checkout & Coupons
-* **Coupon & Promotion Engine:** Support for percentage discounts, minimum spend conditions, maximum discount caps (`maxDiscount`), and free shipping triggers.
-* **Delivery Method Selection:** Standard Delivery vs. Express Courier with real-time fee calculation.
-* **Address Book Management:** Multiple shipping addresses with default address switching.
-* **Payment Gateways:**
+
+- **Coupon & Promotion Engine:** Support for percentage discounts, minimum spend conditions, maximum discount caps (`maxDiscount`), and free shipping triggers.
+- **Delivery Method Selection:** Standard Delivery vs. Express Courier with real-time fee calculation.
+- **Address Book Management:** Multiple shipping addresses with default address switching.
+- **Payment Gateways:**
   1. **Stripe Hosted Checkout:** Secure redirected payment with cryptographically verified webhook callback processing.
   2. **Cash on Delivery (COD):** Immediate checkout with strict inventory locking and verified audit status.
-* **Idempotency Safeguard:** Unique client-generated idempotency keys prevent duplicate orders or double-billing if a user clicks "Place Order" repeatedly.
+- **Idempotency Safeguard:** Unique client-generated idempotency keys prevent duplicate orders or double-billing if a user clicks "Place Order" repeatedly.
 
 ### 📦 Order Lifecycle & Real-Time Tracking
-* **Detailed Order Summary:** Item snapshots, tax calculation, shipping cost breakdown, discount breakdown, and total.
-* **Live Status Timeline:** Visual progress stepper tracking orders across 5 stages:
+
+- **Detailed Order Summary:** Item snapshots, tax calculation, shipping cost breakdown, discount breakdown, and total.
+- **Live Status Timeline:** Visual progress stepper tracking orders across 5 stages:
   `Order Placed` ➔ `Processing` ➔ `Shipped` ➔ `Out for Delivery` ➔ `Delivered`.
-* **Full Order History:** Searchable order archive with tracking numbers and estimated delivery dates.
+- **Full Order History:** Searchable order archive with tracking numbers and estimated delivery dates.
 
 ### 👥 User Roles & Administrative Control
-* **Role-Based Access Control (RBAC):** Three distinct privilege tiers:
+
+- **Role-Based Access Control (RBAC):** Three distinct privilege tiers:
   1. `CUSTOMER`: Shop, manage cart/wishlist, place orders, review products.
   2. `ADMIN`: Manage product catalog, update inventory, dispatch orders, moderate reviews.
   3. `SUPER_ADMIN`: Full system governance, view platform revenue, manage admins and sellers.
-* **Seller Onboarding Portal:** Vendors can submit applications with Business Name, Legal Details, GSTIN/Tax ID, and Business Category.
-* **Seller Governance (Suspend / Unsuspend):**
-  * Super Admins can **Approve**, **Reject**, **Suspend**, or **Unsuspend** any seller.
-  * When a seller is suspended, their store status immediately updates across the platform.
-* **User Account Governance:** Super Admins can suspend/unsuspend customer accounts for policy violations.
+- **Seller Onboarding Portal:** Vendors can submit applications with Business Name, Legal Details, GSTIN/Tax ID, and Business Category.
+- **Seller Governance (Suspend / Unsuspend):**
+  - Super Admins can **Approve**, **Reject**, **Suspend**, or **Unsuspend** any seller.
+  - When a seller is suspended, their store status immediately updates across the platform.
+- **User Account Governance:** Super Admins can suspend/unsuspend customer accounts for policy violations.
 
 ---
 
@@ -294,25 +301,27 @@ Duration    1.84s
 
 ### Detailed Breakdown by Testing Layer:
 
-| Layer | Test File | Tests | Focus Area | Status |
-|---|---|:---:|---|:---:|
-| **1. Unit Testing** | `cartCalculations.test.ts` | **15** | Pure mathematical logic: subtotal calculations, percentage discounts, maximum discount caps, tax rates, coupon eligibility. | ✅ Pass |
-| **2. Integration (Catalog)** | `productService.test.ts` | **14** | API service contracts, search query encoding, filter parameter serialization, error response handling. | ✅ Pass |
-| **3. Integration (Cart)** | `cartService.test.ts` | **12** | Database cart sync, quantity increment/decrement, item removal, local storage fallback. | ✅ Pass |
-| **4. Component Testing** | `ProductCard.test.tsx` | **12** | React DOM rendering, badge display (Deal of Day, Out of Stock), price formatting, click event dispatching. | ✅ Pass |
-| **5. Security Validation** | `authValidation.test.ts` | **15** | Password strength enforcement, email regex, SQL injection input sanitization, XSS payload neutralization. | ✅ Pass |
-| **6. Regression Testing** | `knownBugFixes.test.ts` | **11** | Zero-quantity cart protection, negative discount prevention, duplicate coupon application prevention. | ✅ Pass |
-| **7. E2E Scenario Testing** | `checkoutFlow.test.ts` | **12** | Complete end-to-end user journey: Product selection ➔ Cart update ➔ Address selection ➔ Coupon application ➔ Order confirmation. | ✅ Pass |
-| **TOTAL** | **7 Suites** | **91** | **Complete Full-Stack Test Coverage** | 🟢 **100%** |
+| Layer                        | Test File                  | Tests  | Focus Area                                                                                                                       |   Status    |
+| ---------------------------- | -------------------------- | :----: | -------------------------------------------------------------------------------------------------------------------------------- | :---------: |
+| **1. Unit Testing**          | `cartCalculations.test.ts` | **15** | Pure mathematical logic: subtotal calculations, percentage discounts, maximum discount caps, tax rates, coupon eligibility.      |   ✅ Pass   |
+| **2. Integration (Catalog)** | `productService.test.ts`   | **14** | API service contracts, search query encoding, filter parameter serialization, error response handling.                           |   ✅ Pass   |
+| **3. Integration (Cart)**    | `cartService.test.ts`      | **12** | Database cart sync, quantity increment/decrement, item removal, local storage fallback.                                          |   ✅ Pass   |
+| **4. Component Testing**     | `ProductCard.test.tsx`     | **12** | React DOM rendering, badge display (Deal of Day, Out of Stock), price formatting, click event dispatching.                       |   ✅ Pass   |
+| **5. Security Validation**   | `authValidation.test.ts`   | **15** | Password strength enforcement, email regex, SQL injection input sanitization, XSS payload neutralization.                        |   ✅ Pass   |
+| **6. Regression Testing**    | `knownBugFixes.test.ts`    | **11** | Zero-quantity cart protection, negative discount prevention, duplicate coupon application prevention.                            |   ✅ Pass   |
+| **7. E2E Scenario Testing**  | `checkoutFlow.test.ts`     | **12** | Complete end-to-end user journey: Product selection ➔ Cart update ➔ Address selection ➔ Coupon application ➔ Order confirmation. |   ✅ Pass   |
+| **TOTAL**                    | **7 Suites**               | **91** | **Complete Full-Stack Test Coverage**                                                                                            | 🟢 **100%** |
 
 ### Additional Backend Integration Verification Suites
+
 Located in `server/tests/`, 12 acceptance verification suites validate database constraints against running servers:
-* `task04AuthVerification.ts`: Session tokens, cookie expiry, bcrypt verification.
-* `task06CatalogVerification.ts`: Query indexing, category filtering.
-* `task08PricingVerification.ts`: Authoritative totals & coupon edge cases.
-* `task09OrderVerification.ts`: Inventory decrement transactions & order status transitions.
-* `task10OperationsVerification.ts`: Super admin seller approvals, suspend/unsuspend controls.
-* `task14CriticalSecuritySuite.ts`: Rate limiter triggers, forbidden route rejections.
+
+- `task04AuthVerification.ts`: Session tokens, cookie expiry, bcrypt verification.
+- `task06CatalogVerification.ts`: Query indexing, category filtering.
+- `task08PricingVerification.ts`: Authoritative totals & coupon edge cases.
+- `task09OrderVerification.ts`: Inventory decrement transactions & order status transitions.
+- `task10OperationsVerification.ts`: Super admin seller approvals, suspend/unsuspend controls.
+- `task14CriticalSecuritySuite.ts`: Rate limiter triggers, forbidden route rejections.
 
 ---
 
@@ -323,8 +332,9 @@ Performance testing was conducted using **Artillery** to measure server throughp
 ---
 
 ### 📊 Benchmark 1: Normal Daily Traffic Benchmark
-* **Configuration:** 50 requests/second continuous traffic targeting `/api/products`
-* **Command:** `npm run load:normal`
+
+- **Configuration:** 50 requests/second continuous traffic targeting `/api/products`
+- **Command:** `npm run load:normal`
 
 ```text
 --------------------------------
@@ -348,8 +358,9 @@ vusers.failed: ................................. 0 (Zero Errors)
 ---
 
 ### 📊 Benchmark 2: Flash Sale Spike Test (Extreme Surge)
-* **Configuration:** Ramped from 20 req/s to a sudden surge of **500 users/second** (simulating a flash sale / marketing push).
-* **Command:** `npm run load:spike`
+
+- **Configuration:** Ramped from 20 req/s to a sudden surge of **500 users/second** (simulating a flash sale / marketing push).
+- **Command:** `npm run load:spike`
 
 ```text
 --------------------------------
@@ -366,6 +377,7 @@ Post-Spike Recovery Response Time: ............. 2.5 ms (Instant Recovery!)
 ```
 
 **Key Takeaways from the Spike Test:**
+
 1. **13,093 successful transactions** processed in just 81 seconds on a single Node.js developer instance.
 2. **Rate Limiting Active (`429 Too Many Requests`):** Express rate limiting successfully protected the backend from being completely overwhelmed.
 3. **Instant Self-Healing:** The moment the 500 req/s burst subsided, average response time dropped right back to **2.5 ms**. The server did not freeze, crash, or require a restart.
@@ -375,16 +387,16 @@ Post-Spike Recovery Response Time: ............. 2.5 ms (Instant Recovery!)
 
 ## 8. Security & Compliance Hardening
 
-| Security Category | Implementation | Protection Provided |
-|---|---|---|
-| **Authentication** | Opaque 256-bit cryptographically random tokens stored as SHA-256 hashes in DB | Prevents token hijacking and database compromise leakage |
-| **Cookie Security** | `HttpOnly`, `SameSite=Strict`, `Secure` in production | Immune to JavaScript XSS document.cookie exfiltration |
-| **Password Storage** | `bcryptjs` with salt rounds = 10 | Resistant against rainbow table attacks |
-| **DDoS & Brute Force** | IP-based Rate Limiter on API and Auth routes | Blocks credential stuffing and denial of service attacks |
-| **Data Tampering** | Server-authoritative price & discount calculations | Prevents malicious clients from sending custom item prices |
-| **Double-Charge Protection** | Idempotency keys generated per checkout attempt | Prevents duplicate charges from double-clicks or network retries |
-| **SQL Injection** | Parameterized queries enforced via Prisma ORM | Complete protection against raw SQL injection attacks |
-| **Input Validation** | Strict regex and type verification on all incoming payloads | Rejects malformed or dangerous request bodies |
+| Security Category            | Implementation                                                                | Protection Provided                                              |
+| ---------------------------- | ----------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| **Authentication**           | Opaque 256-bit cryptographically random tokens stored as SHA-256 hashes in DB | Prevents token hijacking and database compromise leakage         |
+| **Cookie Security**          | `HttpOnly`, `SameSite=Strict`, `Secure` in production                         | Immune to JavaScript XSS document.cookie exfiltration            |
+| **Password Storage**         | `bcryptjs` with salt rounds = 10                                              | Resistant against rainbow table attacks                          |
+| **DDoS & Brute Force**       | IP-based Rate Limiter on API and Auth routes                                  | Blocks credential stuffing and denial of service attacks         |
+| **Data Tampering**           | Server-authoritative price & discount calculations                            | Prevents malicious clients from sending custom item prices       |
+| **Double-Charge Protection** | Idempotency keys generated per checkout attempt                               | Prevents duplicate charges from double-clicks or network retries |
+| **SQL Injection**            | Parameterized queries enforced via Prisma ORM                                 | Complete protection against raw SQL injection attacks            |
+| **Input Validation**         | Strict regex and type verification on all incoming payloads                   | Rejects malformed or dangerous request bodies                    |
 
 ---
 
@@ -392,11 +404,11 @@ Post-Spike Recovery Response Time: ............. 2.5 ms (Instant Recovery!)
 
 The repository includes enterprise containerization configurations for production readiness:
 
-* **`Dockerfile`**: Multi-stage production build minimizing image size and isolating dev dependencies.
-* **`compose.yaml`**: One-command orchestration bringing up:
+- **`Dockerfile`**: Multi-stage production build minimizing image size and isolating dev dependencies.
+- **`compose.yaml`**: One-command orchestration bringing up:
   1. `inbox-db`: PostgreSQL 16 database with persistent volume storage and health checks.
   2. `inbox-api`: Production Node.js Express server.
-* **Environment Isolation:** Managed through `.env` configurations with `.env.example` template provided.
+- **Environment Isolation:** Managed through `.env` configurations with `.env.example` template provided.
 
 ---
 
@@ -420,27 +432,34 @@ The repository includes enterprise containerization configurations for productio
 Open separate terminal tabs in the project root directory (`inbox-ecommerce-store`):
 
 #### Step 1: Start the Backend API (Terminal 1)
+
 ```bash
 npm run server:dev
 ```
-* **Status:** Express server starts on port `4000`.
-* **Output:** `[Express] REST API Server listening on http://localhost:4000`
+
+- **Status:** Express server starts on port `4000`.
+- **Output:** `[Express] REST API Server listening on http://localhost:4000`
 
 #### Step 2: Start the Frontend Client (Terminal 2)
+
 ```bash
 npm run dev
 ```
-* **Status:** Vite dev server starts on port `3000`.
-* **Output:** `VITE v8.3.0 ready in ... ms ➜ Local: http://localhost:3000/`
+
+- **Status:** Vite dev server starts on port `3000`.
+- **Output:** `VITE v8.3.0 ready in ... ms ➜ Local: http://localhost:3000/`
 
 #### Step 3: Start Prisma Studio Database GUI (Terminal 3 — Optional)
+
 ```bash
 npm run prisma:studio
 ```
-* **Status:** Visual web database browser opens on port `5555`.
-* **Output:** `Prisma Studio is up on http://localhost:5555`
+
+- **Status:** Visual web database browser opens on port `5555`.
+- **Output:** `Prisma Studio is up on http://localhost:5555`
 
 #### Step 4: Run Automated Tests & Load Tests (Terminal 4 — On Demand)
+
 ```bash
 # Run all 91 automated tests (Unit, Integration, Component, Security, E2E)
 npm run test:all
@@ -459,16 +478,16 @@ npm run load:spike
 
 ### 🌐 Complete Localhost URLs & Portal Access Table
 
-| Portal / Role | Localhost URL | Required Role | Default Credentials / IDs | Key Capabilities & Actions to Test |
-|---|---|:---:|---|---|
-| **👑 Super Admin Dashboard** | [http://localhost:3000/super-admin](http://localhost:3000/super-admin) | `SUPER_ADMIN` | **Email:** `superadmin@inbox.com`<br>**Password:** `SuperAdmin2026!` | Review seller applications, **Approve/Reject/Suspend/Unsuspend** sellers, view platform KPIs and metrics. |
-| **🛡️ Merchant Admin Dashboard** | [http://localhost:3000/admin](http://localhost:3000/admin) | `ADMIN` | **Email:** `admin@inbox.com`<br>**Password:** `AdminSecure2026!` *(or `AdminPassword123!`)* | Add/edit products, update inventory stock, dispatch orders, moderate customer reviews. |
-| **🛒 Shopper / Customer Account** | [http://localhost:3000/login](http://localhost:3000/login) | `CUSTOMER` | **Email:** `shopper@inbox.com` *(or `user@inbox.com`)*<br>**Password:** `CustomerSecure2026!` *(or `Customer123!`)* | Browse catalog, search products, add to cart, apply coupons, place orders, track shipments. |
-| **🏬 Seller Onboarding Portal** | [http://localhost:3000/sell](http://localhost:3000/sell) | `Public` / Vendor | Any vendor registration, or review pre-seeded applicants | Submit seller application with business address, GSTIN/Tax ID, and store name. |
-| **🛍️ Catalog & Search Storefront** | [http://localhost:3000/?tab=products](http://localhost:3000/?tab=products) | `Public` | No login needed | Filter by Category, Price sliders, Rating, and Real-time Search. |
-| **🗄️ Prisma Studio (Database GUI)** | [http://localhost:5555](http://localhost:5555) | Admin / Developer | Web GUI (No login) | Visual database table browser: inspect, filter, and edit all 16 PostgreSQL tables (`User`, `Product`, `Order`, `Coupon`, etc.). |
-| **🔌 Backend API Health Check** | [http://localhost:4000/api/health](http://localhost:4000/api/health) | Public | JSON endpoint | Returns database connectivity status, uptime, and server health. |
-| **📦 Products REST API** | [http://localhost:4000/api/products](http://localhost:4000/api/products) | Public | JSON endpoint | Direct REST API endpoint returning paginated product catalog with filtering. |
+| Portal / Role                       | Localhost URL                                                              |   Required Role   | Default Credentials / IDs                                                                                           | Key Capabilities & Actions to Test                                                                                              |
+| ----------------------------------- | -------------------------------------------------------------------------- | :---------------: | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| **👑 Super Admin Dashboard**        | [http://localhost:3000/super-admin](http://localhost:3000/super-admin)     |   `SUPER_ADMIN`   | **Email:** `superadmin@inbox.com`<br>**Password:** `SuperAdmin2026!`                                                | Review seller applications, **Approve/Reject/Suspend/Unsuspend** sellers, view platform KPIs and metrics.                       |
+| **🛡️ Merchant Admin Dashboard**     | [http://localhost:3000/admin](http://localhost:3000/admin)                 |      `ADMIN`      | **Email:** `admin@inbox.com`<br>**Password:** `AdminSecure2026!` _(or `AdminPassword123!`)_                         | Add/edit products, update inventory stock, dispatch orders, moderate customer reviews.                                          |
+| **🛒 Shopper / Customer Account**   | [http://localhost:3000/login](http://localhost:3000/login)                 |    `CUSTOMER`     | **Email:** `shopper@inbox.com` _(or `user@inbox.com`)_<br>**Password:** `CustomerSecure2026!` _(or `Customer123!`)_ | Browse catalog, search products, add to cart, apply coupons, place orders, track shipments.                                     |
+| **🏬 Seller Onboarding Portal**     | [http://localhost:3000/sell](http://localhost:3000/sell)                   | `Public` / Vendor | Any vendor registration, or review pre-seeded applicants                                                            | Submit seller application with business address, GSTIN/Tax ID, and store name.                                                  |
+| **🛍️ Catalog & Search Storefront**  | [http://localhost:3000/?tab=products](http://localhost:3000/?tab=products) |     `Public`      | No login needed                                                                                                     | Filter by Category, Price sliders, Rating, and Real-time Search.                                                                |
+| **🗄️ Prisma Studio (Database GUI)** | [http://localhost:5555](http://localhost:5555)                             | Admin / Developer | Web GUI (No login)                                                                                                  | Visual database table browser: inspect, filter, and edit all 16 PostgreSQL tables (`User`, `Product`, `Order`, `Coupon`, etc.). |
+| **🔌 Backend API Health Check**     | [http://localhost:4000/api/health](http://localhost:4000/api/health)       |      Public       | JSON endpoint                                                                                                       | Returns database connectivity status, uptime, and server health.                                                                |
+| **📦 Products REST API**            | [http://localhost:4000/api/products](http://localhost:4000/api/products)   |      Public       | JSON endpoint                                                                                                       | Direct REST API endpoint returning paginated product catalog with filtering.                                                    |
 
 ---
 
@@ -504,6 +523,7 @@ npm run load:spike
 ```
 
 > **Note on Initial Setup:** If testing on a clean database without seeded accounts, run:
+>
 > ```bash
 > # Seeds products, coupons, and superadmin account
 > npm run db:seed
@@ -518,9 +538,11 @@ npm run load:spike
 ## ☁️ Cloudinary Product Image Upload Architecture
 
 ### Overview
+
 Merchants and administrators can upload product images directly from their device when adding or editing products in the Merchant Admin Dashboard ([`AdminDashboard.tsx`](file:///c:/Users/Mayank%20godhani/OneDrive/Desktop/work/inBox/inbox-ecommerce-store/src/pages/AdminDashboard.tsx)).
 
 ### Key Features
+
 1. **Interactive Upload Dropzone & File Picker:** Supports drag-and-drop and file browsing for `JPG`, `PNG`, `WEBP`, `GIF`, and `AVIF` formats (up to 10MB).
 2. **Instant Live Preview:** Displays the newly uploaded product thumbnail directly inside the product SKU modal.
 3. **Dual Input Mode:** Toggle seamlessly between **Cloudinary Upload** and **Direct Image URL** depending on merchant workflow.
@@ -528,13 +550,11 @@ Merchants and administrators can upload product images directly from their devic
 5. **Secure Dedicated API:** Protected behind authentication & admin authorization at `POST /api/admin/upload`.
 
 ### Environment Configuration (`.env`)
+
 ```env
-# Cloudinary Image Upload Configuration
-CLOUDINARY_CLOUD_NAME=fx8jzgrg
-CLOUDINARY_API_KEY=885969465511578
-CLOUDINARY_API_SECRET=3gT2SUtagNZ8KEvmqELjEjaVAEA
-CLOUDINARY_URL=cloudinary://885969465511578:3gT2SUtagNZ8KEvmqELjEjaVAEA@fx8jzgrg
+
 ```
 
 ---
-*Report Generated for inBox E-Commerce Engineering Team.*
+
+_Report Generated for inBox E-Commerce Engineering Team._
