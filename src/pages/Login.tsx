@@ -11,7 +11,6 @@ import {
   Phone,
   ArrowRight,
   ShieldCheck,
-  Sparkles,
   ShoppingBag,
   Truck,
   ArrowLeft,
@@ -141,14 +140,6 @@ export const Login: React.FC<LoginProps> = ({ onNavigate, redirectTarget }) => {
     }
   };
 
-  // Quick fill demo helper
-  const handleDemoFill = (demoEmail: string, demoPass: string) => {
-    setEmail(demoEmail);
-    setPassword(demoPass);
-    setErrorMsg('');
-    setMode('login');
-  };
-
   return (
     <div className="min-h-[calc(100vh-160px)] flex flex-col justify-center items-center py-12 px-4 sm:px-6 lg:px-8 bg-slate-50">
       {/* Return to Store Back Link */}
@@ -200,36 +191,6 @@ export const Login: React.FC<LoginProps> = ({ onNavigate, redirectTarget }) => {
               </div>
             </div>
           )}
-
-          {/* Quick Demo Credentials Pills */}
-          <div className="px-6 pt-5">
-            <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200/60">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1">
-                  <Sparkles className="size-3 text-orange-500" /> Quick Demo Sign-In
-                </span>
-                <span className="text-[10px] text-slate-400">1-Click Fill</span>
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={() => handleDemoFill('shopper@inbox.com', 'CustomerSecure2026!')}
-                  className="px-2.5 py-1.5 bg-white hover:bg-orange-50 hover:border-orange-300 border border-slate-200 rounded-xl text-left text-xs transition-colors cursor-pointer"
-                >
-                  <p className="font-bold text-slate-800 text-[11px]">Shopper Account</p>
-                  <p className="text-[10px] text-slate-400 truncate">shopper@inbox.com</p>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleDemoFill('admin@inbox.com', 'AdminSecure2026!')}
-                  className="px-2.5 py-1.5 bg-white hover:bg-emerald-50 hover:border-emerald-300 border border-slate-200 rounded-xl text-left text-xs transition-colors cursor-pointer"
-                >
-                  <p className="font-bold text-slate-800 text-[11px]">Store Admin</p>
-                  <p className="text-[10px] text-slate-400 truncate">admin@inbox.com</p>
-                </button>
-              </div>
-            </div>
-          </div>
 
           {/* Auth Tab Switcher (Sign In vs Register) */}
           <div className="px-6 pt-5">

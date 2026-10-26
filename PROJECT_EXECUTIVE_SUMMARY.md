@@ -459,40 +459,47 @@ npm run load:spike
 
 ### 🌐 Complete Localhost URLs & Portal Access Table
 
-| Portal / Role | Localhost URL | Required Role | Default Credentials | Key Actions to Test |
+| Portal / Role | Localhost URL | Required Role | Default Credentials / IDs | Key Capabilities & Actions to Test |
 |---|---|:---:|---|---|
-| **🛒 Customer Storefront** | [http://localhost:3000](http://localhost:3000) | `CUSTOMER` (or Guest) | *Register any email* or: <br> `user@inbox.com` / `Customer123!` | Browse catalog, search products, add to cart, apply coupons, place orders, track shipments. |
-| **🛍️ Catalog & Search** | [http://localhost:3000/?tab=products](http://localhost:3000/?tab=products) | `Public` | No login needed | Filter by Category, Price sliders, Rating, and Real-time Search. |
-| **🏬 Seller Onboarding** | [http://localhost:3000/sell](http://localhost:3000/sell) | `Public` / Vendor | No login needed | Submit seller application with business address, GSTIN/Tax ID, and store name. |
-| **🛡️ Merchant Admin Dashboard** | [http://localhost:3000/admin](http://localhost:3000/admin) | `ADMIN` | **Email:** `admin@inbox.com`<br>**Password:** `AdminPassword123!` | Add/edit products, update inventory stock, dispatch orders, moderate customer reviews. |
-| **👑 Super Admin Dashboard** | [http://localhost:3000/super-admin](http://localhost:3000/super-admin) | `SUPER_ADMIN` | **Email:** `superadmin@inbox.com`<br>**Password:** `SuperAdmin2026!` | Review seller applications, **Approve/Reject/Suspend/Unsuspend** sellers, suspend customer accounts, view platform revenue KPIs. |
+| **👑 Super Admin Dashboard** | [http://localhost:3000/super-admin](http://localhost:3000/super-admin) | `SUPER_ADMIN` | **Email:** `superadmin@inbox.com`<br>**Password:** `SuperAdmin2026!` | Review seller applications, **Approve/Reject/Suspend/Unsuspend** sellers, view platform KPIs and metrics. |
+| **🛡️ Merchant Admin Dashboard** | [http://localhost:3000/admin](http://localhost:3000/admin) | `ADMIN` | **Email:** `admin@inbox.com`<br>**Password:** `AdminSecure2026!` *(or `AdminPassword123!`)* | Add/edit products, update inventory stock, dispatch orders, moderate customer reviews. |
+| **🛒 Shopper / Customer Account** | [http://localhost:3000/login](http://localhost:3000/login) | `CUSTOMER` | **Email:** `shopper@inbox.com` *(or `user@inbox.com`)*<br>**Password:** `CustomerSecure2026!` *(or `Customer123!`)* | Browse catalog, search products, add to cart, apply coupons, place orders, track shipments. |
+| **🏬 Seller Onboarding Portal** | [http://localhost:3000/sell](http://localhost:3000/sell) | `Public` / Vendor | Any vendor registration, or review pre-seeded applicants | Submit seller application with business address, GSTIN/Tax ID, and store name. |
+| **🛍️ Catalog & Search Storefront** | [http://localhost:3000/?tab=products](http://localhost:3000/?tab=products) | `Public` | No login needed | Filter by Category, Price sliders, Rating, and Real-time Search. |
 | **🗄️ Prisma Studio (Database GUI)** | [http://localhost:5555](http://localhost:5555) | Admin / Developer | Web GUI (No login) | Visual database table browser: inspect, filter, and edit all 16 PostgreSQL tables (`User`, `Product`, `Order`, `Coupon`, etc.). |
 | **🔌 Backend API Health Check** | [http://localhost:4000/api/health](http://localhost:4000/api/health) | Public | JSON endpoint | Returns database connectivity status, uptime, and server health. |
 | **📦 Products REST API** | [http://localhost:4000/api/products](http://localhost:4000/api/products) | Public | JSON endpoint | Direct REST API endpoint returning paginated product catalog with filtering. |
 
 ---
 
-### 🔑 Default Credentials Reference Card
+### 🔑 Authentication Credentials & Test Account IDs
 
 ```text
 ┌────────────────────────────────────────────────────────────────────────┐
-│                        DEFAULT LOGIN CREDENTIALS                       │
+│                        AUTHORIZED TEST ACCOUNTS                        │
 ├────────────────────────────────────────────────────────────────────────┤
-│ 👑 SUPER ADMIN (Full Governance & Suspend/Unsuspend Control):          │
+│ 👑 SUPER ADMIN (Marketplace Master Governance & Verification):         │
 │    URL:      http://localhost:3000/super-admin                         │
 │    Email:    superadmin@inbox.com                                      │
 │    Password: SuperAdmin2026!                                           │
+│    Role:     SUPER_ADMIN                                               │
 ├────────────────────────────────────────────────────────────────────────┤
-│ 🛡️ STORE ADMIN (Products, Inventory & Order Management):               │
+│ 🛡️ STORE ADMIN (Merchant Catalog, Stock & Order Management):           │
 │    URL:      http://localhost:3000/admin                               │
 │    Email:    admin@inbox.com                                           │
-│    Password: AdminPassword123!                                         │
+│    Password: AdminSecure2026!  (fallback: AdminPassword123!)           │
+│    Role:     ADMIN                                                     │
 ├────────────────────────────────────────────────────────────────────────┤
-│ 🛒 STANDARD CUSTOMER (Shopping, Orders & Wishlist):                    │
+│ 🛒 SHOPPER / CUSTOMER (Checkout, Saved Items, Order Tracking):         │
 │    URL:      http://localhost:3000/login                               │
-│    Email:    user@inbox.com                                            │
-│    Password: Customer123!                                              │
-│    (Or register any new email instantly on the login page)            │
+│    Email:    shopper@inbox.com  (or: user@inbox.com)                   │
+│    Password: CustomerSecure2026!  (or: Customer123!)                   │
+│    Role:     CUSTOMER                                                  │
+│    (Or register any new email instantly on the registration tab)       │
+├────────────────────────────────────────────────────────────────────────┤
+│ 🏬 PRE-SEEDED SELLER APPLICATIONS (For Super Admin Queue Testing):     │
+│    Applicant 1: seller.urbanchic@example.com (Fashion / Apparel)       │
+│    Applicant 2: seller.artisancrafts@example.com (Home & Living)       │
 └────────────────────────────────────────────────────────────────────────┘
 ```
 

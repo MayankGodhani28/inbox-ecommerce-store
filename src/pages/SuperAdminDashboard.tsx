@@ -213,12 +213,6 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
       }
     };
 
-    const handleFillDemo = () => {
-      setMasterEmail('superadmin@inbox.com');
-      setMasterPassword('SuperAdmin2026!');
-      setMasterLoginError('');
-    };
-
     return (
       <div className="min-h-screen bg-slate-50 text-slate-900 font-sans antialiased flex items-center justify-center px-4 py-12">
         {/* Super Admin Direct Login Card */}
@@ -239,21 +233,6 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
             <p className="text-xs text-slate-500 leading-relaxed">
               Restricted master terminal for platform owners. Enter your credentials to manage marketplace operations.
             </p>
-          </div>
-
-          {/* Quick Demo Helper */}
-          <div className="mb-4 p-3 rounded-xl bg-purple-50/60 border border-purple-100 flex items-center justify-between">
-            <div>
-              <p className="text-[11px] font-bold text-purple-900">Demo Master Account</p>
-              <p className="text-[10px] text-purple-700 font-mono">superadmin@inbox.com</p>
-            </div>
-            <button
-              type="button"
-              onClick={handleFillDemo}
-              className="px-2.5 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-[10px] font-bold transition-colors cursor-pointer shadow-xs"
-            >
-              Fill Credentials
-            </button>
           </div>
 
           {masterLoginError && (

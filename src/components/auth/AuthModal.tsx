@@ -258,32 +258,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </form>
           )}
 
-          {/* Quick Admin Access Option */}
-          {mode === 'login' && (
-            <div className="mt-4 p-3 rounded-xl bg-blue-50/80 border border-blue-200/70 flex items-center justify-between gap-3 text-xs animate-fade-in">
-              <div className="flex items-center gap-2.5 text-slate-700 min-w-0">
-                <div className="size-8 rounded-lg bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-xs">
-                  <ShieldCheck className="size-4" />
-                </div>
-                <div className="min-w-0">
-                  <p className="font-bold text-slate-900 leading-tight truncate">Store Administrator</p>
-                  <p className="text-[11px] text-slate-500 font-mono truncate">admin@inbox.com</p>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  setEmail('admin@inbox.com');
-                  setPassword('AdminSecure2026!');
-                  setErrorMsg('');
-                }}
-                className="px-3 py-1.5 rounded-lg bg-white text-blue-700 font-bold text-xs hover:bg-blue-50 hover:border-blue-300 border border-blue-200 shadow-2xs transition-all cursor-pointer whitespace-nowrap shrink-0"
-              >
-                Fill Admin Credentials
-              </button>
-            </div>
-          )}
-
           {/* Switch mode links */}
           <div className="mt-5 text-center text-xs text-slate-500 pt-4 border-t border-slate-100">
             {mode === 'login' ? (
