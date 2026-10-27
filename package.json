@@ -36,6 +36,8 @@
     "load:endpoints": "npx artillery run load-tests/05-api-endpoints.yml",
     "load:all": "npx tsx load-tests/run-load-tests.ts --all",
     "load:report": "npx artillery report",
+    "k6:spike": "node -e \"const {spawn} = require('child_process'); const p = process.platform === 'win32' && require('fs').existsSync('./tools/k6.exe') ? './tools/k6.exe' : 'k6'; spawn(p, ['run', 'load-tests/k6-spike-test.js'], {stdio: 'inherit'});\"",
+    "k6:normal": "node -e \"const {spawn} = require('child_process'); const p = process.platform === 'win32' && require('fs').existsSync('./tools/k6.exe') ? './tools/k6.exe' : 'k6'; spawn(p, ['run', 'load-tests/k6-normal-load.js'], {stdio: 'inherit'});\"",
     "test:codeant": "node --experimental-strip-types --test tests/codeant-security.test.mjs"
   },
   "prisma": {

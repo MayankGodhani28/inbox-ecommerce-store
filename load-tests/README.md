@@ -44,9 +44,27 @@ Tests each endpoint individually to find which one is slowest.
 npm run load:endpoints
 ```
 
-### 🚀 Run All Tests
+### 🚀 Run All Tests (Artillery)
 ```bash
 npm run load:all
+```
+
+---
+
+## ⚡ Grafana k6 Load Tests (Modern, High-Concurrency)
+
+Pre-configured k6 scripts are included in `load-tests/`:
+
+### ⚡ k6 Spike Test (Flash Sale / 500 VUs Surge)
+Simulates a rapid flash-sale spike from 20 VUs up to **500 concurrent Virtual Users**:
+```bash
+npm run k6:spike
+```
+
+### 📈 k6 Normal Load Test
+Simulates steady daily traffic (20 to 50 concurrent users):
+```bash
+npm run k6:normal
 ```
 
 ---
