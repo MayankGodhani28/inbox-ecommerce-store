@@ -1,28 +1,39 @@
 /**
  * ─────────────────────────────────────────────────────
- *  Load Test Runner Script
+ *  Grafana k6 Load Test Runner Script
  *  File: load-tests/run-load-tests.ts
  *
  *  Usage:
- *    npx tsx load-tests/run-load-tests.ts          (runs quick test)
- *    npx tsx load-tests/run-load-tests.ts --all    (runs all tests)
- *    npx tsx load-tests/run-load-tests.ts --stress (runs stress test)
- *    npx tsx load-tests/run-load-tests.ts --spike  (runs spike test)
+ *    npx tsx load-tests/run-load-tests.ts            (runs normal load test)
+ *    npx tsx load-tests/run-load-tests.ts --spike    (runs 500-VU flash sale spike)
+ *    npx tsx load-tests/run-load-tests.ts --stress   (runs stress capacity test)
+ *    npx tsx load-tests/run-load-tests.ts --soak     (runs soak endurance test)
+ *    npx tsx load-tests/run-load-tests.ts --endpoints(runs individual endpoint benchmark)
+ *    npx tsx load-tests/run-load-tests.ts --all      (runs all k6 test suites in sequence)
  * ─────────────────────────────────────────────────────
  */
 
 import { execSync, spawn } from 'child_process';
 import path from 'path';
+import fs from 'fs';
 
 const LOAD_TEST_DIR = path.resolve('./load-tests');
-const REPORTS_DIR  = path.resolve('./load-tests/reports');
 
-const TESTS = {
-  normal:    '01-normal-load.yml',
-  stress:    '02-stress-test.yml',
-  spike:     '03-spike-test.yml',
-  soak:      '04-soak-test.yml',
-  endpoints: '05-api-endpoints.yml',
+// Locate local k6 executable or system binary
+function getK6Path(): string {
+  const localWindowsK6 = path.resolve('./tools/k6.exe');
+  if (process.platform === 'win32' && fs.existsSync(localWindowsK6)) {
+    return localWindowsK6;
+  }
+  return 'k6';
+}
+
+const TESTS: Record<string, string> = {
+  normal:    'k6-normal-load.js',
+  spike:     'k6-spike-test.js',
+  stress:    'k6-stress-test.js',
+  endpoints: 'k6-endpoints.js',
+  soak:      'k6-soak-test.js',
 };
 
 // ANSI colours for terminal output
@@ -40,7 +51,7 @@ function banner() {
   console.log(`
 ${c.cyan}${c.bold}╔══════════════════════════════════════════════════╗
 ║     inBox E-Commerce — Load Testing Suite        ║
-║     Powered by Artillery                         ║
+║     Powered by Grafana k6 (High-Concurrency)     ║
 ╚══════════════════════════════════════════════════╝${c.reset}
 `);
 }
@@ -58,31 +69,22 @@ function checkServerRunning(): boolean {
   }
 }
 
-function runTest(testFile: string, reportName: string): Promise<number> {
+function runTest(testFile: string): Promise<number> {
   return new Promise((resolve) => {
-    const reportPath = `${REPORTS_DIR}/${reportName}.json`;
-    const htmlReport = `${REPORTS_DIR}/${reportName}.html`;
+    const k6Bin = getK6Path();
+    const scriptPath = path.join(LOAD_TEST_DIR, testFile);
 
-    // Ensure reports directory exists
-    try { execSync(`mkdir -p "${REPORTS_DIR}"`); } catch { /* already exists */ }
+    console.log(`${c.yellow}⏳ Running k6 test: ${testFile}${c.reset}`);
+    console.log(`${c.yellow}   Using binary:    ${k6Bin}${c.reset}\n`);
 
-    console.log(`${c.yellow}⏳ Running: ${testFile}${c.reset}`);
-    console.log(`${c.yellow}   Report:  ${htmlReport}${c.reset}\n`);
-
-    const child = spawn(
-      'npx',
-      ['artillery', 'run', '--output', reportPath, path.join(LOAD_TEST_DIR, testFile)],
-      { stdio: 'inherit', shell: true }
-    );
+    const child = spawn(k6Bin, ['run', scriptPath], {
+      stdio: 'inherit',
+      shell: false,
+    });
 
     child.on('close', (code) => {
       if (code === 0) {
         console.log(`\n${c.green}✅ PASSED: ${testFile}${c.reset}`);
-        // Generate HTML report
-        try {
-          execSync(`npx artillery report --output "${htmlReport}" "${reportPath}"`, { stdio: 'ignore' });
-          console.log(`${c.green}   📊 HTML Report: ${htmlReport}${c.reset}`);
-        } catch { /* HTML report generation is optional */ }
       } else {
         console.log(`\n${c.red}❌ FAILED: ${testFile} (exit code: ${code})${c.reset}`);
       }
@@ -124,27 +126,25 @@ Then re-run this script.
   const results: Record<string, number> = {};
 
   if (runAll) {
-    // Run every test in sequence
-    separator('Running All Load Tests');
+    separator('Running All k6 Load Tests');
     for (const [name, file] of Object.entries(TESTS)) {
-      results[name] = await runTest(file, name);
+      results[name] = await runTest(file);
     }
   } else if (runStress) {
-    separator('Stress Test');
-    results.stress = await runTest(TESTS.stress, 'stress');
+    separator('k6 Stress Test (Capacity Limits)');
+    results.stress = await runTest(TESTS.stress);
   } else if (runSpike) {
-    separator('Spike Test (Flash Sale Simulation)');
-    results.spike = await runTest(TESTS.spike, 'spike');
+    separator('k6 Spike Test (500-VU Flash Sale)');
+    results.spike = await runTest(TESTS.spike);
   } else if (runSoak) {
-    separator('Soak Test (Memory Leak Detection — 10 min)');
-    results.soak = await runTest(TESTS.soak, 'soak');
+    separator('k6 Soak Test (Memory Leak & Endurance)');
+    results.soak = await runTest(TESTS.soak);
   } else if (runEndpts) {
-    separator('API Endpoints Benchmark');
-    results.endpoints = await runTest(TESTS.endpoints, 'endpoints');
+    separator('k6 Endpoints Benchmark');
+    results.endpoints = await runTest(TESTS.endpoints);
   } else {
-    // Default: run normal load test
-    separator('Normal Load Test (Default)');
-    results.normal = await runTest(TESTS.normal, 'normal');
+    separator('k6 Normal Load Test (Default)');
+    results.normal = await runTest(TESTS.normal);
   }
 
   // ── 3. Summary ──
@@ -158,12 +158,10 @@ Then re-run this script.
     if (code !== 0) allPassed = false;
   }
 
-  console.log(`\n${c.bold}Reports saved to: ${REPORTS_DIR}/${c.reset}\n`);
-
   if (allPassed) {
-    console.log(`${c.green}${c.bold}🎉 All load tests passed! Your server can handle the load.${c.reset}\n`);
+    console.log(`\n${c.green}${c.bold}🎉 All k6 tests passed! Server meets enterprise performance standards.${c.reset}\n`);
   } else {
-    console.log(`${c.red}${c.bold}⚠️  Some tests failed. Check the reports for details.${c.reset}\n`);
+    console.log(`\n${c.red}${c.bold}⚠️  Some tests failed or exceeded thresholds.${c.reset}\n`);
     process.exit(1);
   }
 }
