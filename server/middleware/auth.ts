@@ -4,7 +4,7 @@ import { prisma } from '../db/prisma.js';
 import { User, Role } from '@prisma/client';
 
 export const SESSION_COOKIE_NAME = 'inbox_session_id';
-const SESSION_EXPIRY_DAYS = 7;
+const SESSION_EXPIRY_DAYS = 1; // 1-day time limit (24 hours)
 
 export interface AuthenticatedRequest extends Request {
   user?: User;
@@ -111,6 +111,8 @@ export async function optionalAuth(req: AuthenticatedRequest, res: Response, nex
   if (session && !session.revokedAt && session.expiresAt >= new Date()) {
     req.user = session.user;
     req.sessionToken = rawToken;
+  } else if (session && (session.expiresAt < new Date() || session.revokedAt)) {
+    res.clearCookie(SESSION_COOKIE_NAME, { path: '/' });
   }
 
   next();
