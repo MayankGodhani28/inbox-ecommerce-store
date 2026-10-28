@@ -5,9 +5,12 @@ import { BrandLogo } from './BrandLogo';
 interface InvoiceBillProps {
   order: Order;
   className?: string;
+  sellerName?: string;
 }
 
-export const InvoiceBill: React.FC<InvoiceBillProps> = ({ order, className = '' }) => {
+export const InvoiceBill: React.FC<InvoiceBillProps> = ({ order, className = '', sellerName }) => {
+  const storeSellerName = sellerName || order.storeName || 'Inbox Emporium';
+
   const formattedDate = order.date
     ? new Date(order.date).toLocaleDateString('en-US', {
         year: 'numeric',
@@ -22,30 +25,42 @@ export const InvoiceBill: React.FC<InvoiceBillProps> = ({ order, className = '' 
         day: 'numeric',
       });
 
-  const subtotal = typeof order.subtotal === 'number' && !isNaN(order.subtotal)
+  const subtotal = typeof order.subtotal === 'number' && !isNaN(order.subtotal) && order.subtotal > 0
     ? order.subtotal
-    : order.items?.reduce((sum, it) => sum + (it.price || 0) * (it.quantity || 1), 0) || order.total || 0;
+    : (order.items || []).reduce((sum, it) => sum + (it.price || 0) * (it.quantity || 1), 0);
 
   const deliveryFee = typeof order.deliveryFee === 'number' ? order.deliveryFee : 0;
   const discount = typeof order.discount === 'number' ? order.discount : 0;
-  const tax = typeof order.tax === 'number' ? order.tax : 0;
-  const total = typeof order.total === 'number' ? order.total : subtotal + deliveryFee - discount + tax;
+  const tax = typeof order.tax === 'number' && order.tax > 0
+    ? order.tax
+    : Number((subtotal * 0.08).toFixed(2));
+
+  const total = typeof order.total === 'number' && order.total > 0
+    ? order.total
+    : subtotal + deliveryFee - discount + tax;
 
   const isPaid = order.paymentStatus === 'Paid';
+  const customerName = order.customerName || 'Store Administrator';
+  const customerEmail = order.customerEmail || 'admin@inbox.com';
 
   return (
     <div
+      id="printable-invoice-area"
       className={`printable-bill bg-white text-slate-900 p-8 sm:p-10 max-w-4xl mx-auto border border-slate-200 shadow-sm print:border-none print:shadow-none print:p-0 print:m-0 print:max-w-none text-xs leading-relaxed font-sans ${className}`}
     >
       {/* ---------------------------------------------------- */}
-      {/* 1. OFFICIAL TAX INVOICE HEADER                       */}
+      {/* 1. OFFICIAL TAX INVOICE HEADER & SELLER CREDENTIALS  */}
       {/* ---------------------------------------------------- */}
       <div className="flex flex-col sm:flex-row justify-between items-start gap-6 pb-6 border-b-2 border-slate-800">
         <div>
           <BrandLogo size="md" showSubtitle={true} />
           <div className="mt-3 text-[11px] text-slate-600 space-y-0.5">
+            <p className="font-extrabold text-slate-900">
+              <span className="text-slate-500 font-semibold uppercase">Seller / Store:</span>{' '}
+              {storeSellerName}
+            </p>
             <p className="font-bold text-slate-800">Inbox Infotech E-Commerce Pvt. Ltd.</p>
-            <p>Infotech Commercial Hub, Ring Road, Surat, Gujarat - 395007</p>
+            <p>Infotech Commercial Hub, Outer Ring Road, Bengaluru / Surat, Gujarat - 395007</p>
             <p>
               <span className="font-semibold text-slate-700">GSTIN:</span> 24AAACI1234F1Z5 &bull;{' '}
               <span className="font-semibold text-slate-700">CIN:</span> U72900GJ2020PTC114589
@@ -88,30 +103,28 @@ export const InvoiceBill: React.FC<InvoiceBillProps> = ({ order, className = '' 
             </p>
             <p>
               <span className="text-slate-500 font-semibold uppercase">Payment Mode:</span>{' '}
-              <span className="text-slate-800 font-semibold">{order.paymentMethod || 'Online Payment'}</span>
+              <span className="text-slate-800 font-semibold">{order.paymentMethod || 'Credit / Debit Card'}</span>
             </p>
           </div>
         </div>
       </div>
 
       {/* ---------------------------------------------------- */}
-      {/* 2. CUSTOMER & SHIPPING DISPATCH DETAILS               */}
+      {/* 2. USERNAME & SHIPPING DISPATCH DETAILS              */}
       {/* ---------------------------------------------------- */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 py-6 border-b border-slate-200">
         <div>
           <h3 className="text-[11px] font-black uppercase tracking-wider text-slate-500 mb-2">
-            Billed To &bull; Customer Details
+            Billed To &bull; Customer / Username
           </h3>
-          <p className="font-extrabold text-sm text-slate-900">{order.customerName}</p>
-          <p className="text-slate-600 font-mono mt-0.5">{order.customerEmail}</p>
+          <p className="font-extrabold text-sm text-slate-900">{customerName}</p>
+          <p className="text-slate-600 font-mono mt-0.5">{customerEmail}</p>
           {order.customerPhone && (
             <p className="text-slate-600 mt-0.5">Phone: {order.customerPhone}</p>
           )}
-          {order.shippingAddress && (
-            <p className="text-slate-600 mt-1">
-              Customer ID: <span className="font-mono">{order.userId || 'CUST-REG'}</span>
-            </p>
-          )}
+          <p className="text-slate-600 mt-1">
+            Customer ID: <span className="font-mono">{order.userId || 'CUST-AUTH'}</span>
+          </p>
         </div>
 
         <div>
@@ -120,7 +133,7 @@ export const InvoiceBill: React.FC<InvoiceBillProps> = ({ order, className = '' 
           </h3>
           {order.shippingAddress ? (
             <div className="text-slate-700 space-y-0.5">
-              <p className="font-bold text-slate-900">{order.shippingAddress.fullName || order.customerName}</p>
+              <p className="font-bold text-slate-900">{order.shippingAddress.fullName || customerName}</p>
               <p>{order.shippingAddress.street}</p>
               <p>
                 {order.shippingAddress.city}, {order.shippingAddress.state} - {order.shippingAddress.pincode}
@@ -131,13 +144,18 @@ export const InvoiceBill: React.FC<InvoiceBillProps> = ({ order, className = '' 
               )}
             </div>
           ) : (
-            <p className="text-slate-500 italic">Standard registered delivery address</p>
+            <div className="text-slate-700 space-y-0.5">
+              <p className="font-bold text-slate-900">{customerName}</p>
+              <p>Inbox Infotech Commercial Hub, Outer Ring Rd</p>
+              <p>Bengaluru, Karnataka - 560103</p>
+              <p className="font-semibold text-slate-800">India</p>
+            </div>
           )}
 
           <div className="mt-3 pt-2 border-t border-slate-100 flex flex-wrap gap-x-4 text-[11px] text-slate-600">
             <div>
               <span className="font-semibold text-slate-500">Shipping Mode:</span>{' '}
-              <span className="font-bold text-slate-800">{order.deliveryMethod || 'Express Courier'}</span>
+              <span className="font-bold text-slate-800">{order.deliveryMethod || 'Standard 3-4 Days Delivery'}</span>
             </div>
             {order.trackingNumber && (
               <div>
@@ -185,7 +203,7 @@ export const InvoiceBill: React.FC<InvoiceBillProps> = ({ order, className = '' 
                       ${(it.price || 0).toFixed(2)}
                     </td>
                     <td className="py-3 px-3 text-center font-bold text-slate-800">
-                      {it.quantity}
+                      {it.quantity || 1}
                     </td>
                     <td className="py-3 px-3 text-right font-mono font-bold text-slate-900">
                       ${itemTotal.toFixed(2)}

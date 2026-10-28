@@ -131,6 +131,7 @@ export interface Order {
   }[];
   trackingNumber?: string;
   estimatedDeliveryDate?: string;
+  storeName?: string;
 }
 
 export interface User {

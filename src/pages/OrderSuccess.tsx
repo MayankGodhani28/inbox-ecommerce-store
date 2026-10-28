@@ -4,6 +4,7 @@ import { useTranslation } from '../context/LanguageContext';
 import { orderService } from '../services/orderService';
 import { CheckCircle, ArrowRight, Printer, Truck, FileText } from 'lucide-react';
 import { InvoiceBill } from '../components/common/InvoiceBill';
+import { printInvoiceDocument } from '../utils/printInvoice';
 
 interface OrderSuccessProps {
   order: Order | null;
@@ -58,7 +59,7 @@ export const OrderSuccess: React.FC<OrderSuccessProps> = ({ order: initialOrder,
   }
 
   const handlePrintInvoice = () => {
-    window.print();
+    printInvoiceDocument(order);
   };
 
   return (
@@ -206,7 +207,7 @@ export const OrderSuccess: React.FC<OrderSuccessProps> = ({ order: initialOrder,
       {/* PURE PRINT-ONLY OUTPUT: ONLY THE BILL IS PRINTED     */}
       {/* (100% free of website navbar, footer, buttons, etc)  */}
       {/* ---------------------------------------------------- */}
-      <div className="printable-bill print:block hidden">
+      <div id="printable-invoice-area" className="printable-bill print:block hidden">
         <InvoiceBill order={order} />
       </div>
     </div>

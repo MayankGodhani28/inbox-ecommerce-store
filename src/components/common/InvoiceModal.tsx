@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Order } from '../../types';
 import { InvoiceBill } from './InvoiceBill';
 import { Printer, X } from 'lucide-react';
+import { printInvoiceDocument } from '../../utils/printInvoice';
 
 interface InvoiceModalProps {
   order: Order | null;
@@ -24,7 +25,7 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({ order, isOpen, onClo
   if (!isOpen || !order) return null;
 
   const handlePrint = () => {
-    window.print();
+    printInvoiceDocument(order);
   };
 
   return (

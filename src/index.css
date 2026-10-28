@@ -79,8 +79,14 @@
   .toast-container,
   #seller-banner,
   .quickview-modal-backdrop,
-  .auth-modal-backdrop {
+  .auth-modal-backdrop,
+  .screen-only {
     display: none !important;
+  }
+
+  /* Hide entire page elements by default */
+  body * {
+    visibility: hidden;
   }
 
   /* Force background colors to print accurately on thermal and laser printers */
@@ -119,9 +125,19 @@
     border: none !important;
   }
 
-  /* Printable Bill container */
+  /* Specifically make the printable bill area visible and positioned at top */
+  #printable-invoice-area,
+  #printable-invoice-area *,
+  .printable-bill,
+  .printable-bill * {
+    visibility: visible !important;
+  }
+
+  #printable-invoice-area,
   .printable-bill {
-    display: block !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 !important;
@@ -129,6 +145,7 @@
     background: #ffffff !important;
     box-shadow: none !important;
     border: none !important;
+    display: block !important;
   }
 
   /* Screen-only blocks */
