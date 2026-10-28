@@ -25,3 +25,4 @@ test.describe('Shopping Cart Flow', () => {
     expect(parseInt(badgeText, 10)).toBeGreaterThanOrEqual(1);
   });
 });
+

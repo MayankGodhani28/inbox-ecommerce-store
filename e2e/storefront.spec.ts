@@ -32,3 +32,4 @@ test.describe('Storefront & Catalog Browsing', () => {
     expect(bodyText).toContain('Sony');
   });
 });
+
