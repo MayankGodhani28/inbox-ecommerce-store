@@ -211,7 +211,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     selectedColor?: string,
     selectedSize?: string
   ): Promise<void> => {
-    const validQty = Math.max(1, Math.floor(Number(quantity) || 1));
+    const validQty = quantity;
     if (!isPositiveQuantity(validQty) || !isPositiveQuantity(product.stock)) {
       showToast('Invalid quantity', { message: 'Choose a positive whole number for an available item.', type: 'error' });
       return;
@@ -277,8 +277,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     color?: string,
     size?: string
   ): Promise<void> => {
-    const validQty = Math.floor(Number(quantity) || 0);
-    if (validQty <= 0) {
+    const validQty = quantity;
+    // Only an explicit numeric zero means remove; malformed values are rejected.
+    if (validQty === 0) {
       await removeFromCart(productId, color, size);
       return;
     }
@@ -515,10 +516,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Authoritative calculations (server quote prioritised, exact fallback)
   // Ensure item quantity is always validated as a positive integer before financial calculations
-  const sanitizeQuantity = (qty: any): number => {
-    const val = Math.floor(Number(qty) || 0);
-    return val > 0 ? val : 0;
-  };
+  const sanitizeQuantity = (qty: unknown): number =>
+    isPositiveQuantity(qty) ? qty : 0;
 
   const totalItemsCount = serverQuote
     ? serverQuote.totalItemsCount
@@ -530,7 +529,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         cart
           .reduce((sum, item) => {
             const validQty = sanitizeQuantity(item.quantity);
-            const validPrice = Math.max(0, Number(item.product?.price) || 0);
+            const price = item.product?.price;
+            const validPrice = typeof price === 'number' && Number.isFinite(price) && price >= 0 ? price : 0;
             return sum + validPrice * validQty;
           }, 0)
           .toFixed(2)

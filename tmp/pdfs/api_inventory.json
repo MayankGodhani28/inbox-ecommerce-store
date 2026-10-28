@@ -1,0 +1,570 @@
+[
+  {
+    "method": "GET",
+    "path": "/api/admin/products",
+    "access": "Admin / super admin",
+    "description": "List products created by the current merchant",
+    "file": "server/modules/admin/adminRoutes.ts",
+    "line": 25
+  },
+  {
+    "method": "POST",
+    "path": "/api/admin/products",
+    "access": "Admin / super admin",
+    "description": "Add product linked to current merchant",
+    "file": "server/modules/admin/adminRoutes.ts",
+    "line": 37
+  },
+  {
+    "method": "POST",
+    "path": "/api/admin/upload",
+    "access": "Admin / super admin",
+    "description": "Upload product image to Cloudinary",
+    "file": "server/modules/admin/adminRoutes.ts",
+    "line": 123
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/admin/products/:id",
+    "access": "Admin / super admin",
+    "description": "Update product",
+    "file": "server/modules/admin/adminRoutes.ts",
+    "line": 178
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/admin/products/:id",
+    "access": "Admin / super admin",
+    "description": "Soft-archive product safely",
+    "file": "server/modules/admin/adminRoutes.ts",
+    "line": 272
+  },
+  {
+    "method": "GET",
+    "path": "/api/admin/orders",
+    "access": "Admin / super admin",
+    "description": "List orders isolated to current merchant",
+    "file": "server/modules/admin/adminRoutes.ts",
+    "line": 300
+  },
+  {
+    "method": "GET",
+    "path": "/api/admin/metrics",
+    "access": "Admin / super admin",
+    "description": "Authoritative aggregated dashboard metrics (isolated to current merchant)",
+    "file": "server/modules/admin/adminRoutes.ts",
+    "line": 331
+  },
+  {
+    "method": "GET",
+    "path": "/api/admin/customers",
+    "access": "Admin / super admin",
+    "description": "List registered customer accounts with order metrics (isolated to current merchant)",
+    "file": "server/modules/admin/adminRoutes.ts",
+    "line": 401
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/register",
+    "access": "Public",
+    "description": "Authentication operation",
+    "file": "server/modules/auth/authRoutes.ts",
+    "line": 72
+  },
+  {
+    "method": "GET",
+    "path": "/api/auth/csrf-token",
+    "access": "Public",
+    "description": "Read or refresh CSRF token",
+    "file": "server/modules/auth/authRoutes.ts",
+    "line": 132
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/login",
+    "access": "Public",
+    "description": "Read or refresh CSRF token",
+    "file": "server/modules/auth/authRoutes.ts",
+    "line": 141
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/logout",
+    "access": "Public",
+    "description": "Read or refresh CSRF token",
+    "file": "server/modules/auth/authRoutes.ts",
+    "line": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/auth/me",
+    "access": "Public",
+    "description": "Read or refresh CSRF token",
+    "file": "server/modules/auth/authRoutes.ts",
+    "line": 214
+  },
+  {
+    "method": "GET",
+    "path": "/api/cart",
+    "access": "Signed-in owner",
+    "description": "Get user's active cart with verified live prices & stock",
+    "file": "server/modules/cart/cartRoutes.ts",
+    "line": 24
+  },
+  {
+    "method": "POST",
+    "path": "/api/cart/items",
+    "access": "Signed-in owner",
+    "description": "Add item to cart",
+    "file": "server/modules/cart/cartRoutes.ts",
+    "line": 41
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/cart/items/:id",
+    "access": "Signed-in owner",
+    "description": "Update item quantity",
+    "file": "server/modules/cart/cartRoutes.ts",
+    "line": 109
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/cart/items/:id",
+    "access": "Signed-in owner",
+    "description": "Delete single item",
+    "file": "server/modules/cart/cartRoutes.ts",
+    "line": 149
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/cart",
+    "access": "Signed-in owner",
+    "description": "Clear entire cart",
+    "file": "server/modules/cart/cartRoutes.ts",
+    "line": 163
+  },
+  {
+    "method": "POST",
+    "path": "/api/cart/merge",
+    "access": "Signed-in owner",
+    "description": "Safe guest cart merge upon login",
+    "file": "server/modules/cart/cartRoutes.ts",
+    "line": 169
+  },
+  {
+    "method": "GET",
+    "path": "/api/products",
+    "access": "Public",
+    "description": "Search, filter, sort, paginate",
+    "file": "server/modules/catalog/catalogRoutes.ts",
+    "line": 12
+  },
+  {
+    "method": "GET",
+    "path": "/api/products/:id",
+    "access": "Public",
+    "description": "Single product details",
+    "file": "server/modules/catalog/catalogRoutes.ts",
+    "line": 107
+  },
+  {
+    "method": "GET",
+    "path": "/api/products/:id/reviews",
+    "access": "Public",
+    "description": "Public product reviews",
+    "file": "server/modules/catalog/catalogRoutes.ts",
+    "line": 123
+  },
+  {
+    "method": "POST",
+    "path": "/api/products/:id/reviews",
+    "access": "Signed in",
+    "description": "Authenticated customer review with verified purchase check",
+    "file": "server/modules/catalog/catalogRoutes.ts",
+    "line": 146
+  },
+  {
+    "method": "POST",
+    "path": "/api/products/:id/reviews/:reviewId/helpful",
+    "access": "Public",
+    "description": "Increment helpful count for a review",
+    "file": "server/modules/catalog/catalogRoutes.ts",
+    "line": 244
+  },
+  {
+    "method": "POST",
+    "path": "/api/quote",
+    "access": "Public",
+    "description": "Authoritative pricing quote calculation",
+    "file": "server/modules/checkout/checkoutRoutes.ts",
+    "line": 9
+  },
+  {
+    "method": "POST",
+    "path": "/api/checkout/quote",
+    "access": "Public",
+    "description": "Authoritative pricing quote calculation",
+    "file": "server/modules/checkout/checkoutRoutes.ts",
+    "line": 9
+  },
+  {
+    "method": "GET",
+    "path": "/api/coupons",
+    "access": "Public",
+    "description": "List all active public coupons",
+    "file": "server/modules/checkout/checkoutRoutes.ts",
+    "line": 23
+  },
+  {
+    "method": "GET",
+    "path": "/api/checkout/coupons",
+    "access": "Public",
+    "description": "List all active public coupons",
+    "file": "server/modules/checkout/checkoutRoutes.ts",
+    "line": 23
+  },
+  {
+    "method": "POST",
+    "path": "/api/coupons/validate",
+    "access": "Public",
+    "description": "Validate a specific coupon against subtotal or current cart",
+    "file": "server/modules/checkout/checkoutRoutes.ts",
+    "line": 43
+  },
+  {
+    "method": "POST",
+    "path": "/api/checkout/coupons/validate",
+    "access": "Public",
+    "description": "Validate a specific coupon against subtotal or current cart",
+    "file": "server/modules/checkout/checkoutRoutes.ts",
+    "line": 43
+  },
+  {
+    "method": "GET",
+    "path": "/api/health",
+    "access": "Public",
+    "description": "Process health",
+    "file": "server/modules/health/healthRoutes.ts",
+    "line": 7
+  },
+  {
+    "method": "GET",
+    "path": "/api/health/db",
+    "access": "Public",
+    "description": "Database readiness (SELECT 1)",
+    "file": "server/modules/health/healthRoutes.ts",
+    "line": 18
+  },
+  {
+    "method": "POST",
+    "path": "/api/newsletter/subscribe",
+    "access": "Public",
+    "description": "Subscribe email to newsletter",
+    "file": "server/modules/newsletter/newsletterRoutes.ts",
+    "line": 10
+  },
+  {
+    "method": "GET",
+    "path": "/api/newsletter/status",
+    "access": "Public",
+    "description": "Optional check for active subscription",
+    "file": "server/modules/newsletter/newsletterRoutes.ts",
+    "line": 46
+  },
+  {
+    "method": "POST",
+    "path": "/api/orders",
+    "access": "Signed in",
+    "description": "Create order with transactional inventory decrement & idempotency",
+    "file": "server/modules/orders/orderRoutes.ts",
+    "line": 83
+  },
+  {
+    "method": "GET",
+    "path": "/api/orders",
+    "access": "Signed in",
+    "description": "List current user's orders",
+    "file": "server/modules/orders/orderRoutes.ts",
+    "line": 346
+  },
+  {
+    "method": "GET",
+    "path": "/api/orders/:id",
+    "access": "Signed in",
+    "description": "Get order by ID or orderNumber (owner or admin only)",
+    "file": "server/modules/orders/orderRoutes.ts",
+    "line": 357
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/orders/:id/status",
+    "access": "Admin / super admin",
+    "description": "Admin order status transition & tracking update",
+    "file": "server/modules/orders/orderRoutes.ts",
+    "line": 390
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/orders/:id/collect-payment",
+    "access": "Admin / super admin",
+    "description": "Admin payment collection for COD",
+    "file": "server/modules/orders/orderRoutes.ts",
+    "line": 465
+  },
+  {
+    "method": "GET",
+    "path": "/api/payments/config",
+    "access": "Public",
+    "description": "Expose public gateway configuration",
+    "file": "server/modules/payments/paymentRoutes.ts",
+    "line": 20
+  },
+  {
+    "method": "POST",
+    "path": "/api/payments/create-checkout-session",
+    "access": "Signed in",
+    "description": "Create authenticated hosted Stripe Checkout session",
+    "file": "server/modules/payments/paymentRoutes.ts",
+    "line": 32
+  },
+  {
+    "method": "POST",
+    "path": "/api/payments/webhook",
+    "access": "Public",
+    "description": "Stripe Webhook handler with verified signatures",
+    "file": "server/modules/payments/paymentRoutes.ts",
+    "line": 221
+  },
+  {
+    "method": "GET",
+    "path": "/api/saved-items",
+    "access": "Signed-in owner",
+    "description": "List saved items for user",
+    "file": "server/modules/saved/savedRoutes.ts",
+    "line": 24
+  },
+  {
+    "method": "POST",
+    "path": "/api/saved-items",
+    "access": "Signed-in owner",
+    "description": "Save item for later (optionally moving atomically from cart)",
+    "file": "server/modules/saved/savedRoutes.ts",
+    "line": 38
+  },
+  {
+    "method": "POST",
+    "path": "/api/saved-items/:id/move-to-cart",
+    "access": "Signed-in owner",
+    "description": "Move saved item to cart atomically",
+    "file": "server/modules/saved/savedRoutes.ts",
+    "line": 93
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/saved-items/:id",
+    "access": "Signed-in owner",
+    "description": "Remove saved item",
+    "file": "server/modules/saved/savedRoutes.ts",
+    "line": 170
+  },
+  {
+    "method": "POST",
+    "path": "/api/saved-items/merge",
+    "access": "Signed-in owner",
+    "description": "Merge guest saved items",
+    "file": "server/modules/saved/savedRoutes.ts",
+    "line": 184
+  },
+  {
+    "method": "POST",
+    "path": "/api/super-admin/seller-apply",
+    "access": "Public / optional session",
+    "description": "Apply to become a marketplace seller / admin",
+    "file": "server/modules/superadmin/superAdminRoutes.ts",
+    "line": 20
+  },
+  {
+    "method": "GET",
+    "path": "/api/super-admin/my-application",
+    "access": "Signed-in owner",
+    "description": "Check status of current seller application",
+    "file": "server/modules/superadmin/superAdminRoutes.ts",
+    "line": 143
+  },
+  {
+    "method": "GET",
+    "path": "/api/super-admin/metrics",
+    "access": "Super admin",
+    "description": "Overall administrative summary",
+    "file": "server/modules/superadmin/superAdminRoutes.ts",
+    "line": 160
+  },
+  {
+    "method": "GET",
+    "path": "/api/super-admin/applications",
+    "access": "Super admin",
+    "description": "List all seller applications",
+    "file": "server/modules/superadmin/superAdminRoutes.ts",
+    "line": 184
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/super-admin/applications/:id/approve",
+    "access": "Super admin",
+    "description": "Approve seller application & promote to ADMIN",
+    "file": "server/modules/superadmin/superAdminRoutes.ts",
+    "line": 206
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/super-admin/applications/:id/reject",
+    "access": "Super admin",
+    "description": "Reject seller application",
+    "file": "server/modules/superadmin/superAdminRoutes.ts",
+    "line": 259
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/super-admin/applications/:id/suspend",
+    "access": "Super admin",
+    "description": "Suspend verified seller store",
+    "file": "server/modules/superadmin/superAdminRoutes.ts",
+    "line": 294
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/super-admin/applications/:id/unsuspend",
+    "access": "Super admin",
+    "description": "Reinstate suspended seller store",
+    "file": "server/modules/superadmin/superAdminRoutes.ts",
+    "line": 329
+  },
+  {
+    "method": "GET",
+    "path": "/api/super-admin/admins",
+    "access": "Super admin",
+    "description": "Directory of all platform administrators & sellers",
+    "file": "server/modules/superadmin/superAdminRoutes.ts",
+    "line": 364
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/super-admin/admins/:id/status",
+    "access": "Super admin",
+    "description": "Toggle suspension or role of admin",
+    "file": "server/modules/superadmin/superAdminRoutes.ts",
+    "line": 399
+  },
+  {
+    "method": "GET",
+    "path": "/api/me",
+    "access": "Signed-in owner",
+    "description": "Get current user profile and addresses",
+    "file": "server/modules/users/userRoutes.ts",
+    "line": 23
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/me",
+    "access": "Signed-in owner",
+    "description": "Update allowlisted profile fields (name, phone, avatarUrl)",
+    "file": "server/modules/users/userRoutes.ts",
+    "line": 38
+  },
+  {
+    "method": "GET",
+    "path": "/api/me/addresses",
+    "access": "Signed-in owner",
+    "description": "Get all addresses for current user",
+    "file": "server/modules/users/userRoutes.ts",
+    "line": 68
+  },
+  {
+    "method": "POST",
+    "path": "/api/me/addresses",
+    "access": "Signed-in owner",
+    "description": "Add new address",
+    "file": "server/modules/users/userRoutes.ts",
+    "line": 78
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/me/addresses/:id",
+    "access": "Signed-in owner",
+    "description": "Update existing address",
+    "file": "server/modules/users/userRoutes.ts",
+    "line": 119
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/me/addresses/:id/default",
+    "access": "Signed-in owner",
+    "description": "Set address as default",
+    "file": "server/modules/users/userRoutes.ts",
+    "line": 159
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/me/addresses/:id",
+    "access": "Signed-in owner",
+    "description": "Delete address and preserve single default if needed",
+    "file": "server/modules/users/userRoutes.ts",
+    "line": 184
+  },
+  {
+    "method": "GET",
+    "path": "/api/wishlist",
+    "access": "Signed-in owner",
+    "description": "Get current user's wishlist items",
+    "file": "server/modules/wishlist/wishlistRoutes.ts",
+    "line": 13
+  },
+  {
+    "method": "POST",
+    "path": "/api/wishlist/toggle",
+    "access": "Signed-in owner",
+    "description": "Toggle product in wishlist",
+    "file": "server/modules/wishlist/wishlistRoutes.ts",
+    "line": 28
+  },
+  {
+    "method": "POST",
+    "path": "/api/wishlist/items",
+    "access": "Signed-in owner",
+    "description": "Add to wishlist",
+    "file": "server/modules/wishlist/wishlistRoutes.ts",
+    "line": 68
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/wishlist/items/:productId",
+    "access": "Signed-in owner",
+    "description": "Remove from wishlist",
+    "file": "server/modules/wishlist/wishlistRoutes.ts",
+    "line": 100
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/wishlist/:productId",
+    "access": "Signed-in owner",
+    "description": "Alias for remove",
+    "file": "server/modules/wishlist/wishlistRoutes.ts",
+    "line": 114
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/wishlist",
+    "access": "Signed-in owner",
+    "description": "Clear wishlist",
+    "file": "server/modules/wishlist/wishlistRoutes.ts",
+    "line": 128
+  },
+  {
+    "method": "POST",
+    "path": "/api/wishlist/merge",
+    "access": "Signed-in owner",
+    "description": "Merge guest wishlist into user's account",
+    "file": "server/modules/wishlist/wishlistRoutes.ts",
+    "line": 137
+  }
+]

@@ -1,0 +1,146 @@
+[
+  [
+    "inBox",
+    1
+  ],
+  [
+    "01  Project introduction",
+    2
+  ],
+  [
+    "02  Reading guide and evidence",
+    3
+  ],
+  [
+    "03  Technologies and tools",
+    4
+  ],
+  [
+    "04  System architecture",
+    5
+  ],
+  [
+    "05  Panels and responsibilities",
+    6
+  ],
+  [
+    "06  Frontend routes and screens",
+    7
+  ],
+  [
+    "07  Commerce workflows and rules",
+    8
+  ],
+  [
+    "08  Database design and integrity",
+    9
+  ],
+  [
+    "09  ER diagram: identity and governance",
+    10
+  ],
+  [
+    "10  ER diagram: catalog and customer state",
+    11
+  ],
+  [
+    "11  ER diagram: orders and promotions",
+    12
+  ],
+  [
+    "12  Data dictionary (1/5)",
+    13
+  ],
+  [
+    "12  Data dictionary (2/5)",
+    14
+  ],
+  [
+    "12  Data dictionary (3/5)",
+    15
+  ],
+  [
+    "12  Data dictionary (4/5)",
+    16
+  ],
+  [
+    "12  Data dictionary (5/5)",
+    17
+  ],
+  [
+    "13  API reference (1/5)",
+    18
+  ],
+  [
+    "13  API reference (2/5)",
+    19
+  ],
+  [
+    "13  API reference (3/5)",
+    20
+  ],
+  [
+    "13  API reference (4/5)",
+    21
+  ],
+  [
+    "13  API reference (5/5)",
+    22
+  ],
+  [
+    "14  API contracts and examples",
+    23
+  ],
+  [
+    "15  Fresh verification results",
+    24
+  ],
+  [
+    "16  Saved browser and performance evidence",
+    25
+  ],
+  [
+    "16  Test tools and profiles",
+    26
+  ],
+  [
+    "17  CodeAnt analysis and quality",
+    27
+  ],
+  [
+    "18  Local setup and runbook",
+    28
+  ],
+  [
+    "18  Configuration and provisioning",
+    29
+  ],
+  [
+    "19  Deployment and recovery",
+    30
+  ],
+  [
+    "20  Command reference",
+    31
+  ],
+  [
+    "20  Verification and smoke commands",
+    32
+  ],
+  [
+    "21  Release priorities",
+    33
+  ],
+  [
+    "21  Security controls and boundaries",
+    34
+  ],
+  [
+    "22  Demonstration and evaluation guide",
+    35
+  ],
+  [
+    "22  Source and result index",
+    36
+  ]
+]
