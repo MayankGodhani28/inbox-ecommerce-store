@@ -8,3 +8,5 @@ coverage/
 !.env.example
 tools/
 *.zip
+test-results/
+playwright-report/
