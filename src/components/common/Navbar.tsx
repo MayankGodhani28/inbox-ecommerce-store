@@ -106,47 +106,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
-      {/* Top Presentation & Utilities Bar */}
-      <div className="bg-slate-900 text-slate-300 text-xs py-1.5 px-3 sm:px-6">
-        <div className="max-w-[1500px] mx-auto flex items-center justify-between gap-2">
-          {/* Left: Presentation notice */}
-          <div className="flex items-center gap-2 min-w-0">
-            <span className="flex size-2 rounded-full bg-emerald-400 shrink-0 animate-pulse" />
-            <span className="text-[11px] text-slate-300 truncate">
-              <strong className="text-white font-semibold">{t('nav.demoTitle')}</strong>
-              <span className="hidden sm:inline"> — {t('nav.demoSubtitle')}</span>
-            </span>
-          </div>
-
-          {/* Right: Language Selector + Quick Demo Persona Switcher */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            {/* 3-Language Selector: ENG, GER, DUT */}
-            <LanguageSelector variant="segmented" />
-
-            {isAuthenticated && (
-              <div className="flex items-center gap-2">
-                <div className="hidden sm:flex items-center gap-1.5 text-[11px]">
-                  <span className="text-slate-400">{t('nav.viewingAs')}</span>
-                  <span className={`font-bold ${isAdmin ? 'text-sky-300' : 'text-amber-300'}`}>
-                    {isAdmin ? t('nav.adminBadge') : t('nav.customerBadge')}
-                  </span>
-                </div>
-                {isAdmin && (
-                  <button
-                    onClick={() => onNavigate('admin')}
-                    className="px-2.5 sm:px-3 py-1 rounded-lg text-[11px] font-extrabold bg-[#009FE3] hover:bg-[#0087c2] text-white transition-all cursor-pointer shadow-sm flex items-center gap-1.5"
-                  >
-                    <ShieldCheck className="size-3.5" />
-                    <span className="hidden xs:inline">Admin Portal</span>
-                    <span className="xs:hidden">Admin</span>
-                  </button>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
       {/* Main Navigation Row */}
       <div className="max-w-[1500px] mx-auto px-4 sm:px-6 py-3">
         <div className="flex items-center justify-between gap-4">
@@ -226,6 +185,8 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Right Action Icons */}
           <div className="flex items-center gap-1.5 sm:gap-2">
+            {/* Language Selector Dropdown */}
+            <LanguageSelector variant="dropdown" className="shrink-0" />
             {/* Wishlist Icon */}
             <button
               onClick={() => onNavigate('wishlist')}
@@ -297,6 +258,18 @@ export const Navbar: React.FC<NavbarProps> = ({
                   </div>
 
                   <div className="py-1">
+                    {isAdmin && (
+                      <button
+                        onClick={() => {
+                          setUserDropdownOpen(false);
+                          onNavigate(isSuperAdmin ? 'super-admin' : 'admin');
+                        }}
+                        className="w-full text-left px-4 py-2 text-xs font-bold text-sky-700 hover:bg-sky-50 flex items-center gap-2 cursor-pointer border-b border-slate-100"
+                      >
+                        <ShieldCheck className="size-4 text-sky-600" />
+                        <span>{isSuperAdmin ? 'Super Admin Console' : 'Admin Portal'}</span>
+                      </button>
+                    )}
                     <button
                       onClick={() => {
                         setUserDropdownOpen(false);

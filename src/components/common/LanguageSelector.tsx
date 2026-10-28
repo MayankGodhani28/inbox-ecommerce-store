@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from '../../context/LanguageContext';
 import { Language, AVAILABLE_LANGUAGES } from '../../i18n/types';
-import { ChevronDown, Globe } from 'lucide-react';
+import { ChevronDown, Globe, Check } from 'lucide-react';
 
 interface LanguageSelectorProps {
   variant?: 'segmented' | 'dropdown' | 'mobile';
@@ -9,7 +9,7 @@ interface LanguageSelectorProps {
 }
 
 export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
-  variant = 'segmented',
+  variant = 'dropdown',
   className = '',
 }) => {
   const { language, setLanguage, currentLanguageOption } = useTranslation();
@@ -87,22 +87,27 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
     );
   }
 
-  // Dropdown variant
+  // Modern Dropdown variant for Navbar
   return (
     <div ref={dropdownRef} className={`relative ${className}`}>
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-colors cursor-pointer border border-slate-200"
+        className="flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 hover:text-slate-900 text-xs font-bold transition-all cursor-pointer border border-slate-200/90 shadow-xs"
         aria-label="Select language"
+        title={`Current Language: ${currentLanguageOption.nativeName}`}
       >
-        <span>{currentLanguageOption.flag}</span>
-        <span>{currentLanguageOption.label}</span>
-        <ChevronDown className="size-3 text-slate-500" />
+        <span className="text-sm leading-none">{currentLanguageOption.flag}</span>
+        <span className="tracking-wide">{currentLanguageOption.label}</span>
+        <ChevronDown className={`size-3 text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-1.5 w-32 bg-white rounded-xl shadow-xl border border-slate-200 py-1 z-50 animate-fade-in">
+        <div className="absolute right-0 mt-2 w-44 bg-white rounded-2xl shadow-xl border border-slate-200/90 p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100">
+          <div className="px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 mb-1 flex items-center gap-1.5">
+            <Globe className="size-3 text-slate-400" />
+            <span>Select Language</span>
+          </div>
           {AVAILABLE_LANGUAGES.map((lang) => {
             const isActive = language === lang.code;
             return (
@@ -113,17 +118,20 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
                   setLanguage(lang.code);
                   setIsOpen(false);
                 }}
-                className={`w-full flex items-center justify-between px-3 py-2 text-xs font-bold transition-colors text-left cursor-pointer ${
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${
                   isActive
-                    ? 'bg-orange-50 text-orange-600'
+                    ? 'bg-orange-50 text-orange-600 font-extrabold shadow-xs'
                     : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
                 }`}
               >
-                <span className="flex items-center gap-2">
-                  <span>{lang.flag}</span>
-                  <span>{lang.label}</span>
+                <span className="flex items-center gap-2.5">
+                  <span className="text-base leading-none">{lang.flag}</span>
+                  <span className="flex flex-col">
+                    <span className="text-xs font-bold leading-tight">{lang.nativeName}</span>
+                    <span className="text-[10px] text-slate-400 font-normal">{lang.label}</span>
+                  </span>
                 </span>
-                {isActive && <span className="text-orange-600 font-extrabold">•</span>}
+                {isActive && <Check className="size-3.5 text-orange-600 shrink-0 stroke-[2.5]" />}
               </button>
             );
           })}
