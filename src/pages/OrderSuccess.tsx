@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Order, OrderItem } from '../types';
 import { useTranslation } from '../context/LanguageContext';
 import { orderService } from '../services/orderService';
-import { CheckCircle, ArrowRight, Printer, Truck } from 'lucide-react';
+import { CheckCircle, ArrowRight, Printer, Truck, FileText } from 'lucide-react';
+import { InvoiceBill } from '../components/common/InvoiceBill';
 
 interface OrderSuccessProps {
   order: Order | null;
@@ -14,6 +15,7 @@ export const OrderSuccess: React.FC<OrderSuccessProps> = ({ order: initialOrder,
   const { t, tPaymentMethod } = useTranslation();
   const [order, setOrder] = useState<Order | null>(initialOrder);
   const [isLoading, setIsLoading] = useState(!initialOrder && Boolean(orderId || new URLSearchParams(window.location.search).get('orderId')));
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
   useEffect(() => {
     if (initialOrder) {
@@ -60,8 +62,12 @@ export const OrderSuccess: React.FC<OrderSuccessProps> = ({ order: initialOrder,
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
-      <div className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden p-6 sm:p-10 text-center">
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 print:max-w-none print:p-0 print:m-0 print:border-none print:w-full">
+      {/* ---------------------------------------------------- */}
+      {/* SCREEN-ONLY VIEW: Friendly Storefront Confirmation   */}
+      {/* (Hidden in print mode to keep bill 100% clean)       */}
+      {/* ---------------------------------------------------- */}
+      <div className="screen-only print:hidden bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden p-6 sm:p-10 text-center">
         {/* Animated celebration icon */}
         <div className="size-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4">
           <CheckCircle className="size-9" />
@@ -152,10 +158,19 @@ export const OrderSuccess: React.FC<OrderSuccessProps> = ({ order: initialOrder,
 
           <button
             onClick={handlePrintInvoice}
-            className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer"
+            className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
+            title="Prints the official clean tax bill without website UI"
           >
             <Printer className="size-4" />
             {t('orderSuccess.printInvoice')}
+          </button>
+
+          <button
+            onClick={() => setIsPreviewOpen((prev) => !prev)}
+            className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer"
+          >
+            <FileText className="size-4 text-slate-600" />
+            <span>{isPreviewOpen ? 'Hide Bill Preview' : 'Preview Bill'}</span>
           </button>
 
           <button
@@ -166,6 +181,33 @@ export const OrderSuccess: React.FC<OrderSuccessProps> = ({ order: initialOrder,
             <ArrowRight className="size-4" />
           </button>
         </div>
+
+        {/* Optional On-Screen Bill Preview */}
+        {isPreviewOpen && (
+          <div className="mt-8 pt-6 border-t border-slate-200 text-left print:hidden animate-fade-in">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                Official Bill Preview
+              </span>
+              <button
+                onClick={handlePrintInvoice}
+                className="px-3.5 py-1.5 bg-[#E84A27] text-white text-xs font-bold rounded-lg flex items-center gap-1.5 hover:bg-[#d63f1f] cursor-pointer"
+              >
+                <Printer className="size-3.5" />
+                <span>Print Bill</span>
+              </button>
+            </div>
+            <InvoiceBill order={order} />
+          </div>
+        )}
+      </div>
+
+      {/* ---------------------------------------------------- */}
+      {/* PURE PRINT-ONLY OUTPUT: ONLY THE BILL IS PRINTED     */}
+      {/* (100% free of website navbar, footer, buttons, etc)  */}
+      {/* ---------------------------------------------------- */}
+      <div className="printable-bill print:block hidden">
+        <InvoiceBill order={order} />
       </div>
     </div>
   );

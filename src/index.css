@@ -51,3 +51,105 @@
 .animate-scale {
   animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+
+/* ==========================================================================
+   PRINT STYLES: Exclusively displays the clean retail bill / tax invoice
+   Hides all website UI (Navbar, Footer, Sidebars, Modals chrome, Buttons)
+   ========================================================================== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm 12mm 12mm;
+  }
+
+  /* Universal element suppressions for website chrome */
+  nav,
+  header,
+  footer,
+  aside,
+  button,
+  input,
+  select,
+  textarea,
+  .no-print,
+  .print-hidden,
+  .print\:hidden,
+  [data-no-print],
+  .toast-container,
+  #seller-banner,
+  .quickview-modal-backdrop,
+  .auth-modal-backdrop {
+    display: none !important;
+  }
+
+  /* Force background colors to print accurately on thermal and laser printers */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Body & document reset for crisp white paper output */
+  html,
+  body {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    font-size: 11pt !important;
+    line-height: 1.35 !important;
+  }
+
+  /* Main container reset */
+  main {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* Printable Bill container */
+  .printable-bill {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* Screen-only blocks */
+  .screen-only {
+    display: none !important;
+  }
+
+  /* Print-only blocks */
+  .print-only {
+    display: block !important;
+  }
+
+  /* Table formatting for invoice items */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+
+  tr,
+  .avoid-page-break {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+}

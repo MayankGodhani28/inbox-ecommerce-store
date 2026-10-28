@@ -10,6 +10,7 @@ import {
   Printer,
   Search,
 } from 'lucide-react';
+import { InvoiceModal } from '../components/common/InvoiceModal';
 
 interface OrdersProps {
   onNavigate: (tab: string, param?: string) => void;
@@ -32,6 +33,7 @@ export const Orders: React.FC<OrdersProps> = ({ onNavigate, onSelectProduct }) =
   const [orders, setOrders] = useState<Order[]>([]);
   const [activeFilter, setActiveFilter] = useState<'all' | 'active' | 'delivered'>('all');
   const [searchOrderId, setSearchOrderId] = useState('');
+  const [selectedInvoiceOrder, setSelectedInvoiceOrder] = useState<Order | null>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -89,7 +91,7 @@ export const Orders: React.FC<OrdersProps> = ({ onNavigate, onSelectProduct }) =
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full">
+    <div className={`max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full ${selectedInvoiceOrder ? 'print:hidden' : ''}`}>
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 mb-6">
         <button onClick={() => onNavigate('home')} className="hover:text-slate-700 cursor-pointer">{t('orders.breadcrumbHome')}</button>
@@ -226,8 +228,9 @@ export const Orders: React.FC<OrdersProps> = ({ onNavigate, onSelectProduct }) =
                   </button>
 
                   <button
-                    onClick={() => onNavigate('order-success', order.id)}
+                    onClick={() => setSelectedInvoiceOrder(order)}
                     className="flex-1 sm:flex-none px-4 py-2 border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold rounded-xl flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                    title="View and print official tax bill"
                   >
                     <Printer className="size-3.5" />
                     {t('orderSuccess.printInvoice')}
@@ -238,6 +241,13 @@ export const Orders: React.FC<OrdersProps> = ({ onNavigate, onSelectProduct }) =
           ))}
         </div>
       )}
+
+      {/* Official Tax Invoice Modal */}
+      <InvoiceModal
+        order={selectedInvoiceOrder}
+        isOpen={Boolean(selectedInvoiceOrder)}
+        onClose={() => setSelectedInvoiceOrder(null)}
+      />
     </div>
   );
 };

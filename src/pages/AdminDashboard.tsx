@@ -55,7 +55,9 @@ import {
   UploadCloud,
   Image as ImageIcon,
   Loader2,
+  Printer,
 } from 'lucide-react';
+import { InvoiceModal } from '../components/common/InvoiceModal';
 
 interface AdminDashboardProps {
   onProductsUpdate: () => void;
@@ -222,6 +224,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [orderSearch, setOrderSearch] = useState('');
   const [orderStatusFilter, setOrderStatusFilter] = useState<string>('all');
   const [customerSearch, setCustomerSearch] = useState('');
+  const [viewingInvoiceOrder, setViewingInvoiceOrder] = useState<Order | null>(null);
 
   const [metrics, setMetrics] = useState<{
     paidRevenue: number;
@@ -1308,7 +1311,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   }
 
   return (
-    <div className="min-h-screen flex bg-[#F6F6F7] text-[#202223] font-sans antialiased selection:bg-emerald-100 selection:text-emerald-900">
+    <div className={`min-h-screen flex bg-[#F6F6F7] text-[#202223] font-sans antialiased selection:bg-emerald-100 selection:text-emerald-900 ${viewingInvoiceOrder ? 'print:hidden' : ''}`}>
       {/* ======================================================== */}
       {/* 1. MERCHANT POLARIS LEFT SIDEBAR (Desktop Light Mode)     */}
       {/* ======================================================== */}
@@ -1930,6 +1933,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                 </button>
                               )}
                             <button
+                              onClick={() => setViewingInvoiceOrder(ord)}
+                              className="px-2.5 py-1 rounded-lg border border-[#D2D5D8] hover:bg-neutral-100 text-neutral-700 font-bold text-[11px] flex items-center gap-1 cursor-pointer"
+                              title="Print Customer Bill / Tax Invoice"
+                            >
+                              <Printer className="size-3" />
+                              <span>Bill</span>
+                            </button>
+                            <button
                               onClick={() => onNavigate('order-tracking', ord.id)}
                               className="px-3 py-1 rounded-lg bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-bold text-[11px] cursor-pointer"
                             >
@@ -2512,6 +2523,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           </div>
         </div>
       )}
+      {/* Official Tax Invoice Modal for Merchant / Admin */}
+      <InvoiceModal
+        order={viewingInvoiceOrder}
+        isOpen={Boolean(viewingInvoiceOrder)}
+        onClose={() => setViewingInvoiceOrder(null)}
+      />
     </div>
   );
 };
