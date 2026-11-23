@@ -1,0 +1,11 @@
+.env
+.vercel/
+.env.*
+server/backups/
+tmp/
+output/
+playwright-report/
+test-results/
+.vercel-server/
+node_modules/
+dist/

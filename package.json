@@ -44,7 +44,8 @@
     "k6:stress": "tsx load-tests/run-load-tests.ts --stress",
     "k6:soak": "tsx load-tests/run-load-tests.ts --soak",
     "k6:endpoints": "tsx load-tests/run-load-tests.ts --endpoints",
-    "test:codeant": "node --experimental-strip-types --test tests/codeant-security.test.mjs"
+    "test:codeant": "node --experimental-strip-types --test tests/codeant-security.test.mjs",
+    "vercel:api": "esbuild server/app.ts --bundle --platform=node --format=esm --packages=external --outfile=.vercel-server/app.mjs"
   },
   "prisma": {
     "seed": "tsx server/db/seed.ts"

@@ -57,3 +57,9 @@ desktop.ini
 *.tmp
 *.temp
 tmp/*.log
+tmp/vercel-config/
+
+# Vercel deployment caches
+.vercel/
+.vercel-server/
+.vercel
