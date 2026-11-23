@@ -220,7 +220,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ onNavigate, onOrderPlaced })
 
       // Trigger Confetti effect
       try {
-        confetti({
+        void confetti({
           particleCount: 100,
           spread: 70,
           origin: { y: 0.6 },
@@ -231,7 +231,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ onNavigate, onOrderPlaced })
       }
 
       showToast(t('orderSuccess.confirmedBadge'), { type: 'success' });
-      clearCart();
+      void clearCart();
       onOrderPlaced(newOrder);
       onNavigate('order-success', newOrder.id);
     } catch (err: any) {

@@ -60,7 +60,7 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const currentUserId = user?.id || null;
 
     if (currentUserId && currentUserId !== prevUserRef.current) {
-      syncWithServer();
+      void syncWithServer();
     } else if (!currentUserId && prevUserRef.current) {
       setWishlist([]);
       localStorage.removeItem(WISHLIST_STORAGE_KEY);

@@ -33,7 +33,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
   if (!product) return null;
 
   const handleAddToCart = () => {
-    addToCart(product, quantity, selectedColor, selectedSize);
+    void addToCart(product, quantity, selectedColor, selectedSize);
     onClose();
   };
 

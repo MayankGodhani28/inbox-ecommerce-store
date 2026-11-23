@@ -31,12 +31,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   const handleAddCart = (e: React.MouseEvent) => {
     e.stopPropagation();
-    addToCart(product, 1, product.colors ? product.colors[0] : undefined, product.sizes ? product.sizes[0] : undefined);
+    void addToCart(product, 1, product.colors ? product.colors[0] : undefined, product.sizes ? product.sizes[0] : undefined);
   };
 
   const handleWishlistClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    toggleWishlist(product);
+    void toggleWishlist(product);
   };
 
   const handleQuickViewClick = (e: React.MouseEvent) => {

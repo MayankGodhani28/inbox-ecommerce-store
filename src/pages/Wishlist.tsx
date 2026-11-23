@@ -28,13 +28,13 @@ export const Wishlist: React.FC<WishlistProps> = ({
   const { t } = useTranslation();
 
   const handleMoveToCart = (product: Product) => {
-    addToCart(product, 1);
-    removeFromWishlist(product.id);
+    void addToCart(product, 1);
+    void removeFromWishlist(product.id);
   };
 
   const handleAddAllToCart = () => {
-    wishlist.forEach((p) => addToCart(p, 1));
-    clearWishlist();
+    wishlist.forEach((p) => { void addToCart(p, 1); });
+    void clearWishlist();
   };
 
   if (wishlist.length === 0) {

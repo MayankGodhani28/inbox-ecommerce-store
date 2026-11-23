@@ -106,12 +106,12 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
   const inWishlist = isInWishlist(product.id);
 
   const handleAddToCart = () => {
-    addToCart(product, quantity, selectedColor, selectedSize);
+    void addToCart(product, quantity, selectedColor, selectedSize);
     showToast(t('toast.addedMultipleToCart', { quantity, name: product.name }), { type: 'success' });
   };
 
   const handleBuyNow = () => {
-    addToCart(product, quantity, selectedColor, selectedSize);
+    void addToCart(product, quantity, selectedColor, selectedSize);
     onNavigate('checkout');
   };
 

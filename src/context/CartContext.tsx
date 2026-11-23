@@ -137,7 +137,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const currentUserId = user?.id || null;
 
     if (currentUserId && currentUserId !== prevUserRef.current) {
-      syncWithServer();
+      void syncWithServer();
     } else if (!currentUserId && prevUserRef.current) {
       setCart([]);
       setSavedItems([]);
@@ -203,7 +203,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [cart, deliveryMethod, appliedCoupon, showToast, quoteKey]);
 
   useEffect(() => {
-    fetchQuote();
+    void fetchQuote();
   }, [fetchQuote]);
 
   const addToCart = async (
