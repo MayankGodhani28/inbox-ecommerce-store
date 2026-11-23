@@ -24,8 +24,8 @@ catalogRouter.get('/', optionalAuth, async (req: AuthenticatedRequest, res: Resp
     dealOfDay,
   } = req.query;
 
-  const pageNum = Math.max(1, parseInt(page as string, 10) || 1);
-  const sizeNum = Math.min(100, Math.max(1, parseInt(pageSize as string, 10) || 50));
+  const pageNum = Math.max(1, Number.parseInt(page as string, 10) || 1);
+  const sizeNum = Math.min(100, Math.max(1, Number.parseInt(pageSize as string, 10) || 50));
   const skip = (pageNum - 1) * sizeNum;
 
   const where: Prisma.ProductWhereInput = {
@@ -48,12 +48,12 @@ catalogRouter.get('/', optionalAuth, async (req: AuthenticatedRequest, res: Resp
   if (minPrice !== undefined || maxPrice !== undefined) {
     where.price = {};
     if (minPrice !== undefined) {
-      const minMinor = Math.round(parseFloat(minPrice as string) * 100);
-      if (!isNaN(minMinor)) where.price.gte = minMinor;
+      const minMinor = Math.round(Number.parseFloat(minPrice as string) * 100);
+      if (!Number.isNaN(minMinor)) where.price.gte = minMinor;
     }
     if (maxPrice !== undefined) {
-      const maxMinor = Math.round(parseFloat(maxPrice as string) * 100);
-      if (!isNaN(maxMinor)) where.price.lte = maxMinor;
+      const maxMinor = Math.round(Number.parseFloat(maxPrice as string) * 100);
+      if (!Number.isNaN(maxMinor)) where.price.lte = maxMinor;
     }
   }
 
@@ -147,8 +147,8 @@ catalogRouter.post('/:id/reviews', requireAuth, async (req: AuthenticatedRequest
   const { rating, title, comment } = req.body;
   const productId = req.params.id;
 
-  const numRating = parseInt(rating, 10);
-  if (isNaN(numRating) || numRating < 1 || numRating > 5) {
+  const numRating = Number.parseInt(rating, 10);
+  if (Number.isNaN(numRating) || numRating < 1 || numRating > 5) {
     res.status(400).json({ error: { code: 'INVALID_INPUT', message: 'Rating must be an integer between 1 and 5' } });
     return;
   }

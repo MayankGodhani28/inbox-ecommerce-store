@@ -166,12 +166,13 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="max-w-[1500px] mx-auto px-4 sm:px-6 py-3">
         <div className="flex items-center justify-between gap-4">
           {/* Left: Brand Logo */}
-          <div
+          <button
+            type="button"
             onClick={() => onNavigate('home')}
-            className="cursor-pointer shrink-0 transition-opacity hover:opacity-90"
+            className="cursor-pointer shrink-0 transition-opacity hover:opacity-90 border-none bg-transparent p-0 text-left"
           >
             <BrandLogo size="md" />
-          </div>
+          </button>
 
           {/* Center: Search Bar with Suggestions */}
           <div ref={searchRef} className="hidden md:flex flex-1 max-w-xl relative">
@@ -205,10 +206,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                       {t('nav.matchingProducts')}
                     </div>
                     {searchSuggestions.map((prod) => (
-                      <div
+                      <button
+                        type="button"
                         key={prod.id}
                         onClick={() => handleSelectSuggestion(prod)}
-                        className="px-3 py-2 hover:bg-orange-50/70 cursor-pointer flex items-center gap-3 transition-colors"
+                        className="w-full px-3 py-2 hover:bg-orange-50/70 cursor-pointer flex items-center gap-3 transition-colors border-none bg-transparent text-left"
                       >
                         <img
                           src={prod.images[0]}
@@ -221,14 +223,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                             {prod.brand} • <span className="font-semibold text-orange-600">${prod.price.toFixed(2)}</span>
                           </p>
                         </div>
-                      </div>
+                      </button>
                     ))}
-                    <div
+                    <button
+                      type="button"
                       onClick={handleSearchSubmit}
-                      className="px-3 py-2 border-t border-slate-100 text-xs font-bold text-orange-600 hover:bg-slate-50 text-center cursor-pointer"
+                      className="w-full px-3 py-2 border-t border-slate-100 text-xs font-bold text-orange-600 hover:bg-slate-50 text-center cursor-pointer bg-transparent"
                     >
                       {t('nav.viewAllResults', { query: searchQuery })}
-                    </div>
+                    </button>
                   </div>
                 ) : (
                   <div className="p-4 text-center text-xs text-slate-500">
@@ -459,8 +462,9 @@ export const Navbar: React.FC<NavbarProps> = ({
         createPortal(
           <div className="md:hidden fixed inset-0 z-50 flex justify-end bg-slate-900/60 backdrop-blur-sm animate-fade-in">
             {/* Backdrop click to close */}
-            <div
-              className="flex-1"
+            <button
+              type="button"
+              className="flex-1 border-none bg-transparent cursor-pointer"
               onClick={() => setMobileMenuOpen(false)}
               aria-label="Close menu backdrop"
             />

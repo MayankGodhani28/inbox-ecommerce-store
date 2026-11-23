@@ -155,7 +155,7 @@ async function run() {
       method: b.method,
       endpoint: b.path,
       status: lastStatus,
-      timeMs: parseFloat(avgTime.toFixed(2)),
+      timeMs: Number.parseFloat(avgTime.toFixed(2)),
     });
   }
 

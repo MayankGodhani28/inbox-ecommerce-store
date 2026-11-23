@@ -56,7 +56,7 @@ export async function bootstrapAdmin(params?: {
 }
 
 if (process.argv[1] && process.argv[1].endsWith('bootstrapAdmin.ts')) {
-  (async () => {
+  void (async () => {
     try {
       await bootstrapAdmin();
     } catch (err) {

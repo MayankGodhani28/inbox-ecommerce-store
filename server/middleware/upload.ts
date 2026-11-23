@@ -17,7 +17,7 @@ const ALLOWED_MIME_TYPES = new Set([
 const upload = multer({
   storage,
   limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB file size limit
+    fileSize: 5 * 1024 * 1024, // 5MB file size limit
     files: 1, // Only 1 file per upload
   },
   fileFilter: (_req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {

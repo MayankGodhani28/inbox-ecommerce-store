@@ -249,8 +249,9 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       {/* Mobile Drawer */}
       {showMobile && isOpenMobile && (
         <div className="fixed inset-0 z-50 lg:hidden flex justify-end bg-slate-900/60 backdrop-blur-xs animate-fade-in">
-          <div
-            className="flex-1"
+          <button
+            type="button"
+            className="flex-1 border-none bg-transparent cursor-pointer"
             onClick={onCloseMobile}
             aria-label="Close filter backdrop"
           />

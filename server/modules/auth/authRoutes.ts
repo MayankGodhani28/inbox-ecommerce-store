@@ -81,7 +81,7 @@ authRouter.post('/register', csrfProtection, async (req: Request, res: Response)
   }
 
   const cleanEmail = typeof email === 'string' ? email.trim().toLowerCase() : '';
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   if (!cleanEmail || !emailRegex.test(cleanEmail)) {
     res.status(400).json({
       error: { code: 'INVALID_INPUT', message: 'A valid email address is required', requestId },

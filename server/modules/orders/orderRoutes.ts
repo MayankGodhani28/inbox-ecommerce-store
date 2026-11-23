@@ -240,7 +240,7 @@ orderRouter.post('/', requireAuth, async (req: AuthenticatedRequest, res: Respon
       }
 
       // 3. Generate unique orderNumber
-      const orderNumber = `INB-${Date.now().toString().slice(-6)}-${Math.floor(1000 + Math.random() * 9000)}`;
+      const orderNumber = `INB-${Date.now().toString().slice(-6)}-${crypto.randomInt(1000, 10000)}`;
 
       // 4. Estimate delivery date
       const estDays = deliveryMethod === 'Express' ? 2 : 4;

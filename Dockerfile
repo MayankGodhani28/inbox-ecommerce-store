@@ -5,7 +5,7 @@ WORKDIR /app
 
 # Install build dependencies
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm ci --ignore-scripts
 
 # Copy schema and generate Prisma client
 COPY prisma ./prisma
@@ -27,7 +27,7 @@ ENV PORT=4000
 
 # Install production dependencies only
 COPY package.json package-lock.json ./
-RUN npm ci --omit=dev
+RUN npm ci --omit=dev --ignore-scripts
 
 # Copy generated prisma client and migrations
 COPY prisma ./prisma

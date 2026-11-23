@@ -468,7 +468,7 @@ export const nl: TranslationDictionary = {
   'auth.fullName': 'Volledige naam',
   'auth.phoneNumber': 'Telefoonnummer',
   'auth.emailAddress': 'E-mailadres',
-  'auth.password': 'Wachtwoord',
+  'auth.password': 'Wachtwoord', // NOSONAR - UI translation string, not a credential
   'auth.forgotPassword': 'Wachtwoord vergeten?',
   'auth.rememberMe': 'Onthoud mij',
   'auth.signInBtn': 'Inloggen',

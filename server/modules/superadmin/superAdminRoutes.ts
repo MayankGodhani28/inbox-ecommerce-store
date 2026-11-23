@@ -58,7 +58,7 @@ superAdminRouter.post('/seller-apply', optionalAuth, async (req: AuthenticatedRe
   }
 
   const cleanEmail = req.user?.email.toLowerCase() || (typeof email === 'string' ? email.trim().toLowerCase() : '');
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   if (!cleanEmail || !emailRegex.test(cleanEmail)) {
     res.status(400).json({ error: { code: 'INVALID_INPUT', message: 'A valid business email address is required' } });
     return;
@@ -550,7 +550,7 @@ superAdminRouter.put('/credentials', async (req: AuthenticatedRequest, res: Resp
   if (newEmail !== undefined && newEmail !== null) {
     const trimmed = String(newEmail).trim().toLowerCase();
     if (trimmed.length > 0 && trimmed !== currentUser.email.toLowerCase()) {
-      const emailRegex = /^[^s@]+@[^s@]+.[^s@]+$/;
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!emailRegex.test(trimmed)) {
         res.status(400).json({ error: { code: 'INVALID_INPUT', message: 'Invalid new email format.' } });
         return;

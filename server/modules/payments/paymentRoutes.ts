@@ -93,7 +93,7 @@ paymentRouter.post('/create-checkout-session', requireAuth, async (req: Authenti
   });
 
   // 3. Generate collision-resistant order number
-  const orderNumber = `INB-ST-${Date.now().toString().slice(-6)}-${Math.floor(1000 + Math.random() * 9000)}`;
+  const orderNumber = `INB-ST-${Date.now().toString().slice(-6)}-${crypto.randomInt(1000, 10000)}`;
 
   try {
     // 4. Create pending order transactionally with stock reservation

@@ -81,7 +81,7 @@ export const OrderTracking: React.FC<OrderTrackingProps> = ({
       }
     };
 
-    fetchOrder();
+    void fetchOrder();
     return () => {
       isMounted = false;
     };
@@ -322,10 +322,11 @@ export const OrderTracking: React.FC<OrderTrackingProps> = ({
               </h3>
               <div className="flex flex-col gap-2 max-h-36 overflow-y-auto pr-1">
                 {order.items.map((it, idx) => (
-                  <div
+                  <button
+                    type="button"
                     key={`${it.productId}-${idx}`}
                     onClick={() => onSelectProduct(it.productId)}
-                    className="flex items-center justify-between text-xs p-1 hover:bg-slate-50 rounded-lg cursor-pointer"
+                    className="w-full flex items-center justify-between text-xs p-1 hover:bg-slate-50 rounded-lg cursor-pointer text-left border-none bg-transparent"
                   >
                     <div className="flex items-center gap-2">
                       <img
@@ -338,7 +339,7 @@ export const OrderTracking: React.FC<OrderTrackingProps> = ({
                       </span>
                     </div>
                     <span className="text-slate-500">Qty: {it.quantity}</span>
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>

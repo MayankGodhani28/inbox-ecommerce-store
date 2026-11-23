@@ -56,8 +56,9 @@ desktop.ini
 *.tgz
 *.tmp
 *.temp
-tmp/*.log
-tmp/vercel-config/
+tmp/
+server/backups/
+sonar-issues.json
 
 # Vercel deployment caches
 .vercel/

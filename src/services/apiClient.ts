@@ -47,7 +47,18 @@ export async function apiRequest<T = any>(
   const headers = new Headers(defaultHeaders);
   new Headers(options.headers).forEach((value, key) => headers.set(key, value));
   headers.set('X-Requested-With', 'XMLHttpRequest');
-  const response = await fetch(url, {
+
+  // Prevent Client-Side Request Forgery by enforcing same-origin or relative endpoints
+  let targetUrl = url;
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    const parsed = new URL(url);
+    if (typeof window !== 'undefined' && parsed.origin !== window.location.origin) {
+      throw new Error(`Blocked cross-origin request to unauthorized host: ${parsed.host}`);
+    }
+    targetUrl = parsed.pathname + parsed.search;
+  }
+
+  const response = await fetch(targetUrl, {
     ...options,
     credentials: 'include',
     headers,

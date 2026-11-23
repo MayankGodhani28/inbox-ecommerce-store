@@ -173,7 +173,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
 
   const handleShare = () => {
     if (navigator.clipboard) {
-      navigator.clipboard.writeText(window.location.href);
+      void navigator.clipboard.writeText(window.location.href);
       showToast(t('details.shareCopied'), { type: 'info' });
     }
   };
@@ -600,8 +600,9 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
-                        <label className="text-xs text-slate-600 block mb-1">Headline</label>
+                        <label htmlFor="review-headline" className="text-xs text-slate-600 block mb-1">Headline</label>
                         <input
+                          id="review-headline"
                           type="text"
                           value={newReviewTitle}
                           onChange={(e) => setNewReviewTitle(e.target.value)}
@@ -610,8 +611,9 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
                         />
                       </div>
                       <div>
-                        <label className="text-xs text-slate-600 block mb-1">{t('details.yourRating')}</label>
+                        <label htmlFor="review-rating" className="text-xs text-slate-600 block mb-1">{t('details.yourRating')}</label>
                         <select
+                          id="review-rating"
                           value={newReviewRating}
                           onChange={(e) => setNewReviewRating(Number(e.target.value))}
                           className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-slate-200 focus:outline-none focus:border-orange-500 cursor-pointer"

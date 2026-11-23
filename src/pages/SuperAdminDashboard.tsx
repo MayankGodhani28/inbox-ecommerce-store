@@ -103,7 +103,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
 
   useEffect(() => {
     if (isSuperAdmin) {
-      loadData();
+      void loadData();
     } else {
       setIsLoading(false);
     }
@@ -321,10 +321,11 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
 
           <form onSubmit={handleDirectMasterLogin} className="space-y-4 text-left">
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">Super Admin Email</label>
+              <label htmlFor="master-admin-email" className="block text-xs font-bold text-slate-700 mb-1">Super Admin Email</label>
               <div className="relative">
                 <Mail className="size-4 text-slate-400 absolute left-3 top-3" />
                 <input
+                  id="master-admin-email"
                   type="email"
                   required
                   value={masterEmail}
@@ -336,10 +337,11 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">Master Password</label>
+              <label htmlFor="master-admin-pass" className="block text-xs font-bold text-slate-700 mb-1">Master Password</label>
               <div className="relative">
                 <Lock className="size-4 text-slate-400 absolute left-3 top-3" />
                 <input
+                  id="master-admin-pass"
                   type={showPassword ? 'text' : 'password'}
                   required
                   value={masterPassword}
@@ -1071,7 +1073,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
               {/* Current Password Field */}
               <div className="p-4 rounded-2xl bg-amber-50/60 border border-amber-200/80 space-y-2">
                 <div className="flex items-center justify-between">
-                  <label className="block text-xs font-black uppercase tracking-wider text-amber-900">
+                  <label htmlFor="superadmin-cur-pass" className="block text-xs font-black uppercase tracking-wider text-amber-900">
                     Current Password <span className="text-rose-500">*</span>
                   </label>
                   <span className="text-[11px] text-amber-700 font-medium">Required for authorization</span>
@@ -1079,6 +1081,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                 <div className="relative">
                   <Lock className="size-4 text-slate-400 absolute left-3.5 top-3" />
                   <input
+                    id="superadmin-cur-pass"
                     type={showOldPass ? 'text' : 'password'}
                     required
                     value={credOldPassword}
@@ -1098,12 +1101,13 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
 
               {/* New Email */}
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-slate-700">
+                <label htmlFor="superadmin-new-email" className="block text-xs font-bold text-slate-700">
                   New Super Admin Email
                 </label>
                 <div className="relative">
                   <Mail className="size-4 text-slate-400 absolute left-3.5 top-3" />
                   <input
+                    id="superadmin-new-email"
                     type="email"
                     value={credNewEmail}
                     onChange={(e) => setCredNewEmail(e.target.value)}
@@ -1119,12 +1123,13 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
               {/* New Password & Confirmation */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-bold text-slate-700">
+                  <label htmlFor="superadmin-new-pass" className="block text-xs font-bold text-slate-700">
                     New Password
                   </label>
                   <div className="relative">
                     <Lock className="size-4 text-slate-400 absolute left-3.5 top-3" />
                     <input
+                      id="superadmin-new-pass"
                       type={showNewPass ? 'text' : 'password'}
                       value={credNewPassword}
                       onChange={(e) => setCredNewPassword(e.target.value)}
@@ -1143,12 +1148,13 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ onNavi
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-bold text-slate-700">
+                  <label htmlFor="superadmin-confirm-pass" className="block text-xs font-bold text-slate-700">
                     Confirm New Password
                   </label>
                   <div className="relative">
                     <Lock className="size-4 text-slate-400 absolute left-3.5 top-3" />
                     <input
+                      id="superadmin-confirm-pass"
                       type={showNewPass ? 'text' : 'password'}
                       value={credConfirmPassword}
                       onChange={(e) => setCredConfirmPassword(e.target.value)}

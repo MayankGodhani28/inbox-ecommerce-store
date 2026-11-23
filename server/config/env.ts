@@ -18,8 +18,8 @@ export interface ServerEnv {
 export function validateEnv(): ServerEnv {
   const errors: string[] = [];
 
-  const port = parseInt(process.env.PORT || '4000', 10);
-  if (isNaN(port) || port <= 0) {
+  const port = Number.parseInt(process.env.PORT || '4000', 10);
+  if (Number.isNaN(port) || port <= 0) {
     errors.push('PORT must be a valid positive integer');
   }
 

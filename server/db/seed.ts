@@ -97,7 +97,7 @@ export async function seed() {
 }
 
 if (process.argv[1] && process.argv[1].endsWith('seed.ts')) {
-  (async () => {
+  void (async () => {
     try {
       await seed();
     } catch (err) {

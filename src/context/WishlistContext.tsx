@@ -72,7 +72,30 @@ export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   // Sync unauthenticated state with localStorage
   useEffect(() => {
     if (!isAuthenticated) {
-      localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(wishlist));
+      const safeWishlist = Array.isArray(wishlist)
+        ? wishlist.map((p) => ({
+            id: String(p.id),
+            name: String(p.name),
+            brand: String(p.brand),
+            category: String(p.category),
+            price: Number(p.price) || 0,
+            originalPrice: Number(p.originalPrice) || 0,
+            discount: Number(p.discount) || 0,
+            stock: Number(p.stock) || 0,
+            rating: Number(p.rating) || 5,
+            reviewCount: Number(p.reviewCount) || 0,
+            images: Array.isArray(p.images) ? p.images.map(String) : [],
+            description: String(p.description || ''),
+            colors: Array.isArray(p.colors) ? p.colors.map(String) : [],
+            sizes: Array.isArray(p.sizes) ? p.sizes.map(String) : [],
+            specifications: typeof p.specifications === 'object' && p.specifications !== null ? p.specifications : {},
+            isTrending: Boolean(p.isTrending),
+            isBestSeller: Boolean(p.isBestSeller),
+            isNewArrival: Boolean(p.isNewArrival),
+            isDealOfDay: Boolean(p.isDealOfDay),
+          }))
+        : [];
+      localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(safeWishlist));
     }
   }, [wishlist, isAuthenticated]);
 

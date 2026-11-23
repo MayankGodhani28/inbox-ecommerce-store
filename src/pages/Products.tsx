@@ -116,7 +116,7 @@ export const Products: React.FC<ProductsProps> = ({
 
   // Extract all unique brands from products
   const availableBrands = useMemo(() => {
-    return Array.from(new Set(products.map((p) => p.brand))).sort();
+    return Array.from(new Set(products.map((p) => p.brand))).sort((a, b) => a.localeCompare(b));
   }, [products]);
 
   // Filter and Sort Pipeline

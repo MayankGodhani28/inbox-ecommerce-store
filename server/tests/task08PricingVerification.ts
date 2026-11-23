@@ -196,10 +196,10 @@ async function runPricingTests() {
       }),
     });
     const taxQuote = ((await taxCheckQuoteRes.json()) as any).data;
-    if (taxQuote.tax !== 2.88) {
+    if (Math.abs(taxQuote.tax - 2.88) > 0.001) {
       throw new Error(`Expected tax $2.88, got $${taxQuote.tax}`);
     }
-    if (taxQuote.total !== 43.87) {
+    if (Math.abs(taxQuote.total - 43.87) > 0.001) {
       throw new Error(`Expected total $43.87 ($36 taxable + $4.99 delivery + $2.88 tax), got $${taxQuote.total}`);
     }
     console.log(`✓ Tax (8%) and final total verified with exact rounding: Tax $${taxQuote.tax}, Total $${taxQuote.total}.`);

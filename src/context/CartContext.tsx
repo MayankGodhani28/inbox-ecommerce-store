@@ -159,7 +159,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     if (!isAuthenticated) {
-      localStorage.setItem(SAVED_STORAGE_KEY, JSON.stringify(savedItems));
+      const sanitized = Array.isArray(savedItems) ? sanitizeCart(savedItems) : [];
+      localStorage.setItem(SAVED_STORAGE_KEY, JSON.stringify(sanitized));
     }
   }, [savedItems, isAuthenticated]);
 

@@ -135,7 +135,7 @@ async function runCatalogTests() {
       throw new Error(`Admin product creation failed with status ${newProdRes.status}`);
     }
     const createdProd = ((await newProdRes.json()) as any).data.product;
-    if (createdProd.price !== 89.99) {
+    if (Math.abs(createdProd.price - 89.99) > 0.001) {
       throw new Error(`Price conversion mismatch! Expected 89.99, got ${createdProd.price}`);
     }
     console.log('✓ Admin product creation succeeded with minor unit conversion.');

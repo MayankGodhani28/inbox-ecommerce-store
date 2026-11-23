@@ -60,14 +60,14 @@ adminRouter.post('/products', async (req: AuthenticatedRequest, res: Response): 
     return;
   }
 
-  const numPrice = parseFloat(price);
-  if (isNaN(numPrice) || numPrice <= 0) {
+  const numPrice = Number.parseFloat(price);
+  if (Number.isNaN(numPrice) || numPrice <= 0) {
     res.status(400).json({ error: { code: 'INVALID_INPUT', message: 'Price must be a positive number' } });
     return;
   }
 
-  const numStock = parseInt(stock, 10);
-  if (isNaN(numStock) || numStock < 0) {
+  const numStock = Number.parseInt(stock, 10);
+  if (Number.isNaN(numStock) || numStock < 0) {
     res.status(400).json({ error: { code: 'INVALID_INPUT', message: 'Stock must be greater than or equal to 0' } });
     return;
   }
@@ -85,7 +85,7 @@ adminRouter.post('/products', async (req: AuthenticatedRequest, res: Response): 
   }
 
   const priceMinor = Math.round(numPrice * 100);
-  const origPriceMinor = originalPrice ? Math.round(parseFloat(originalPrice) * 100) : priceMinor;
+  const origPriceMinor = originalPrice ? Math.round(Number.parseFloat(originalPrice) * 100) : priceMinor;
   const sellerStore = (user.storeName || brand || 'Inbox').trim();
 
   const newProduct = await prisma.product.create({
@@ -97,7 +97,7 @@ adminRouter.post('/products', async (req: AuthenticatedRequest, res: Response): 
       description: (description || '').trim(),
       price: priceMinor,
       originalPrice: origPriceMinor,
-      discount: discount ? parseInt(discount, 10) || 0 : 0,
+      discount: discount ? Number.parseInt(discount, 10) || 0 : 0,
       stock: numStock,
       images: imageList,
       colors: Array.isArray(colors) ? colors : [],
@@ -221,8 +221,8 @@ adminRouter.patch('/products/:id', async (req: AuthenticatedRequest, res: Respon
   if (description !== undefined) updates.description = description.trim();
 
   if (price !== undefined) {
-    const numPrice = parseFloat(price);
-    if (isNaN(numPrice) || numPrice <= 0) {
+    const numPrice = Number.parseFloat(price);
+    if (Number.isNaN(numPrice) || numPrice <= 0) {
       res.status(400).json({ error: { code: 'INVALID_INPUT', message: 'Price must be positive' } });
       return;
     }
@@ -230,12 +230,12 @@ adminRouter.patch('/products/:id', async (req: AuthenticatedRequest, res: Respon
   }
 
   if (originalPrice !== undefined) {
-    updates.originalPrice = Math.round(parseFloat(originalPrice) * 100);
+    updates.originalPrice = Math.round(Number.parseFloat(originalPrice) * 100);
   }
 
   if (stock !== undefined) {
-    const numStock = parseInt(stock, 10);
-    if (isNaN(numStock) || numStock < 0) {
+    const numStock = Number.parseInt(stock, 10);
+    if (Number.isNaN(numStock) || numStock < 0) {
       res.status(400).json({ error: { code: 'INVALID_INPUT', message: 'Stock must be >= 0' } });
       return;
     }
@@ -253,7 +253,7 @@ adminRouter.patch('/products/:id', async (req: AuthenticatedRequest, res: Respon
   if (colors !== undefined) updates.colors = colors;
   if (sizes !== undefined) updates.sizes = sizes;
   if (specifications !== undefined) updates.specifications = specifications;
-  if (discount !== undefined) updates.discount = parseInt(discount, 10) || 0;
+  if (discount !== undefined) updates.discount = Number.parseInt(discount, 10) || 0;
   if (isTrending !== undefined) updates.isTrending = Boolean(isTrending);
   if (isBestSeller !== undefined) updates.isBestSeller = Boolean(isBestSeller);
   if (isNewArrival !== undefined) updates.isNewArrival = Boolean(isNewArrival);

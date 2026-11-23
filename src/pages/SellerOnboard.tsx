@@ -426,10 +426,11 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
-                      <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
+                      <label htmlFor="seller-applicant-name" className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
                         Full Name *
                       </label>
                       <input
+                        id="seller-applicant-name"
                         type="text"
                         required
                         value={applicantName}
@@ -439,10 +440,11 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
+                      <label htmlFor="seller-work-email" className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
                         Work Email *
                       </label>
                       <input
+                        id="seller-work-email"
                         type="email"
                         required
                         value={applicantEmail}
@@ -452,10 +454,11 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
+                      <label htmlFor="seller-account-pass" className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
                         Account Password *
                       </label>
                       <input
+                        id="seller-account-pass"
                         type="password"
                         required
                         value={password}
@@ -539,10 +542,11 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                  <label htmlFor="seller-inventory-category" className="block text-xs font-bold text-slate-700 mb-1.5">
                     Primary Inventory Category *
                   </label>
                   <select
+                    id="seller-inventory-category"
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                     className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#E84A27] focus:ring-1 focus:ring-[#E84A27] cursor-pointer"
@@ -559,11 +563,12 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                <label htmlFor="seller-business-addr" className="text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
                   <MapPin className="size-3.5 text-indigo-600" />
                   Registered Business Address *
                 </label>
                 <input
+                  id="seller-business-addr"
                   type="text"
                   required
                   value={businessAddress}
@@ -574,10 +579,11 @@ export const SellerOnboard: React.FC<SellerOnboardProps> = ({ onNavigate, onOpen
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                <label htmlFor="seller-brand-story" className="block text-xs font-bold text-slate-700 mb-1.5">
                   Product Line & Brand Story (Optional)
                 </label>
                 <textarea
+                  id="seller-brand-story"
                   rows={3}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}

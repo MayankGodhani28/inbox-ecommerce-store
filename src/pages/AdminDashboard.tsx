@@ -363,7 +363,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     setPDesc(prod.description);
     setUploadError('');
     setIsUploadingImage(false);
-    setImageInputMode(prod.images[0] ? 'upload' : 'upload');
+    setImageInputMode(prod.images[0]?.startsWith('http') ? 'url' : 'upload');
     setIsProductModalOpen(true);
   };
 
@@ -378,15 +378,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       showToast('Validation Error', { message: 'Please upload a product image or provide an image URL', type: 'error' });
       return;
     }
-    const priceNum = parseFloat(pPrice);
-    const origPriceNum = parseFloat(pOriginalPrice);
-    const stockNum = parseInt(pStock, 10);
+    const priceNum = Number.parseFloat(pPrice);
+    const origPriceNum = Number.parseFloat(pOriginalPrice);
+    const stockNum = Number.parseInt(pStock, 10);
 
-    if (isNaN(priceNum) || priceNum <= 0) {
+    if (Number.isNaN(priceNum) || priceNum <= 0) {
       showToast('Validation Error', { message: 'Price must be greater than 0', type: 'error' });
       return;
     }
-    if (isNaN(stockNum) || stockNum < 0) {
+    if (Number.isNaN(stockNum) || stockNum < 0) {
       showToast('Validation Error', { message: 'Stock must be 0 or higher', type: 'error' });
       return;
     }
@@ -1057,8 +1057,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                           <div>
-                            <label className="block text-[11px] font-bold text-slate-600 mb-1">Full Name *</label>
+                            <label htmlFor="admin-owner-name" className="block text-[11px] font-bold text-slate-600 mb-1">Full Name *</label>
                             <input
+                              id="admin-owner-name"
                               type="text"
                               required
                               value={applicantName}
@@ -1068,8 +1069,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                             />
                           </div>
                           <div>
-                            <label className="block text-[11px] font-bold text-slate-600 mb-1">Work Email *</label>
+                            <label htmlFor="admin-owner-email" className="block text-[11px] font-bold text-slate-600 mb-1">Work Email *</label>
                             <input
+                              id="admin-owner-email"
                               type="email"
                               required
                               value={applicantEmail}
@@ -1079,8 +1081,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                             />
                           </div>
                           <div>
-                            <label className="block text-[11px] font-bold text-slate-600 mb-1">Account Password *</label>
+                            <label htmlFor="admin-owner-pass" className="block text-[11px] font-bold text-slate-600 mb-1">Account Password *</label>
                             <input
+                              id="admin-owner-pass"
                               type="password"
                               required
                               value={applicantPassword}
@@ -1158,10 +1161,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       </div>
 
                       <div>
-                        <label className="block text-xs font-bold text-slate-700 mb-1">
+                        <label htmlFor="admin-onboard-category" className="block text-xs font-bold text-slate-700 mb-1">
                           Product Category *
                         </label>
                         <select
+                          id="admin-onboard-category"
                           value={category}
                           onChange={(e) => setCategory(e.target.value)}
                           className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#008060] cursor-pointer"
@@ -1177,11 +1181,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     </div>
 
                     <div>
-                      <label className="text-xs font-bold text-slate-700 mb-1 flex items-center gap-1.5">
+                      <label htmlFor="admin-onboard-address" className="text-xs font-bold text-slate-700 mb-1 flex items-center gap-1.5">
                         <MapPin className="size-3.5 text-[#008060]" />
                         Registered Business Address *
                       </label>
                       <input
+                        id="admin-onboard-address"
                         type="text"
                         required
                         value={businessAddress}
@@ -1192,10 +1197,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">
+                      <label htmlFor="admin-onboard-desc" className="block text-xs font-bold text-slate-700 mb-1">
                         Product Description & Catalog Pitch (Optional)
                       </label>
                       <textarea
+                        id="admin-onboard-desc"
                         rows={3}
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
@@ -1268,10 +1274,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
               <form onSubmit={handleDirectAdminLogin} className="space-y-4 text-left">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Admin Email</label>
+                  <label htmlFor="direct-admin-email" className="block text-xs font-bold text-slate-700 mb-1">Admin Email</label>
                   <div className="relative">
                     <Mail className="size-4 text-slate-400 absolute left-3 top-3" />
                     <input
+                      id="direct-admin-email"
                       type="email"
                       required
                       value={adminAuthEmail}
@@ -1283,10 +1290,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Password</label>
+                  <label htmlFor="direct-admin-password" className="block text-xs font-bold text-slate-700 mb-1">Password</label>
                   <div className="relative">
                     <Lock className="size-4 text-slate-400 absolute left-3 top-3" />
                     <input
+                      id="direct-admin-password"
                       type={showAdminPassword ? 'text' : 'password'}
                       required
                       value={adminAuthPassword}
@@ -1483,9 +1491,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           {/* Breadcrumb / Title */}
           <div className="flex items-center gap-3">
             <div className="lg:hidden flex items-center gap-2">
-              <div onClick={() => onNavigate('home')} className="cursor-pointer">
+              <button
+                type="button"
+                onClick={() => onNavigate('home')}
+                className="cursor-pointer border-none bg-transparent p-0 text-left"
+              >
                 <BrandLogo size="sm" />
-              </div>
+              </button>
               <span className="px-2 py-0.5 rounded bg-[#008060] text-white text-[10px] font-bold">
                 Admin
               </span>
@@ -2319,8 +2331,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
             <form onSubmit={handleSaveProduct} className="flex flex-col gap-3 text-xs mt-4">
               <div>
-                <label className="font-bold text-neutral-700 block mb-1">Title</label>
+                <label htmlFor="admin-prod-title" className="font-bold text-neutral-700 block mb-1">Title</label>
                 <input
+                  id="admin-prod-title"
                   type="text"
                   required
                   value={pName}
@@ -2331,8 +2344,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="font-bold text-neutral-700 block mb-1">Brand / Vendor</label>
+                  <label htmlFor="admin-prod-brand" className="font-bold text-neutral-700 block mb-1">Brand / Vendor</label>
                   <input
+                    id="admin-prod-brand"
                     type="text"
                     required
                     value={pBrand}
@@ -2341,8 +2355,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-neutral-700 block mb-1">Department</label>
+                  <label htmlFor="admin-prod-category" className="font-bold text-neutral-700 block mb-1">Department</label>
                   <select
+                    id="admin-prod-category"
                     value={pCategory}
                     onChange={(e) => setPCategory(e.target.value as ProductCategory)}
                     className="w-full px-3 py-2 rounded-lg border border-[#D2D5D8] focus:outline-none focus:border-[#008060] bg-white cursor-pointer"
@@ -2358,8 +2373,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="font-bold text-neutral-700 block mb-1">Price ($)</label>
+                  <label htmlFor="admin-prod-price" className="font-bold text-neutral-700 block mb-1">Price ($)</label>
                   <input
+                    id="admin-prod-price"
                     type="number"
                     step="0.01"
                     required
@@ -2369,8 +2385,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-neutral-700 block mb-1">Compare-at ($)</label>
+                  <label htmlFor="admin-prod-origprice" className="font-bold text-neutral-700 block mb-1">Compare-at ($)</label>
                   <input
+                    id="admin-prod-origprice"
                     type="number"
                     step="0.01"
                     required
@@ -2380,8 +2397,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-neutral-700 block mb-1">Available Qty</label>
+                  <label htmlFor="admin-prod-stock" className="font-bold text-neutral-700 block mb-1">Available Qty</label>
                   <input
+                    id="admin-prod-stock"
                     type="number"
                     required
                     value={pStock}
@@ -2393,7 +2411,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <label className="font-bold text-neutral-700">Product Image</label>
+                  <label htmlFor="product-image-file-input" className="font-bold text-neutral-700">Product Image</label>
                   <div className="flex items-center gap-1 bg-neutral-100 p-0.5 rounded-md text-[11px]">
                     <button
                       type="button"
@@ -2431,9 +2449,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       id="product-image-file-input"
                     />
 
-                    <div
+                    <button
+                      type="button"
                       onClick={() => !isUploadingImage && fileInputRef.current?.click()}
-                      className={`border-2 border-dashed rounded-lg p-3 text-center cursor-pointer transition-all ${
+                      className={`w-full border-2 border-dashed rounded-lg p-3 text-center cursor-pointer transition-all ${
                         isUploadingImage
                           ? 'border-emerald-300 bg-emerald-50/50 cursor-wait'
                           : 'border-neutral-300 hover:border-emerald-500 hover:bg-neutral-50'
@@ -2475,7 +2494,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                           <span className="text-[10px] text-neutral-400">JPG, PNG, WEBP, GIF, AVIF up to 10MB</span>
                         </div>
                       )}
-                    </div>
+                    </button>
 
                     {uploadError && (
                       <div className="p-2 bg-rose-50 border border-rose-200 rounded-md text-[11px] text-rose-700 flex items-start gap-1.5">
@@ -2512,8 +2531,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               </div>
 
               <div>
-                <label className="font-bold text-neutral-700 block mb-1">Description</label>
+                <label htmlFor="admin-prod-desc" className="font-bold text-neutral-700 block mb-1">Description</label>
                 <textarea
+                  id="admin-prod-desc"
                   rows={3}
                   required
                   value={pDesc}

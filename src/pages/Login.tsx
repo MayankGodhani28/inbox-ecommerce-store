@@ -276,9 +276,10 @@ export const Login: React.FC<LoginProps> = ({ onNavigate, redirectTarget }) => {
                 {mode === 'register' && (
                   <>
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">Full Name</label>
+                      <label htmlFor="login-name" className="block text-xs font-bold text-slate-700 mb-1">Full Name</label>
                       <div className="relative">
                         <input
+                          id="login-name"
                           type="text"
                           required
                           value={name}
@@ -291,9 +292,10 @@ export const Login: React.FC<LoginProps> = ({ onNavigate, redirectTarget }) => {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">Phone Number (Optional)</label>
+                      <label htmlFor="login-phone" className="block text-xs font-bold text-slate-700 mb-1">Phone Number (Optional)</label>
                       <div className="relative">
                         <input
+                          id="login-phone"
                           type="tel"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
@@ -308,9 +310,10 @@ export const Login: React.FC<LoginProps> = ({ onNavigate, redirectTarget }) => {
 
                 {/* Email Address */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Email Address</label>
+                  <label htmlFor="login-email" className="block text-xs font-bold text-slate-700 mb-1">Email Address</label>
                   <div className="relative">
                     <input
+                      id="login-email"
                       type="email"
                       required
                       value={email}
@@ -326,7 +329,7 @@ export const Login: React.FC<LoginProps> = ({ onNavigate, redirectTarget }) => {
                 {mode !== 'forgot' && (
                   <div>
                     <div className="flex items-center justify-between mb-1">
-                      <label className="block text-xs font-bold text-slate-700">Password</label>
+                      <label htmlFor="login-password" className="block text-xs font-bold text-slate-700">Password</label>
                       {mode === 'login' && (
                         <button
                           type="button"
@@ -339,6 +342,7 @@ export const Login: React.FC<LoginProps> = ({ onNavigate, redirectTarget }) => {
                     </div>
                     <div className="relative">
                       <input
+                        id="login-password"
                         type={showPassword ? 'text' : 'password'}
                         required
                         value={password}

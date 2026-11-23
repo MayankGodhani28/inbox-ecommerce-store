@@ -25,7 +25,7 @@ export const InvoiceBill: React.FC<InvoiceBillProps> = ({ order, className = '',
         day: 'numeric',
       });
 
-  const subtotal = typeof order.subtotal === 'number' && !isNaN(order.subtotal) && order.subtotal > 0
+  const subtotal = typeof order.subtotal === 'number' && !Number.isNaN(order.subtotal) && order.subtotal > 0
     ? order.subtotal
     : (order.items || []).reduce((sum, it) => sum + (it.price || 0) * (it.quantity || 1), 0);
 

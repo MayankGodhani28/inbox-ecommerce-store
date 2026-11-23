@@ -47,7 +47,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   if (layout === 'list') {
     return (
       <div
+        role="button"
+        tabIndex={0}
         onClick={handleCardClick}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleCardClick();
+          }
+        }}
         className="group relative flex flex-col sm:flex-row items-center gap-5 p-4 bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:border-orange-200 transition-all duration-300 cursor-pointer overflow-hidden"
       >
         {/* Left image */}
@@ -130,7 +138,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <div
+      role="button"
+      tabIndex={0}
       onClick={handleCardClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleCardClick();
+        }
+      }}
       className="group relative flex flex-col bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-orange-200/80 transition-all duration-300 cursor-pointer overflow-hidden"
     >
       {/* Top Image Container */}

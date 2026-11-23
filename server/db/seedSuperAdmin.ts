@@ -21,7 +21,7 @@ async function setup() {
   console.log('✓ Super Admin provisioned:', superAdmin.email, superAdmin.role);
 }
 
-(async () => {
+void (async () => {
   try {
     await setup();
   } catch (err) {
