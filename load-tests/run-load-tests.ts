@@ -62,7 +62,7 @@ function separator(title: string) {
 
 function checkServerRunning(): boolean {
   try {
-    execSync('curl -s http://localhost:4000/api/health --max-time 3', { stdio: 'ignore' });
+    execSync('curl -s http://localhost:4000/api/health --max-time 3', { stdio: 'ignore' }); // NOSONAR - Local check for benchmark runner
     return true;
   } catch {
     return false;
@@ -166,4 +166,4 @@ Then re-run this script.
   }
 }
 
-main();
+void main();

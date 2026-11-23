@@ -58,7 +58,7 @@ export async function apiRequest<T = any>(
     targetUrl = parsed.pathname + parsed.search;
   }
 
-  const response = await fetch(targetUrl, {
+  const response = await fetch(targetUrl, { // NOSONAR - Same-origin validated API endpoint
     ...options,
     credentials: 'include',
     headers,

@@ -28,7 +28,7 @@ export const options = {
 const BASE_URL = __ENV.TARGET_URL || 'http://localhost:4000';
 
 export default function () {
-  const rand = Math.random();
+  const rand = Math.random(); // NOSONAR - Simulation pseudorandom generator for k6 load test
 
   // Scenario 1 (70%): Flash Sale Rush — Browse + Deals + Best Sellers + Coupons
   if (rand < 0.70) {

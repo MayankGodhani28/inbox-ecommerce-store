@@ -42,11 +42,17 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm animate-fade-in"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
+      role="dialog"
+      aria-modal="true"
     >
-      <div className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden">
+      <button
+        type="button"
+        className="fixed inset-0 border-none bg-transparent cursor-pointer w-full h-full"
+        onClick={onClose}
+        aria-label="Close modal backdrop"
+        tabIndex={-1}
+      />
+      <div className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-10">
         {/* Close button */}
         <button
           onClick={onClose}

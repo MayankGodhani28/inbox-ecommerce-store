@@ -153,14 +153,14 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Sync unauthenticated state with localStorage
   useEffect(() => {
     if (!isAuthenticated) {
-      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart)); // NOSONAR - Client storage for guest cart
     }
   }, [cart, isAuthenticated]);
 
   useEffect(() => {
     if (!isAuthenticated) {
       const sanitized = Array.isArray(savedItems) ? sanitizeCart(savedItems) : [];
-      localStorage.setItem(SAVED_STORAGE_KEY, JSON.stringify(sanitized));
+      localStorage.setItem(SAVED_STORAGE_KEY, JSON.stringify(sanitized)); // NOSONAR - Client storage for guest saved items
     }
   }, [savedItems, isAuthenticated]);
 

@@ -88,11 +88,17 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
+      role="dialog"
+      aria-modal="true"
     >
-      <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden">
+      <button
+        type="button"
+        className="fixed inset-0 border-none bg-transparent cursor-pointer w-full h-full"
+        onClick={onClose}
+        aria-label="Close modal backdrop"
+        tabIndex={-1}
+      />
+      <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-10">
         {/* Close Button */}
         <button
           onClick={onClose}
